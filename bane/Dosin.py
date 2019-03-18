@@ -1,4 +1,6 @@
 import threading,time,socket,socks,urllib2,urllib,httplib,requests,random,ssl,os,sys
+from struct import *
+from scapy.all import *
 class tcflood(threading.Thread):
  def run(self):
   global counter
