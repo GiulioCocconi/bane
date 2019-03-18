@@ -2,12 +2,11 @@ import setuptools
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
-with open('requirements.txt') as f:
-    requirements = f.read()
+requirements=['requests','PySocks','bs4','paramiko','pexpect','mysql-connector','scapy','stem']
 
 setuptools.setup(
     name="bane",
-    version="1.4.7",
+    version="1.4.8",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
