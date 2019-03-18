@@ -3637,7 +3637,7 @@ def mysql(u,username='root',password=''):
  except Exception as e:
   pass
  return i
-def hydra(u,proto="ssh",p=22,wl=wordlist,logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False):
+def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
 
