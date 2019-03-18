@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/AlaBouali/bane",
     packages=setuptools.find_packages(),
     python_requires=">=2.7",
-    license="MIT License"
+    license="MIT License",
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "License :: OSI Approved :: MIT License ",
