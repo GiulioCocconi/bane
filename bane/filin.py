@@ -1,3 +1,4 @@
+import os
 def clear_file(w):
  with open(w,'w'):
     pass
