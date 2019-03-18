@@ -108,8 +108,7 @@ pip install bane
 <br>if you want it to executble anywhere for linux or mac after cloning it, just do this:
 
 
-cd bane/bane
-sudo mv bane.py /usr/lib/python2.7 && sudo mv payloads.py /usr/lib/python2.7
+cd bane/bane && sudo mv bane.py /usr/lib/python2.7 && sudo mv payloads.py /usr/lib/python2.7
 
 
 ---------------------------------------------------------------------------------------------------------------------------
