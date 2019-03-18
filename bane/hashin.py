@@ -1,3 +1,4 @@
+import hashlib
 def md5(w):
  '''
    function to return md5 encrypted string
