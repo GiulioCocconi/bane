@@ -1,3 +1,6 @@
+import requests,random,re
+from bs4 import BeautifulSoup
+from payloads import *
 def inputs(u,value=False,timeout=10,bypass=False,proxy={}):
  '''
    this function is to get the names and values of input fields on a given webpage to scan.
