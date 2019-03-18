@@ -14,7 +14,6 @@ setuptools.setup(
     url="https://github.com/AlaBouali/bane",
     packages=setuptools.find_packages(),
     python_requires=">=2.7",
-    install_requires=['pexpect','paramiko','PySocks','requests','bs4','scapy >= 2.3.3','stem','mysql-connector'],
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "License :: OSI Approved :: MIT License ",
