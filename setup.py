@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="bane",
-    version="1.4.5",
+    version="1.4.6",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     package_data={'bane':'bane'},
