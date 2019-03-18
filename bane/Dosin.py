@@ -1,3 +1,4 @@
+import threading,time,socket,socks,urllib2,urllib,httplib,requests,random
 class tcflood(threading.Thread):
  def run(self):
   global counter
