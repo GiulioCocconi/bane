@@ -1,3 +1,7 @@
+import requests,re,random
+from bs4 import BeautifulSoup
+from payloads import *
+from extrafun import *
 def sqlieb(u,logs=True,returning=False,timeout=10,proxy={}):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding "'" at the end of the line and
