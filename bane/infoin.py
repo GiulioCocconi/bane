@@ -1,3 +1,6 @@
+import requests,random
+from bs4 import BeautifulSoup
+from payloads import *
 def info(u,timeout=10,proxy={}):
  '''
    this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as a list of strings
