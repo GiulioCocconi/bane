@@ -1,3 +1,7 @@
+import pexpect,paramiko,smtplib,telnetlib,requests
+import mysql.connector as mconn
+from ftplib import FTP
+from payloads import *
 """
    in functions below you can use a proxy in any function that takes the 'proxy' parameter with the same way that requests module does:
   
