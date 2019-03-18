@@ -1,3 +1,5 @@
+import requests,random,re
+from payloads import *
 def virustotal(f,proxy={},timeout=5):
  s=sha256fl(f)
  u="https://www.virustotal.com/en/file/"+s+"/analysis/"
