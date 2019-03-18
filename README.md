@@ -92,7 +92,7 @@ I-INSTALLING THE LIBRARY AND IMPORTING:
 
 you can use pip to do that:
 
-pip install bane
+python -m pip install bane
 
 <br>or you can clone the project's link then run setup.py<br>
 
