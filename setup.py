@@ -13,7 +13,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/AlaBouali/bane",
-    packages=setuptools.find_packages(),
+    packages="bane",
     python_requires=">=2.7",
     license="MIT License",
     classifiers=[
