@@ -1,3 +1,6 @@
+import requests,re,random
+from bs4 import BeautifulSoup
+from payloads import *
 def crawl(u,timeout=10,bypass=False,proxy={}):
  '''
    this function is used to crawl any given link and returns a list of all available links on that webpage with ability to bypass anti-crawlers
