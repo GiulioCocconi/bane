@@ -1,3 +1,6 @@
+import requests,re,random
+from bs4 import BeautifulSoup
+from payloads import *
 def masshttp(*args):
  '''
    this function gather up thousands of HTTP / HTTPS proxies from www.proxyserverlist24.top and proxy-daily.com
