@@ -4,6 +4,8 @@ from scapy.all import *
 import stem
 from stem import Signal
 from stem.control import Controller
+from payloads import *
+from proxin import *
 class tcflood(threading.Thread):
  def run(self):
   global counter
