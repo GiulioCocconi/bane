@@ -1,5 +1,4 @@
 import setuptools
-
 with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
@@ -12,6 +11,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/AlaBouali/bane",
     python_requires=">=2.7",
+    install_requires=["requests","PySocks","bs4","paramiko","pexpect","mysql-connector","scapy","stem"]
     packages=["bane"],
     license="MIT License",
     classifiers=[
