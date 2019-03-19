@@ -3,6 +3,9 @@ from scapy.all import *
 from struct import *
 from payloads import *
 from proxer import *
+import stem
+from stem import Signal
+from stem.control import Controller
 def udp(u,port=80,ports=None,level=3,size=3,connection=True):
   '''
    this function is for UDP flood attack tests.
