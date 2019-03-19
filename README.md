@@ -92,7 +92,7 @@ I-INSTALLING THE LIBRARY AND IMPORTING:
 
 you can use pip to do that:
 
-python -m pip install bane
+pip install bane
 
 <br>or you can clone the project's link then run setup.py<br>
 
@@ -104,11 +104,6 @@ python -m pip install bane
 
 >>>import bane
 >>>
-
-<br>if you want it to executble anywhere for linux or mac after cloning it, just do this:
-
-
-cd bane/bane && sudo mv bane.py /usr/lib/python2.7 && sudo mv payloads.py /usr/lib/python2.7
 
 
 ---------------------------------------------------------------------------------------------------------------------------
