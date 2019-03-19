@@ -13,7 +13,6 @@ setuptools.setup(
     url="https://github.com/AlaBouali/bane",
     python_requires=">=2.7",
     packages=["bane"],
-    package_dir={'bane': 'bane'},
     license="MIT License",
     classifiers=[
         "Programming Language :: Python :: 2.7",
