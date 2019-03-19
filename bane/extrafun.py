@@ -1,7 +1,8 @@
-import cgi,HTMLParser,requests,os,random,re
+import cgi,HTMLParser,requests,os,random,re,hashlib
 import bs4
 from bs4 import BeautifulSoup
 from payloads import *
+from hasher import sha256fl
 def clear_file(w):
  with open(w,'w'):
     pass
