@@ -1,4 +1,4 @@
-import cgi,HTMLParser,requests,os,random,re,hashlib
+import cgi,HTMLParser,requests,os,random,re,hashlib,urllib
 import bs4
 from bs4 import BeautifulSoup
 from payloads import *
