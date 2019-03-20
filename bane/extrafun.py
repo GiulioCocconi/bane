@@ -22,7 +22,7 @@ def read_file(w):
 def create_file(w):
     with open(w ,"a+") as f:
      pass   
-def virustotal(f,proxy={},timeout=5):
+def virustotal(f,proxy={},timeout=10):
  s=sha256fl(f)
  u="https://www.virustotal.com/en/file/"+s+"/analysis/"
  try:
@@ -41,8 +41,8 @@ def virustotal(f,proxy={},timeout=5):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,maxi=100,proxy={},timeout=5):
- url="http://www.google.com/search"
+def googledk(q,maxi=100,proxy={},timeout=10):
+ url="https://www.google.com/search"
  ls=[]
  y=0
  q=q.replace(" ","+")
@@ -102,7 +102,7 @@ def webhint(ur,proxy={},timeout=10):
  except Exception as e:
   pass
  return r
-def youtube(q,proxy={},timeout=5):
+def youtube(q,proxy={},timeout=10):
  '''
    this function is for searching on youtub and returning a links of related videos.
 '''
