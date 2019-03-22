@@ -4,7 +4,7 @@ import paramiko
 from paramiko import SSHClient, AutoAddPolicy
 import mysql.connector as mconn
 from payloads import *
-def access(u,timeout=10,bypass=False,proxy={}):
+def access(u,timeout=10,bypass=False,proxy=None):
  '''
    this function isused to check if the given link is returning 200 ok response or not.
    
@@ -25,6 +25,8 @@ def access(u,timeout=10,bypass=False,proxy={}):
  '''
  if bypass==True:
    u+='#'
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
    s=0
    r=requests.get(u,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout) 
@@ -44,7 +46,7 @@ def access(u,timeout=10,bypass=False,proxy={}):
    please note that if you are going to use socks proxies you will have to install: requests[socks]
 
 """
-def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy={}):
+def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None):
  '''
    if you are lucky and smart enough, using google dorking you can gain an unauthorised access to private file managers and manipulate files
    (delete, upload, edit...) and exploit this weakness on the security of the target for further purposes.
@@ -68,6 +70,8 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy={}):
    >>>bane.filemanager(url,returning=True,mapping=False)
 '''
  k=[]
+ if proxy:
+  proxy={'http':'http://'+proxy}
  for i in manager:
   try:
    if u[len(u)-1]=='/':
@@ -95,7 +99,7 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy={}):
    pass
  if returning==True:
   return k
-def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy={}):
+def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy=None):
  '''
    this function is using "Forced Browsing" technique which is aim to access restricted areas without providing any credentials!!!
    it is used here to gain access to admin control panel by trying different possible combinations of links with the given URL.
@@ -124,6 +128,8 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
    ext: (set by default to: "php") it helps you to find links with the given extention, cuurentky it supports only 3 extentions: "php", "asp"
    and "aspx"( any other extention won't be used).  
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  l=[]
  if u[len(u)-1]=='/':
     u=u[0:len(u)-1]
@@ -146,7 +152,7 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
     print'[-]Failed'
  if returning==True:
   return l
-def adminlogin(u,p,timeout=10,proxy={}):
+def adminlogin(u,p,timeout=10,proxy=None):
  '''
    this function try to use the values you insert in the dictionary field "p" to make a POST request in the login page and check it the 
    credentials are correct or not by checking the response code.
@@ -165,6 +171,8 @@ def adminlogin(u,p,timeout=10,proxy={}):
    ... print 'logged in!!!'
  '''
  s=0
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
   r=requests.post(u,data=p,headers = {'User-Agent': random.choice(ua)},allow_redirects=False,proxies=proxy,timeout=timeout)
   if r.status_code==302:
@@ -172,7 +180,7 @@ def adminlogin(u,p,timeout=10,proxy={}):
  except:
   pass
  return s
-def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy={}):
+def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None):
  '''
    this function use a list of possible admin panel links with different extensions: php, asp, aspx, js, /, cfm, cgi, brf and html.
    
@@ -185,6 +193,8 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
 
   >>>bane.adminpanel('http://www.example.com',ext='aspx',timeout=5)
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  links=[]
  ext=ext.strip()
  if ext.lower()=="php":
