@@ -36,13 +36,11 @@ def access(u,timeout=10,bypass=False,proxy=None):
    pass
  return False
 """
-   in functions below you can use a proxy in any function that takes the 'proxy' parameter with the same way that requests module does:
+   in functions below you can use a proxy in any function that takes the 'proxy' parameter with this way:
   
    example:
 
-   proxy={'http': 'http://xx.xxx.xx.xxx:80'}
-  
-   please note that if you are going to use socks proxies you will have to install: requests[socks]
+   proxy='192.122.58.47:80'
 
 """
 def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None):
