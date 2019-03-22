@@ -20,7 +20,7 @@ def access(u,timeout=10,bypass=False,proxy=None):
    >>>url='http://www.example.com/admin/'
    >>>url+='edit.php'
    >>>a=bane.access(url)
-   >>>if a==1:
+   >>>if a==True:
    ... print 'accessable'
  '''
  if bypass==True:
@@ -28,14 +28,13 @@ def access(u,timeout=10,bypass=False,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
-   s=0
    r=requests.get(u,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout) 
    if r.status_code == requests.codes.ok:
     if (("Uncaught exception" not in r.text) or ("404 Not Found" not in r.text)):
-     s+=1
+     return True
  except Exception as e:
    pass
- return s
+ return False
 """
    in functions below you can use a proxy in any function that takes the 'proxy' parameter with the same way that requests module does:
   
@@ -167,19 +166,18 @@ def adminlogin(u,p,timeout=10,proxy=None):
 
    >>>import bane
    >>>a=bane.adminlogin('http://www.example.com/admin/login.php',{'user':'ala','pass':'ala'})
-   >>>if a==1:
+   >>>if a==True:
    ... print 'logged in!!!'
  '''
- s=0
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
   r=requests.post(u,data=p,headers = {'User-Agent': random.choice(ua)},allow_redirects=False,proxies=proxy,timeout=timeout)
   if r.status_code==302:
-   s+=1
+   return True
  except:
   pass
- return s
+ return False
 def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None):
  '''
    this function use a list of possible admin panel links with different extensions: php, asp, aspx, js, /, cfm, cgi, brf and html.
@@ -260,7 +258,6 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
 
 '''
 def smtp(u, p=25,username='',password='',ehlo=True,helo=False,ttls=False):
- i=False
  try:
   s= smtplib.SMTP(u, p)
   if ehlo==True:
@@ -272,12 +269,11 @@ def smtp(u, p=25,username='',password='',ehlo=True,helo=False,ttls=False):
    if ttls==True:
     s.starttls()
   s.login(username, password)
-  i=True
+  return True
  except Exception as e:
   pass
- return i
+ return False
 def telnet1(u,p=23,username='',password='',timeout=5):
- i=False
  p='telnet {} {}'.format(u,p)
  try:
   child = pexpect.spawn(p)
@@ -293,12 +289,11 @@ def telnet1(u,p=23,username='',password='',timeout=5):
   c= child.after
   for x in prompts:
    if x in c:
-    i=True
+    return True
  except Exception as e:
   pass
- return i
+ return False
 def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
- s=False
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   t.read_until(":",timeout=timeout)
@@ -308,12 +303,11 @@ def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
   c= t.read_until(prompt,timeout=timeout)
   for x in prompts:
    if x in c:
-    s=True
+    return True
  except Exception as e:
   pass
- return s
+ return False
 def ssh1(u,p=22,username='',password='',timeout=5):
- i=False
  p='ssh -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
@@ -331,12 +325,11 @@ def ssh1(u,p=22,username='',password='',timeout=5):
   c= child.after
   for x in prompts:
    if x in c:
-    i=True
+    return True
  except Exception as e:
   pass
- return i
+ return False
 def ssh2(ip,username='',password='',p=22,timeout=5):
- i=False
  try:
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
@@ -344,38 +337,34 @@ def ssh2(ip,username='',password='',p=22,timeout=5):
   stdin, stdout, stderr = s.exec_command ("echo alawashere",timeout=timeout)
   r=stdout.read()
   if "alawashere" in r:
-   i=True
+   return True
  except Exception as e:
   pass
- return i
+ return False
 def ftpanon(ip,timeout=5):
-  i=False
   try:
     ftp = FTP(ip,timeout=timeout)
     ftp.login()
-    i=True
-    ftp.quit()
+    return True
   except Exception as e:
     pass
-  return i
+  return False
 def ftp(ip,username='',password='',timeout=5):
    try:
     i=False
     ftp = FTP(ip,timeout=timeout)
     ftp.login(username,password)
-    i=True
-    ftp.quit()
+    return True
    except Exception as e:
     pass
-   return i  
+   return False
 def mysql(u,username='root',password=''):
- i=False
  try:
   mconn.connect(host=u,user=username, password=password)
-  i=True
+  return True
  except Exception as e:
   pass
- return i
+ return False
 def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
