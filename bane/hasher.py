@@ -148,32 +148,32 @@ def dsha224(w,z):
  w=hashlib.sha224(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 def dsha384(w,z):
  w=hashlib.sha384(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 def dsha512(w,z):
  w=hashlib.sha512(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 def dsha256(w,z):
  w=hashlib.sha256(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 def dsha1(w,z):
  w=hashlib.sha1(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 def dmd5(w,z):
  w=hashlib.md5(w.encode("utf-8")).hexdigest()
  if w==z:
    return True
- return false
+ return False
 '''
   function to do simple caesar encryption lol.
   
