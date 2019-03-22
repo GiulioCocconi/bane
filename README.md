@@ -141,8 +141,8 @@ default parameters:
 
 they return only 2 possible results:
 
-<br>0: the target is not vulnerable.
-<br>1: the target is vulnerable.<br>
+<br>False: the target is not vulnerable.
+<br>True: the target is vulnerable.<br>
 
 
 <h2>2-XSS:</h2> (useful link: https://www.acunetix.com/vulnerabilities/web/cross-site-scripting/ )
@@ -180,7 +180,7 @@ there is another functions to test with:
 >>>bane.fi('http://example.com/index.php?file=page1.php')
 
 <br>it returns (in case the parameter "returning" set to: True) a dict that contains 
-<br>{ "Status" : status # ==>1 if success or 0 is fail
+<br>{ "Status" : status # ==>True if success or False is fail
 ,<br>"Nullbyte" : nullbyte # ==>True if "nullbyte" parameter is set to True
 <br>,"Link" : r.url # ==> the result URL}<br>
 
@@ -195,8 +195,8 @@ there is another functions to test with:
 
 <br>if it returns:
 
-<br>0: not vulnerable
-<br>1: vulnerable
+<br>False: not vulnerable
+<br>True: vulnerable
 
 
 <br>you can use another functions to do that as well:
