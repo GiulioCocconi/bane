@@ -2,7 +2,7 @@ import requests,urllib,socket,random,time,re
 import bs4
 from bs4 import BeautifulSoup
 from payloads import *
-def info(u,timeout=10,proxy={}):
+def info(u,timeout=10,proxy=None):
  '''
    this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as a list of strings
    with this format:
@@ -17,6 +17,8 @@ def info(u,timeout=10,proxy={}):
    >>>domain='www.google.com'
    >>>bane.info(domain)
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
   h=[]
   u='https://check-host.net/ip-info?host='+u
@@ -47,7 +49,7 @@ def info(u,timeout=10,proxy={}):
  except Exception as e:
   pass
  return h
-def upordown(ur,logs=True,returning=False,timeout=10,proxy={}):
+def upordown(ur,logs=True,returning=False,timeout=10,proxy=None):
  '''
    this funtion checks the given ip or domain if it is up or down using 2 validation sources:
    down.com and downforeveryoneorjustme.com
@@ -66,6 +68,8 @@ def upordown(ur,logs=True,returning=False,timeout=10,proxy={}):
    1 => target seems up for one of them
    2 => target seems up for both
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  s=0
  if "://" in ur:
   ur=ur.split('://')[1].split('=')[0]
@@ -106,7 +110,7 @@ def upordown(ur,logs=True,returning=False,timeout=10,proxy={}):
   pass 
  if returning==True:
   return s
-def nortonrate(u,logs=True,returning=False,timeout=15,proxy={}):
+def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
  '''
    this function takes any giving and gives a security report from: safeweb.norton.com, if it is a: spam domain, contains a malware...
    it takes 3 arguments:
@@ -118,6 +122,8 @@ def nortonrate(u,logs=True,returning=False,timeout=15,proxy={}):
    >>>url='http://www.example.com'
    >>>bane.nortonrate(domain)
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  s=""
  try:
   if logs==True:
@@ -170,10 +176,12 @@ def myip(logs=True,returning=False):
    >>>bane.nmap(ip)
    etc...
 '''
-def dnslookup(u,logs=True,returning=False,proxy={}):
+def dnslookup(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: DNS look up
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  c=''
  try:
   c=requests.get("https://api.hackertarget.com/dnslookup/?q="+u,proxies=proxy,timeout=10).text
@@ -183,10 +191,12 @@ def dnslookup(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def whois(u,logs=True,returning=False,proxy={}):
+def whois(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: whois
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  c=''
  try:
    c=requests.get("https://api.hackertarget.com/whois/?q="+u,proxies=proxy,timeout=10).text
@@ -196,11 +206,13 @@ def whois(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def traceroute(u,logs=True,returning=False,proxy={}):
+def traceroute(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: tracerout
  '''
  c=""
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
    c=requests.get("https://api.hackertarget.com/mtr/?q="+u,proxies=proxy,timeout=10).text
  except:
@@ -209,11 +221,13 @@ def traceroute(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def reversedns(u,logs=True,returning=False,proxy={}):
+def reversedns(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: reverse DNS look up
  '''
  c=""
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
    c=requests.get("https://api.hackertarget.com/reversedns/?q="+u,proxies=proxy,timeout=10).text
  except:
@@ -222,10 +236,12 @@ def reversedns(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def geoip(u,logs=True,returning=False,proxy={}):
+def geoip(u,logs=True,returning=False,proxy=None):
  '''
    this function is for getting: geoip informations
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  c=""
  try:
    c=requests.get("https://api.hackertarget.com/geoip/?q="+u,proxies=proxy,timeout=10).text
@@ -235,10 +251,12 @@ def geoip(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def nmap(u,logs=True,returning=False,proxy={}):
+def nmap(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: nmap
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  c=""
  try:
    c=requests.get("https://api.hackertarget.com/nmap/?q="+u,proxies=proxy,timeout=10).text
@@ -248,10 +266,12 @@ def nmap(u,logs=True,returning=False,proxy={}):
   print c.strip()
  if returning==True:
   return c.strip()
-def reverseiplookup(u,logs=True,returning=False,proxy={}):
+def reverseiplookup(u,logs=True,returning=False,proxy=None):
  '''
    this function is for: reverse ip look up
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  c=""
  try:
    c=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,proxies=proxy,timeout=10).text
