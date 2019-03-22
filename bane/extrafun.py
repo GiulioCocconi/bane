@@ -22,7 +22,9 @@ def read_file(w):
 def create_file(w):
     with open(w ,"a+") as f:
      pass   
-def virustotal(f,proxy={},timeout=10):
+def virustotal(f,proxy=None,timeout=10):
+ if proxy:
+  proxy={'http':'http://'+proxy}
  s=sha256fl(f)
  u="https://www.virustotal.com/en/file/"+s+"/analysis/"
  try:
@@ -41,7 +43,9 @@ def virustotal(f,proxy={},timeout=10):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,maxi=100,per_page=10,proxy={},timeout=10):
+def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if per_page>100:
   per_page=100
  url="https://www.google.com/search"
@@ -81,11 +85,13 @@ def unescape_html(s):
    function to return unescaped html string
  '''
  return HTMLParser.HTMLParser().unescape(s).encode("utf-8")
-def webhint(ur,proxy={},timeout=10):
+def webhint(ur,proxy=None,timeout=10):
  '''
    this function takes any webpage link and returns a report link from webhint.io.
 '''
  u="https://webhint.io/scanner/"
+ if proxy:
+  proxy={'http':'http://'+proxy}
  r=''
  if ("://" not in ur):
   return r
@@ -104,7 +110,7 @@ def webhint(ur,proxy={},timeout=10):
  except Exception as e:
   pass
  return r
-def youtube(q,proxy={},timeout=10):
+def youtube(q,proxy=None,timeout=10):
  '''
    this function is for searching on youtub and returning a links of related videos.
 '''
