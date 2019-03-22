@@ -155,7 +155,7 @@ def myip(logs=True,returning=False):
 '''
  c=""
  try:
-   c+=requests.get("http://ipinfo.io/ip",timeout=10).text
+   c+=requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)} ,timeout=10).text
  except:
   pass
  if logs==True:
@@ -184,7 +184,7 @@ def dnslookup(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=''
  try:
-  c=requests.get("https://api.hackertarget.com/dnslookup/?q="+u,proxies=proxy,timeout=10).text
+  c=requests.get("https://api.hackertarget.com/dnslookup/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -199,7 +199,7 @@ def whois(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=''
  try:
-   c=requests.get("https://api.hackertarget.com/whois/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/whois/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -214,7 +214,7 @@ def traceroute(u,logs=True,returning=False,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
-   c=requests.get("https://api.hackertarget.com/mtr/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/mtr/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -229,7 +229,7 @@ def reversedns(u,logs=True,returning=False,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
-   c=requests.get("https://api.hackertarget.com/reversedns/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/reversedns/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -244,7 +244,7 @@ def geoip(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=""
  try:
-   c=requests.get("https://api.hackertarget.com/geoip/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/geoip/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -259,7 +259,7 @@ def nmap(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=""
  try:
-   c=requests.get("https://api.hackertarget.com/nmap/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/nmap/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
@@ -274,7 +274,7 @@ def reverseiplookup(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=""
  try:
-   c=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,proxies=proxy,timeout=10).text
+   c=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
  except:
   pass
  if logs==True:
