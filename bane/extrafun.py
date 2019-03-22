@@ -41,14 +41,16 @@ def virustotal(f,proxy={},timeout=10):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,maxi=100,proxy={},timeout=10):
+def googledk(q,maxi=100,per_page=10,proxy={},timeout=10):
+ if per_page>100:
+  per_page=100
  url="https://www.google.com/search"
  ls=[]
- y=0
+ y=per_page
  q=q.replace(" ","+")
  while len(ls)<maxi:
-  y+=100
-  pl = {"num":100, 'q' :q,'start' : y}
+  y+=per_page
+  pl = {"num":per_page, 'q' :q,'start' : y}
   hd = { 'User-agent' : 'Mozilla/11.0'}
   try:
    r = requests.get(url, params=pl, headers=hd,proxies=proxy,timeout=timeout )
