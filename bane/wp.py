@@ -1,9 +1,11 @@
 import requests,random
 from payloads import ua
-def wpadmin(u,path='/xmlrpc.php',username='',password='',timeout=10,proxy={}):
+def wpadmin(u,path='/xmlrpc.php',username='',password='',timeout=10,proxy=None):
  '''
    this function is to check the wordpress given logins using the xmlrpc.php file. if they are correct it returns True, else False
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if u[len(u)-1]=='/':
   u=u[0:len(u)-1]
  s=False
@@ -22,10 +24,12 @@ def wpadmin(u,path='/xmlrpc.php',username='',password='',timeout=10,proxy={}):
  except:
   pass
  return s
-def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,content=True,proxy={}):
+def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to get WP users
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if u[len(u)-1]=='/':
   u=u[0:len(u)-1]
  s=''
@@ -46,10 +50,12 @@ def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,co
   return b
  if content==True:
   return c
-def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=False,content=True,proxy={}):
+def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to return all informations about a WP user with a given index integer
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if u[len(u)-1]=='/':
   u=u[0:len(u)-1]
  s=''
@@ -70,10 +76,12 @@ def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=F
   return b
  if content==True:
   return c
-def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,content=True,proxy={}):
+def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to get WP posts
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if u[len(u)-1]=='/':
   u=u[0:len(u)-1]
  s=''
@@ -94,10 +102,12 @@ def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,co
   return b
  if content==True:
   return c
-def wppost(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=False,content=True,proxy={}):
+def wppost(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to return all informations about a WP post with a given index integer
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if u[len(u)-1]=='/':
   u=u[0:len(u)-1]
  s=''
