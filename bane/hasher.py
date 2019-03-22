@@ -129,8 +129,8 @@ def base64decodefl(f):
   the first one is a word to encrypt it and compare it to the second argument that takes the hash that you are trying to crack.
 
   if it returns:
-  0 => the hashes didn't match
-  1 => the hashes has matched
+  False => the hashes didn't match
+  True => the hashes has matched
 
   example:
 
@@ -138,48 +138,42 @@ def base64decodefl(f):
   >>>l=['admin','12345','user','ala','soul','vince']
   >>>fox word in l:
   ... print'[*]Trying:',word
-      if bane.dmd5( word,hash)==1:
+      if bane.dmd5( word,hash)==True:
        print'[+]Found!!'
        break
       else:
        print'[-]failed'
 '''
 def dsha224(w,z):
- s=0
  w=hashlib.sha224(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 def dsha384(w,z):
- s=0
  w=hashlib.sha384(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 def dsha512(w,z):
- s=0
  w=hashlib.sha512(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 def dsha256(w,z):
- s=0
  w=hashlib.sha256(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 def dsha1(w,z):
- s=0
  w=hashlib.sha1(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 def dmd5(w,z):
- s=0
  w=hashlib.md5(w.encode("utf-8")).hexdigest()
  if w==z:
-   s+=1
- return s
+   return True
+ return false
 '''
   function to do simple caesar encryption lol.
   
