@@ -41,7 +41,7 @@ def virustotal(f,proxy={},timeout=10):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,maxi=100,per_page=10,proxy={},timeout=10):
+def googledk(q,maxi=100,per_page=100,proxy={},timeout=10):
  if per_page>100:
   per_page=100
  url="https://www.google.com/search"
