@@ -2,7 +2,7 @@ import requests,random,re
 import bs4
 from bs4 import BeautifulSoup
 from payloads import *
-def inputs(u,value=False,timeout=10,bypass=False,proxy={}):
+def inputs(u,value=False,timeout=10,bypass=False,proxy=None):
  '''
    this function is to get the names and values of input fields on a given webpage to scan.
 
@@ -24,6 +24,8 @@ def inputs(u,value=False,timeout=10,bypass=False,proxy={}):
   ['email','password','rememberme:yes','rememberme:no']
   
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if bypass==True:
   u+='#'
  l=[]
@@ -50,10 +52,12 @@ def inputs(u,value=False,timeout=10,bypass=False,proxy={}):
  except Exception as e:
   pass
  return l
-def forms(u,value=True,timeout=10,bypass=False,proxy={}):
+def forms(u,value=True,timeout=10,bypass=False,proxy=None):
  '''
    same as "inputs" function but it works on forms input fields only
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if bypass==True:
   u+='#'
  l=[]
@@ -82,10 +86,12 @@ def forms(u,value=True,timeout=10,bypass=False,proxy={}):
  except Exception as e:
   pass
  return l
-def loginform(u,timeout=10,bypass=False,value=True,proxy={}):
+def loginform(u,timeout=10,bypass=False,value=True,proxy=None):
  '''
    same as "inputs" function but it works on login input fields only
  '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  if bypass==True:
   u+='#'
  l=[]
@@ -114,7 +120,7 @@ def loginform(u,timeout=10,bypass=False,value=True,proxy={}):
  except Exception as e:
   pass
  return l
-def crawl(u,timeout=10,bypass=False,proxy={}):
+def crawl(u,timeout=10,bypass=False,proxy=None):
  '''
    this function is used to crawl any given link and returns a list of all available links on that webpage with ability to bypass anti-crawlers
    
@@ -132,6 +138,8 @@ def crawl(u,timeout=10,bypass=False,proxy={}):
    
    >>>bane.crawl(url,bypass=True)
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  h=[]
  if bypass==True:
   u+='#'
@@ -158,7 +166,7 @@ def crawl(u,timeout=10,bypass=False,proxy={}):
  except:
   pass
  return h
-def pather(u,timeout=10,bypass=False,proxy={}):
+def pather(u,timeout=10,bypass=False,proxy=None):
  '''
    this function is similar to the "crawl" function except that it returns only the paths not the full URL.
    
@@ -176,6 +184,8 @@ def pather(u,timeout=10,bypass=False,proxy={}):
    
    >>>bane.pather(url,bypass=True)
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  h=[]
  p=[]
  if bypass==True:
@@ -205,7 +215,7 @@ def pather(u,timeout=10,bypass=False,proxy={}):
  for x in h:
   p.append(x.split(u)[1])
  return p
-def media(u,timeout=10,bypass=False,proxy={}):
+def media(u,timeout=10,bypass=False,proxy=None):
  '''
    this funtion was made to collect the social media links related to the targeted link (facebook, twitter, instagram...).
 
@@ -224,6 +234,8 @@ def media(u,timeout=10,bypass=False,proxy={}):
    >>>bane.media(url,bypass=True)
 '''
  h=[]
+ if proxy:
+  proxy={'http':'http://'+proxy}
  try:
   if bypass==True:
    u+='#'
@@ -245,7 +257,7 @@ def media(u,timeout=10,bypass=False,proxy={}):
  except:
   pass
  return h
-def subdomains(u,timeout=10,bypass=False,proxy={}):
+def subdomains(u,timeout=10,bypass=False,proxy=None):
  '''
    this function collects the subdomains found on the targeted webpage.
 
@@ -263,6 +275,8 @@ def subdomains(u,timeout=10,bypass=False,proxy={}):
    
    >>>bane.subdomains(url,bypass=True)
 '''
+ if proxy:
+  proxy={'http':'http://'+proxy}
  h=[]
  try:
   if bypass==True:
