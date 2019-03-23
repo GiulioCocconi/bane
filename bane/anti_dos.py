@@ -7,10 +7,13 @@ def evilips(l):
  (source: https://kirkkosinski.com/2013/11/mass-blocking-evil-ip-addresses-iptables-ip-sets/)
  '''
  os.system('ipset create evil_ips iphash')
+ os.system('ipset flush evil_ips')
  for x in l:
   o='ipset add evil_ips '+x
   os.system(o)
+
 def mass_block(l,duration=3600):
+ evilips(l)
  t=time.time()
  os.system('iptables -A INPUT -m set --match-set evil_ips src -j DROP')
  os.system('iptables -A OUPUT -m set --match-set evil_ips dst -j DROP')
