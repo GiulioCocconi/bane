@@ -3,7 +3,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 setuptools.setup(
     name="bane",
-    version="1.6.7",
+    version="1.6.8",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
