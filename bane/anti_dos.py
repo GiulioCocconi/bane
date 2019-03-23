@@ -36,7 +36,7 @@ def single_block(s,duration=3600):
  t=time.time()
  o='iptables -A INPUT -s {} -j DROP'.format(s)
  os.system(o)
- whileTrue:
+ while True:
   if time.time()-t>duration:
    break
  o='iptables -D INPUT -s {} -j DROP'.format(s)
