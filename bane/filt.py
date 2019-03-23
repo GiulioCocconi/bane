@@ -1,5 +1,7 @@
 from extrafun import escape_html,unescape_html
 from bs4 import BeautifulSoup
+import re
+from payloads import sqlipayloads
 '''
 the following functions use a strict rules to make sure that the returned input is 100% safe
 '''
@@ -68,4 +70,31 @@ def filter_fi(s,ext='php',remote=None):
    if (s not in remote):
     return None
   return None
+ return s
+
+def filter_sqli(s):
+ a=re.compile('/.*?/')
+ b=re.sub(a, '', s)
+ b=b.lower()
+ b=b.replace(' ','+')
+ b=b.replace('%20','+')
+ if re.findall('.*union.*select.*',b):
+  return None
+ if re.findall('.*order.*by.*',b):
+  return None
+ if re.findall('.*select.*current_user().*',b):
+  return None
+ if re.findall('.*select.*version().*',b):
+  return None
+ if re.findall('.*select.*database().*',b):
+  return None
+ if re.findall('.*select.*from.*',b):
+  return None
+ if re.findall('.*select.*concat.*',b):
+  return None
+ b=b.replace('+',' ')
+ b=b.replace('%20',' ')
+ for x in pl:
+  if x in b:  
+   return None
  return s
