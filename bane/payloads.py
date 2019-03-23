@@ -345,7 +345,7 @@ innerl=[
 '/invoice',
 '/index'
 ]
-php=[
+phpl=[
 '/login.php',
 '/admin/account.php',
 '/admin/index.php',
@@ -523,7 +523,7 @@ php=[
 '/sysadmin.php',
 '/ur-admin.php'
 ]
-aspx=[
+aspxl=[
 '/login.aspx',
 '/admin/account.aspx',
 '/admin/index.aspx',
@@ -599,7 +599,7 @@ aspx=[
 '/adminhome.aspx',
 '/administrator_login.aspx'
 ]
-asp=[
+aspl=[
 '/account.asp',
 '/admin/account.asp',
 '/admin/index.asp',
@@ -679,7 +679,7 @@ asp=[
 '/sysadmin.asp',
 '/ur-admin.asp'
 ]
-html=[
+htmll=[
 '/admin/account.html',
 '/admin/index.html',
 '/admin/login.html',
@@ -749,7 +749,7 @@ html=[
 '/sysadmin.html',
 '/ur-admin.html'
 ]
-js=[
+jsl=[
 '/admin/account.js',
 '/admin/index.js',
 '/admin/login.js',
@@ -819,7 +819,7 @@ js=[
 '/memberadmin.js',
 '/administratorlogin.js'
 ]
-slash=[
+slashl=[
 '/admin/',
 '/administrator/',
 '/administration/',
@@ -995,7 +995,7 @@ slash=[
 '/wplogin/',
 '/xlogin/'
 ]
-cgi=[
+cgil=[
 '/bb-admin/index.cgi',
 '/bb-admin/login.cgi',
 '/bb-admin/admin.cgi',
@@ -1065,7 +1065,7 @@ cgi=[
 '/siteadmin/index.cgi',
 '/admin_area/index.cgi'
 ]
-cfm=[
+cfml=[
 '/admin/account.cfm',
 '/admin/index.cfm',
 '/admin/login.cfm',
@@ -1135,7 +1135,7 @@ cfm=[
 '/admincontrol.cfm',
 '/acceso.cfm'
 ]
-brf=[
+brfl=[
 '/admin_area/admin.brf',
 '/admin_area/login.brf',
 '/siteadmin/login.brf',
