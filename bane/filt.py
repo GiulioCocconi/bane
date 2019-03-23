@@ -1,7 +1,7 @@
 from extrafun import escape_html,unescape_html
 from bs4 import BeautifulSoup
 import re
-from payloads import sqlipayloads
+from payloads import sqlipayloads as pl
 '''
 the following functions use a strict rules to make sure that the returned input is 100% safe
 '''
