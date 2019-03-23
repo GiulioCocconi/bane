@@ -55,6 +55,10 @@ def anti_loris(port,conn=50):
  o='iptables  -A INPUT -p tcp --syn --dport {} -m connlimit --connlimit-above {} -j DROP'.format(port,conn)
  os.system(o)
 
+ '''
+ https://javapipe.com/blog/iptables-ddos-protection/
+ '''
+ 
 def anti_spoof():
  '''
  reject invalid packets, it works against: ACK, PSH, ACK-PSH floods...
