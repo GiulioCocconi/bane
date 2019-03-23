@@ -194,23 +194,23 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
  links=[]
  ext=ext.strip()
  if ext.lower()=="php":
-  links=php
+  links=phpl
  elif ext.lower()=="asp":
-  links=asp
+  links=aspl
  elif ext.lower()=="aspx":
-  links=aspx
+  links=aspxl
  elif ext.lower()=="js":
-  links=js
+  links=jsl
  elif ext=="/":
-  links=slash
+  links=slashl
  elif ext.lower()=="cfm":
-  links=cfm
+  links=cfml
  elif ext.lower()=="cgi":
-  links=cgi
+  links=cgil
  elif ext.lower()=="brf":
-  links=brf
+  links=brfl
  elif ext.lower()=="html":
-  links=html
+  links=htmll
  k=[]
  for i in links:
   try:
