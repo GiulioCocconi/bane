@@ -157,7 +157,7 @@ def xssget(u,pl,extra=None,timeout=10,proxy=None):
    pl.update(extra)
   try:
      c=requests.get(u, params= pl,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout).text
-     if  HTMLParser.HTMLParser().unescape(xp).encode("utf-8") in c:
+     if  xp in c:
       return True
   except Exception as e:
    pass
@@ -182,7 +182,7 @@ def xsspost(u,pl,extra=None,timeout=10,proxy=None):
    pl.update(extra)
   try:
      c=requests.post(u, data= pl,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout ).text
-     if HTMLParser.HTMLParser().unescape(xp).encode("utf-8") in c:
+     if xp in c:
       return True 
   except Exception as e:
    pass
