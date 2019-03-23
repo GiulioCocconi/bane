@@ -88,4 +88,4 @@ def anti_frag():
  
 def ant_rst():
  os.system('iptables -A INPUT -p tcp --tcp-flags RST RST -m limit --limit 2/s --limit-burst 2 -j ACCEPT')
-os.system('iptables -A INPUT -p tcp --tcp-flags RST RST -j DROP')
+ os.system('iptables -A INPUT -p tcp --tcp-flags RST RST -j DROP')
