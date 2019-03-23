@@ -17,7 +17,7 @@ def mass_block(l,duration=3600):
  t=time.time()
  os.system('iptables -A INPUT -m set --match-set evil_ips src -j DROP')
  os.system('iptables -A OUPUT -m set --match-set evil_ips dst -j DROP')
- whileTrue:
+ while True:
   if time.time()-t>duration:
    break
  os.system('iptables -D INPUT -m set --match-set evil_ips src -j DROP')
