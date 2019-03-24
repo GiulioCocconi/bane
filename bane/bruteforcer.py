@@ -414,7 +414,7 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
     print"[-]Failed"
  if returning==True:
   return o
-def decrypter(u,wl=[],md5h=True,sha1h=False,sha256h=False,sha224h=False,sha384h=False,sha512h=False,base64h=False,caesarh=False,logs=True,returning=False):
+def decrypter(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=False,sha512h=False,base64h=False,caesarh=False,logs=True,returning=False):
  if logs==True:
   print'[!]hash:',u,'\nbruteforcing has started!!!\n'
  s=False
