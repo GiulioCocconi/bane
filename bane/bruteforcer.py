@@ -1,10 +1,11 @@
-import requests,pexpect,random,smtplib,telnetlib,sys,os
+import requests,pexpect,random,smtplib,telnetlib,sys,os,hashlib,base64
 from ftplib import FTP
 import paramiko
 from paramiko import SSHClient, AutoAddPolicy
 import mysql.connector as mconn
 from payloads import *
 from wp import wpadmin
+from hasher import *
 def access(u,timeout=10,bypass=False,proxy=None):
  '''
    this function isused to check if the given link is returning 200 ok response or not.
