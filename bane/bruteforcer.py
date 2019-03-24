@@ -4,6 +4,7 @@ import paramiko
 from paramiko import SSHClient, AutoAddPolicy
 import mysql.connector as mconn
 from payloads import *
+from wp import wpadmin
 def access(u,timeout=10,bypass=False,proxy=None):
  '''
    this function isused to check if the given link is returning 200 ok response or not.
@@ -386,16 +387,18 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
   s=smtp
  if proto=="mysql":
   s=mysql
+ if proto=="wp":
+  s=wpadmin
  for x in wl:
   user=x.split(':')[0].strip()
   pwd=x.split(':')[1].strip()
   if logs==True:
    print"[*]Trying: {}:{}".format(user,pwd)
-  if proto=="mysql":
+  if (proto=="mysql"):
    r=s(u,user,pwd)
-  elif proto=="ftp":
+  elif ((proto=="ftp")or(proto=="wp")):
    r=s(u,username=user,password=pwd,timeout=timeout)
-  elif proto=="smtp":
+  elif (proto=="smtp"):
    r=s(u,p,username=user,password=pwd,ehlo=ehlo,helo=helo,ttls=ttls)
   else:
    r=s(u,p,username=user,password=pwd,timeout=timeout)
