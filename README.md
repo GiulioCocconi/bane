@@ -249,25 +249,25 @@ we can access and enumerate some or all internal admin panel pages using this me
 
 <br><h3>high timeout value:</h3>
 
->>>bane.timeouttest('www.google.com',p=443)
+>>>bane.timeouttest('www.google.com',port=443)
 
 <br><h3>slow GET attack test:</h3>
 
->>>bane.slowgettest('www.google.com',p=80)
+>>>bane.slowgettest('www.google.com',port=80)
 
 <br><h3>slow POST attack test:</h3>
 
->>>bane.slowposttest('www.google.com',p=80)
+>>>bane.slowposttest('www.google.com',port=80)
 
 
 <br><h3>slow read attack test:</h3>
 
->>>bane.slowreadtest('www.google.com',p=80)
+>>>bane.slowreadtest('www.google.com',port=80)
 
 
 <br><h3>connections per IP test:</h3>
 
->>>bane.connectionslimit('www.google.com',p=80)
+>>>bane.connectionslimit('www.google.com',port=80)
 
 
 <br><h2>7-Bruteforce attacks:</h2> (useful link: https://www.acunetix.com/vulnerabilities/web/login-page-password-guessing-attack/ )
