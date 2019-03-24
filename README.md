@@ -239,7 +239,15 @@ This attack is also known as Predictable Resource Location, File Enumeration, Di
 <br><h3>admin panel:</h3>
 we can access and enumerate some or all internal admin panel pages using this method and takeover the panel!!!
 
-<br>bane.forcebrowsing('http://example.com/admin/')
+<br>bane.forcebrowsing('http://example.com/admin/' , ext="php",timeout=10)
+
+or
+
+<br>bane.forcebrowsing('http://example.com/admin/' , ext="asp")
+
+<br>also you can use a function here to find the site's admin login panel:
+
+<br>bane.adminpanel('http://example.com/admin/' , ext="php",timeout=7)
 
 <br>the default extension is "php", you can change it as you like to: asp, aspx<br> using the parameter "ext".
 
@@ -425,6 +433,7 @@ we can access and enumerate some or all internal admin panel pages using this me
 
 <br>wordlist=["admin:admin","admin:12345","root:root"]
 <br>bane.hydra("127.0.0.1",proto="telnet",p=23,wl=wordlist)
+
 
 <br><h1>DoS / DDoS:</h1> (useful link: https://en.wikipedia.org/wiki/Denial-of-service_attack )
 
