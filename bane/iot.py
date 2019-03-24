@@ -37,15 +37,15 @@ class iots(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,22))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
     for x in wordlist:
      try:
       username=x.split(':')[0]
@@ -76,15 +76,15 @@ class iott(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,23))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
     for x in wordlist:
      try:
       username=x.split(':')[0]
@@ -113,15 +113,15 @@ class iotf1(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,21))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
     for x in wordlist:
      try:
       username=x.split(':')[0]
@@ -144,15 +144,15 @@ class iotf2(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,21))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
      try:
       if ftpanon(ip)==True:
        print ip
@@ -169,15 +169,15 @@ class iotsm(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,25))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
     for x in wordlist:
      try:
       username=x.split(':')[0]
@@ -202,15 +202,15 @@ class iotmy(threading.Thread):
  def run(self):
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,3306))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
     for x in wordlist:
      try:
       username=x.split(':')[0]
@@ -234,15 +234,15 @@ class iotmy2(threading.Thread):
   s=mysql
   while True:
    ip=getip()
-   i=0
+   i=False
    try:
     so=socket.socket()
     so.settimeout(3)
     so.connect((ip,3306))
-    i+=1
+    i=True
    except Exception as ex: 
     pass
-   if i>0:
+   if i==True:
      try:
       if mysql(ip)==True:
        ip+=':root:'
