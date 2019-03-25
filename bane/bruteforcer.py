@@ -1,4 +1,4 @@
-import requests,pexpect,random,smtplib,telnetlib,sys,os,hashlib,base64,sys
+import requests,pexpect,random,smtplib,telnetlib,sys,os,hashlib,base64
 from ftplib import FTP
 import paramiko
 from paramiko import SSHClient, AutoAddPolicy
