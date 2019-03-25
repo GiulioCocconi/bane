@@ -111,7 +111,8 @@ import bane
 
 
 <h4>-you need to install "expect" on linux or mac or android (termux's app)</h4>
-<h4>-for windows' users you can't use bane.ssh1() and bane.telnet1() because it works on pexpect and it need expec package to work, which can't be installed on windows</h4>
+<h4>-for windows' users you can't use: bane.ssh1() and bane.telnet1() because they depend on pexpect and it need expect package to work, which can't be installed on windows</h4>
+<h4>-termux's users can't use both: bane.ssh2() and bane.telnet2() functions because they depend on paramiko</h4>
 
 ---------------------------------------------------------------------------------------------------------------------------
 II-USAGE:
