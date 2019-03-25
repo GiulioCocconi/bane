@@ -187,7 +187,7 @@ def xsspost(u,pl,extra=None,timeout=10,proxy=None):
   except Exception as e:
    pass
   return False
-def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None):
+def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
   '''
    this function is for xss test with both POST and GET requests. it extracts the input fields names using the "inputs" function then test each
    input using POST and GET methods.
@@ -209,7 +209,7 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None):
    >>>bane.xss('http://www.example.com/',payload="<script>alert(123);</script>")
   '''
   if proxy:
-   proxy={'http':'http://'+proxy}
+   proxy=proxy
   lst=[]
   if payload:
    xp=payload
@@ -229,9 +229,11 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None):
    if '?' in u:
     u=u.split('?')[0].split(',')[0]
    for i in l:
+    if proxies:
+     proxy=random.choice(proxies)
     pl={i : xp}
     if get==True: 
-     if xssget(u,pl,proxy=proxy)==True:
+     if xssget(u,pl,proxy=proxy,timeout=timeout)==True:
         x="parameter: "+i+" method: GET=> [+]Payload was found"
      else:
       x="parameter: "+i+" method: GET=> [-]Payload was not found"
@@ -239,7 +241,7 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None):
      if logs==True:
       print x
     if post==True:
-     if xsspost(u,pl,proxy=proxy)==True:
+     if xsspost(u,pl,proxy=proxy,timeout=timeout)==True:
      	x="parameter: "+i+" method: POST=> [+]Payload was found"
      else:
       x="parameter: "+i+" method: POST=> [-]Payload was not found"
@@ -354,7 +356,7 @@ def postinject(u,param='',value='',extra=None,end=False,timeout=10,proxy=None):
  except:
   pass
  return False
-def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,timeout=10):
+def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,proxies=None,timeout=10):
  '''
    this function is for FI vulnerability test using a link
 '''
@@ -371,6 +373,8 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
   u=u.split("=")[0]+'='
  if mapping==True:
   for i in range(1,rounds+1):
+   if proxies:
+    proxy={'http':'http://'+random.choice(proxies)}
    try:
     if logs==True:
      print'[*]Trying:', u+l
