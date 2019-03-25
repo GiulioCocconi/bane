@@ -15,7 +15,7 @@ if os.name=='posix':
     
 setuptools.setup(
     name="bane",
-    version="1.7.6",
+    version="1.7.7",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
