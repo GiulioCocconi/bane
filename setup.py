@@ -6,15 +6,9 @@ i made this so you can use it on termux :)
 '''
 req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem"]
 
-if (sys.platform == "win32") or( sys.platform == "win64"):
- req=["requests","PySocks","bs4","paramiko","mysql-connector","scapy","stem"]
-
-if ('linux' in sys.platform):
-  req=["requests","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
-    
 setuptools.setup(
     name="bane",
-    version="1.7.8",
+    version="1.7.9",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
