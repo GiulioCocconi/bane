@@ -4,13 +4,12 @@ with open("README.md", "r") as fh:
 '''
 i made this so you can use it on termux :)
 '''
-req=["requests","lxml","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
+req=["requests","lxml","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem"]
 
 if (sys.platform == "win32") or( sys.platform == "win64"):
  req=["requests","lxml","PySocks","bs4","paramiko","mysql-connector","scapy","stem"]
 
 if os.name=='posix':
- if platform.linux_distribution()==('','',''):
   req=["requests","lxml","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
     
 setuptools.setup(
