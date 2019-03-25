@@ -59,9 +59,9 @@ def filter_fi(s,ext='php',remote=None):
  ext: (set by default to: 'php') file's extension
  remote: (set by default to: None) whitelist for legit weblinks to import files from
  '''
- s=s.replace('../','')
+ s=s.replace('..','')
  s=s.replace('%00','')
- if (('etc/' in s)or('proc/' in s)):
+ if (('/etc/' in s)or('/proc/' in s)):
   return None
  if (ext not in s):
   return None
@@ -76,25 +76,41 @@ def filter_sqli(s):
  a=re.compile('/.*?/')
  b=re.sub(a, '', s)
  b=b.lower()
- b=b.replace(' ','+')
- b=b.replace('%20','+')
- if re.findall('.*union.*select.*',b):
-  return None
- if re.findall('.*order.*by.*',b):
-  return None
- if re.findall('.*select.*current_user().*',b):
-  return None
- if re.findall('.*select.*version().*',b):
-  return None
- if re.findall('.*select.*database().*',b):
-  return None
- if re.findall('.*select.*from.*',b):
-  return None
- if re.findall('.*select.*concat.*',b):
-  return None
  b=b.replace('+',' ')
  b=b.replace('%20',' ')
+ if re.findall('.*u.*n.*i.*o.*n.*s.*e.*l.*e.*c.*t.*',b):
+  return None
+ if re.findall('.*o.*r.*d.*e.*r.*b.*y.*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*c.*u.*r.*r.*e.*n.*t.*_.*u.*s.*e.*r.*(.*).*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*f.*r.*o.*m.*w.*h.*e.*r.*e.*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*v.*e.*r.*s.*i.*o.*n.*(.*).*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*d.*a.*t.*a.*b.*a.*s.*e.*(.*).*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*f.*r.*o.*m.*',b):
+  return None
+ if re.findall('.*s.*e.*l.*e.*c.*t.*c.*o.*n.*c.*a.*t.*',b):
+  return None
+ if re.findall('.*i.*n.*s.*e.*r.*t.*i.*n.*t.*o.*v.*a.*l.*u.*e.*s.*',b):
+  return None
+ if re.findall('.*i.*n.*s.*e.*r.*t.*i.*n.*t.*o.*',b):
+  return None
+ if re.findall('.*d.*r.*o.*p.*f.*r.*o.*m.*w.*h.*e.*r.*e.*',b):
+   return None
+ if re.findall('.*d.*r.*o.*p.*t.*a.*b.*l.*e.*',b):
+  return None
+ if re.findall('.*d.*r.*o.*p.*f.*r.*o.*m.*w.*h.*e.*r.*e.*',b):
+  return None
+ if re.findall('.*u.*p.*d.*a.*t.*e.*s.*e.*t.*',b):
+  return None
+ if re.findall('.*d.*e.*l.*e.*t.*e.*t.*a.*b.*l.*e.*',b):
+  return None
+ if re.findall('.*d.*e.*l.*e.*t.*e.*f.*r.*o.*m.*w.*h.*e.*r.*e.*',b):
+  return None
  for x in pl:
   if x in b:  
    return None
- return s
+ return filter_xss(s,tags=None)
