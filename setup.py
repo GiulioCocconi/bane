@@ -14,7 +14,7 @@ if ('linux' in sys.platform):
     
 setuptools.setup(
     name="bane",
-    version="1.7.7",
+    version="1.7.8",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
