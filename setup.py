@@ -1,4 +1,4 @@
-import setuptools,os,platform,sys
+import setuptools,os,sys
 with open("README.md", "r") as fh:
     long_description = fh.read()
 '''
@@ -9,7 +9,7 @@ req=["requests","lxml","PySocks","bs4","pexpect","paramiko","mysql-connector","s
 if (sys.platform == "win32") or( sys.platform == "win64"):
  req=["requests","lxml","PySocks","bs4","paramiko","mysql-connector","scapy","stem"]
 
-if os.name=='posix':
+if ('linux' in sys.platform):
   req=["requests","lxml","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
     
 setuptools.setup(
