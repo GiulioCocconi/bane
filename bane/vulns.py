@@ -210,6 +210,8 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None,p
   '''
   if proxy:
    proxy=proxy
+  if proxies:
+   proxy=random.choice(proxies)
   lst=[]
   if payload:
    xp=payload
@@ -218,7 +220,7 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None,p
   if logs==True:
    print"Getting parameters..."
   hu=0
-  l=inputs(u)
+  l=inputs(u,proxy=proxy)
   if len(l)==0:
    if logs==True:
     print"No parameters were found!!!"
