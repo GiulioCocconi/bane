@@ -42,14 +42,16 @@ def filter_html(s,unescape=True):
   s=unescape_html(s)
  return BeautifulSoup(s, "lxml").text
 
-def filter_injections(s):
+def filter_injections(s,xssf=True):
  '''
  in any injection attack (sql injection, code injection, command injection...), the attacker always add in his input ";" then his malicious injection.
  so the best act to sanitize the input is to remove everything after the ";".
  '''
- return s.split(';')[0]
-
-def filter_fi(s,ext='php',remote=None):
+ s=s.split(';')[0]
+ if xssf==True:
+  return filter_xss(s,tags=None)
+ return s
+def filter_fi(s,ext='php',remote=None,xssf=True):
  '''
  this function is used to remove any possible expolitaion for File Inclusion (Local and Remote) vulnerability and return safe input only
  
@@ -70,9 +72,11 @@ def filter_fi(s,ext='php',remote=None):
    if (s not in remote):
     return None
   return None
+ if xssf==True:
+  return filter_xss(s,tags=None)
  return s
 
-def filter_sqli(s):
+def filter_sqli(s,xssf=True):
  a=re.compile('/.*?/')
  b=re.sub(a, '', s)
  b=b.lower()
@@ -113,4 +117,6 @@ def filter_sqli(s):
  for x in pl:
   if x in b:  
    return None
- return filter_xss(s,tags=None)
+ if xssf==True:
+  return filter_xss(s,tags=None)
+ return s
