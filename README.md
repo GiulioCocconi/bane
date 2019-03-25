@@ -110,8 +110,8 @@ import bane
 <br><h2>NOTES:</h2>
 
 
-<br><h4>-you need to install "expect" on linux or mac or android (termux's app)</h4>
-<br><h4>-if you are linux or mac user you will need to install the python's package: "paramiko" manually cuz it can't be installed on termux so it's better to be choice to install or not depending on the platform :):<br><br>pip install paramiko</h4> 
+<h4>-you need to install "expect" on linux or mac or android (termux's app)</h4>
+<h4>-if you are linux or mac user you will need to install the python's package: "paramiko" manually cuz it can't be installed on termux so it's better to be choice to install or not depending on the platform :):<br><br>pip install paramiko</h4> 
 
 
 
