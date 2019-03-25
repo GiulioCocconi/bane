@@ -286,7 +286,7 @@ def telnet1(u,p=23,username='',password='',timeout=5):
   while True:
    child.expect(['.*o.*'],timeout=timeout)
    c= child.after
-   if 'ogin' in c:
+   if (('ogin' in c) or ('user' in c.lower())):
     child.send(username+'\n')
    elif "assword" in c:
     child.send(password+'\n')
@@ -322,7 +322,7 @@ def ssh1(u,p=22,username='',password='',timeout=5):
    c= child.after
    if "yes/no" in c:
     child.send('yes\n')
-   elif 'ogin' in c:
+   elif (('ogin' in c) or ('user' in c.lower())):
     child.send(username+'\n')
    elif "assword" in c:
     child.send(password+'\n')
