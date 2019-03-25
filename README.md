@@ -165,13 +165,14 @@ hey return only 2 possible results:
 <br>here we have a function to get all html inputs in any webpage and test each input one by one against this attack with both: GET and POST methods.
 
 bane.xss('https://xss-game.appspot.com/level1/frame')
-<br>Getting parameters<br>
-<br>Test has started<br>
+
+<br>output:
+<br><br>Getting parameters
+<br>Test has started
 <br>Payload:
 <script>alert("Vulnerable!!!");</script>
 <br>parameter: query method: GET=> [+]Payload was found
 <br>parameter: query method: POST=> [-]Payload was not found
->>> 
 
 there is a default payload which is used in case you didn't modify the "payload" parameter (set by default to: None) to any XSS payload.you can set differnet xss payloads to test everytime with possibility to use a proxy.
 
