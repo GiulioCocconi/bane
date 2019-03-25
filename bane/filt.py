@@ -1,5 +1,4 @@
 from extrafun import escape_html,unescape_html
-from bs4 import BeautifulSoup
 import re
 from payloads import sqlipayloads as pl
 '''
@@ -33,14 +32,6 @@ def filter_xss(s,tags=['br','h1','h2','h3','h4','h5','h6','p','strong','pre','b'
    z='</'+x+'>'
    s=s.replace(y,z)
  return s
-
-def filter_html(s,unescape=True):
- '''
- this function is to remove all html tags
- '''
- if unescape==True:
-  s=unescape_html(s)
- return BeautifulSoup(s, "lxml").text
 
 def filter_injections(s,xssf=True):
  '''
