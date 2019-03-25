@@ -1,14 +1,12 @@
 import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
-'''
-i made this so you can use it on termux :)
-'''
+
 req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem"]
 
 setuptools.setup(
     name="bane",
-    version="1.7.9",
+    version="1.8.0",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
