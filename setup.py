@@ -1,16 +1,16 @@
-import setuptools,sys
+import setuptools,os,platform
 with open("README.md", "r") as fh:
     long_description = fh.read()
 '''
-i made this so you can use it on termux, if you are not a termux user you can install: "paramiko" and enjoy all the features :)
+i made this so you can use it on termux :)
 '''
-if (sys.platform != "win32") and( sys.platform != "win64"):
-    req=["requests","lxml","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
-else:
-    req=["requests","lxml","PySocks","bs4","paramiko","pexpect","mysql-connector","scapy","stem"]
+req=["requests","lxml","PySocks","bs4","paramiko","pexpect","mysql-connector","scapy","stem"]
+if os.name=='posix':
+ if platform.linux_distribution()==('','',''):
+  req=["requests","lxml","PySocks","bs4","pexpect","mysql-connector","scapy","stem"]
 setuptools.setup(
     name="bane",
-    version="1.7.5",
+    version="1.7.6",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
