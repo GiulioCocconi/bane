@@ -1,4 +1,4 @@
-import setuptools,os,platform
+import setuptools,os,platform,sys
 with open("README.md", "r") as fh:
     long_description = fh.read()
 '''
