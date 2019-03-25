@@ -219,13 +219,13 @@ def xss(u,payload=None,get=True,post=True,logs=True,returning=False,proxy=None,p
    xp='<script>alert("Vulnerable!!!");</script>'
   if logs==True:
    print"Getting parameters..."
-  hu=0
-  l=inputs(u,proxy=proxy)
+  hu=True
+  l=inputs(u,proxy=proxy,timeout=timeout)
   if len(l)==0:
    if logs==True:
     print"No parameters were found!!!"
-   hu+=1
-  if hu==0:
+   hu=False
+  if hu==True:
    if logs==True:
     print"Test has started...\nPayload:\n"+xp
    if '?' in u:
