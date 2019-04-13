@@ -510,11 +510,11 @@ def proxy_check(ip,p,proto='http',timeout=5):
     timeout: (set by default to: 5) the connection's timeout
 
 '''
- i=0
+ i=False
  if (proto=='http') or (proto=='https'):
   try:
    requests.get("http://www.google.com",proxies={proto:'http://'+ip+':'+p},timeout=timeout)
-   i+=1
+   i=True
   except:
    pass
  elif proto=='socks4':
@@ -523,7 +523,7 @@ def proxy_check(ip,p,proto='http',timeout=5):
    s.setproxy(socks.PROXY_TYPE_SOCKS4, ip, p, True)
    s.settimeout(timeout)
    s.connect(('www.google.com',80))
-   i+=1
+   i=True
   except:
    pass
  elif proto=='socks5':
@@ -532,7 +532,7 @@ def proxy_check(ip,p,proto='http',timeout=5):
    s.setproxy(socks.PROXY_TYPE_SOCKS5, ip, p, True)
    s.settimeout(timeout)
    s.connect(('www.google.com',80))
-   i+=1
+   i=True
   except:
    pass
  return i
