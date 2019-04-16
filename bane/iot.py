@@ -54,8 +54,6 @@ class iots(threading.Thread):
        q=ssh1(ip,username=username,password=password)
       elif method==2:
        q=ssh2(ip,username=username,password=password)
-      elif method==3:
-       q=ssh3(ip,username=username,password=password)
       if q==True:
        ip+=':'+username+':'+password
        print ip
