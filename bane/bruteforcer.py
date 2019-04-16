@@ -410,7 +410,7 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
     proxy=proxy
    if proxies:
     proxy=random.choice(proxies)
-   r=s(u,username=user,password=pwd,proxies=proxy,timeout=timeout)
+   r=s(u,username=user,password=pwd,proxy=proxy,timeout=timeout)
   elif (proto=="smtp"):
    r=s(u,p,username=user,password=pwd,ehlo=ehlo,helo=helo,ttls=ttls)
   else:
