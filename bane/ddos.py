@@ -1327,7 +1327,10 @@ class phu(threading.Thread):
     if prints==True:
      print"[!]Requests: {} | Bot: {}".format(counter,pr.split(':')[0])
    except socket.timeout:
-    httplist.remove(pr)
+    try:
+     httplist.remove(pr)
+    except:
+     pass
    except Exception as e:
     pass
 class hu(threading.Thread):
