@@ -87,22 +87,17 @@ class iott(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if method==1:
-       q= telnet1(ip,username=username,password=password)
-      elif method==2:
-       q= telnet2(ip,username=username,password=password)
+      q= telnet2(ip,username=username,password=password)
       if q==True:
        ip+=':'+username+':'+password
        print ip
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTtelnet(threads=100,meth=1,wl=wordlist,filename='telnetbots.txt'):
+def IoTtelnet(threads=500,wl=wordlist,filename='telnetbots.txt'):
  create_file(filename)
  global filen
  filen=filename
- global method
- method=meth
  global wordlist
  wordlist=wl
  for x in range(threads):
