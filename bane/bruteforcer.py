@@ -82,12 +82,16 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,
     print'[*]Trying:',g
    r=requests.get(g,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout) 
    if r.status_code == requests.codes.ok:
-    if (("Uncaught exception" not in r.text) or ("404 Not Found" not in r.text)):
-     if logs==True:
-      print'[+]FOUND!!!'
-      k.append(g)
-     if mapping==False:
-      break
+    if (("Uncaught exception" not in r.text) and ("404 Not Found" not in r.text)):
+     if 'could not be found.' not in r.text:
+      if logs==True:
+       print'[+]FOUND!!!'
+       k.append(g)
+      if mapping==False:
+       break
+      else:
+       if logs==True:
+        print'[-]Failed'
     else:
      if logs==True:
       print'[-]Failed'
