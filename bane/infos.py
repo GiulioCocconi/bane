@@ -49,67 +49,6 @@ def info(u,timeout=10,proxy=None):
  except Exception as e:
   pass
  return h
-def upordown(ur,logs=True,returning=False,timeout=10,proxy=None):
- '''
-   this funtion checks the given ip or domain if it is up or down using 2 validation sources:
-   down.com and downforeveryoneorjustme.com
-   it takes 3 arguments:
-  
-   ur: ip or domain
-   logs: (set by default to: True) showing the process, you can turn it off by setting it to:False
-   returning: (set by default to: False) returnin interger indicating the up or down score.
-   
-   usage:
-   >>>import bane
-   >>>domain='www.google.com'
-   >>>bane.upordown(domain)
-   
-   0 => target semms down for both
-   1 => target seems up for one of them
-   2 => target seems up for both
-'''
- if proxy:
-  proxy={'http':'http://'+proxy}
- s=0
- if "://" in ur:
-  ur=ur.split('://')[1].split('=')[0]
-  if '/' in ur:
-   ur=ur.split('/')[0].split('=')[0]
- try:
-  if logs==True:
-   print'[*]Testing with: down.com'
-  u='https://down.com/?q='+ur
-  c=requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout).text
-  soup = BeautifulSoup(c,"html.parser")
-  for a in soup.findAll('strong'):
-   if "Down" in str(a):
-    if logs==True:
-     print'[-]Down'
-   else:
-    if logs==True:
-     print'[+]Up'
-    s+=1
- except:
-  pass
- u='https://downforeveryoneorjustme.com/'+ur
- try:
-  if logs==True:
-   print'[*]Testing with: downforeveryoneorjustme.com'
-  c=requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout).text
-  soup = BeautifulSoup(c,"html.parser")
-  for a in soup.findAll('p'):
-   if ('class="domain"' in str(a)):
-    if "Down" in str(a):
-     if logs==True:
-      print'[-]Down'
-    else:
-     s+=1
-     if logs==True:
-      print'[+]Up'
- except:
-  pass 
- if returning==True:
-  return s
 def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
  '''
    this function takes any giving and gives a security report from: safeweb.norton.com, if it is a: spam domain, contains a malware...
