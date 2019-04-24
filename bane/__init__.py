@@ -24,5 +24,4 @@ from vulns import *
 from iot import *
 from wp import *
 from filt import *
-from anti_dos import *
 from proxer import *
