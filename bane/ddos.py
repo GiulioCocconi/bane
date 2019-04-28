@@ -595,7 +595,7 @@ class pham(threading.Thread):
      try:
       s.send(h)
       if prints==True:
-       print"Posted: {}".format(h)
+       print"Posted: {} --> {}".format(h,ipp)
       time.sleep(random.uniform(.1,3))
      except Exception as dx:
       pass
