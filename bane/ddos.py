@@ -94,7 +94,10 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,logs=Tr
    except KeyboardInterrupt:
     break
    except Exception as e:
-    time.sleep(t)
+    try:
+     time.sleep(t)
+    except:
+     pass
   print''
   if returning==True:
    return packets
