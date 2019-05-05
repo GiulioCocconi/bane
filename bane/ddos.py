@@ -2489,7 +2489,7 @@ class dose(threading.Thread):
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
        session.get(u,headers=h,timeout=timeout)
-      else:
+     else:
        requests.get(u,headers=h,timeout=timeout)
     elif method==2:
       req="POST"
