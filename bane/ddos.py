@@ -1374,7 +1374,7 @@ class hu(threading.Thread):
        print"Requests: {}".format(counter)
      except Exception as e:
       pass
-def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=True):
+def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=False):
  '''
    this function is used for hulk attack with more complex modification (more than 10k useragents and references, also a better way to generate random http GET parameters.
     
