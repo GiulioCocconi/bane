@@ -6,7 +6,7 @@ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","
 
 setuptools.setup(
     name="bane",
-    version="1.9.2",
+    version="1.9.3",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
