@@ -69,11 +69,11 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,
    >>>bane.filemanager(url,returning=True,mapping=False)
 '''
  k=[]
- if proxy:
-  proxy={'http':'http://'+proxy}
- if proxies:
-  proxy={'http':'http://'+random.choice(proxies)}
  for i in manager:
+  if proxy:
+   proxy={'http':'http://'+proxy}
+  if proxies:
+   proxy={'http':'http://'+random.choice(proxies)}
   try:
    if u[len(u)-1]=='/':
     u=u[0:len(u)-1]
@@ -133,10 +133,6 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
    ext: (set by default to: "php") it helps you to find links with the given extention, cuurentky it supports only 3 extentions: "php", "asp"
    and "aspx"( any other extention won't be used).  
 '''
- if proxy:
-  proxy={'http':'http://'+proxy}
- if proxies:
-  proxy={'http':'http://'+random.choice(proxies)}
  l=[]
  if u[len(u)-1]=='/':
     u=u[0:len(u)-1]
@@ -145,6 +141,10 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
   if logs==True:
    print'[*]Trying:',g
   try:
+   if proxy:
+    proxy={'http':'http://'+proxy}
+   if proxies:
+    proxy={'http':'http://'+random.choice(proxies)}
    h=access(g,proxy=proxy)
   except KeyboardInterrupt:
    break
@@ -199,10 +199,6 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
 
   >>>bane.adminpanel('http://www.example.com',ext='aspx',timeout=5)
  '''
- if proxy:
-  proxy={'http':'http://'+proxy}
- if proxies:
-  proxy={'http':'http://'+random.choice(proxies)}
  links=[]
  ext=ext.strip()
  if ext.lower()=="php":
@@ -226,6 +222,10 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
  k=[]
  for i in links:
   try:
+   if proxy:
+    proxy={'http':'http://'+proxy}
+   if proxies:
+    proxy={'http':'http://'+random.choice(proxies)}
    if u[len(u)-1]=='/':
     u=u[0:len(u)-1]
    g=u+i
