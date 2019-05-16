@@ -288,41 +288,51 @@ def telnet1(u,p=23,username='',password='',timeout=5):
  try:
   child = pexpect.spawn(p)
   while True:
-   child.expect(['.*o.*'],timeout=timeout)
+   child.expect(['.*:'],timeout=timeout)
    c= child.after
-   if (('ogin' in c) or ('user' in c.lower())):
+   if (('ogin' in c) or ('sername' in c)):
     child.send(username+'\n')
    elif "assword" in c:
     child.send(password+'\n')
     break
-  child.expect('.*@.*',timeout=timeout)
-  c= child.after
+  try:
+   child.expect('.*@.*',timeout=timeout)
+  except:
+   pass
+  c= child.before
   for x in prompts:
    if x in c:
     return True
- except Exception as e:
+ except:
   pass
  return False
 def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
-  t.read_until(":",timeout=timeout)
-  t.write(username + "\n")
-  t.read_until(":",timeout=timeout)
-  t.write(password + "\n")
+  while True:
+   s=t.read_until(":",timeout=timeout)
+   if (('sername' in s) or ('ogin' in s)):
+    t.write(username + "\n")
+   elif ("assword" in s):
+    t.write(password + "\n")
+    break
   c= t.read_until(prompt,timeout=timeout)
   for x in prompts:
    if x in c:
     return True
- except Exception as e:
+ except:
   pass
  return False
 def ssh1(u,p=22,username='',password='',timeout=5):
  p='ssh -p {} {}@{}'.format(p,username,u)
+ x=False
  try:
   child = pexpect.spawn(p)
   while True:
-   child.expect(['.*o.*'],timeout=timeout)
+   try:
+    child.expect(['.*:.*'],timeout=timeout)
+   except:
+    pass
    c= child.after
    if "yes/no" in c:
     child.send('yes\n')
@@ -331,8 +341,11 @@ def ssh1(u,p=22,username='',password='',timeout=5):
    elif "assword" in c:
     child.send(password+'\n')
     break
-  child.expect('.*@.*',timeout=timeout)
-  c= child.after
+  try:
+   child.expect('.*$.*',timeout=timeout)
+  except:
+   pass
+  c= child.before
   for x in prompts:
    if x in c:
     return True
