@@ -323,9 +323,8 @@ def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
  except:
   pass
  return False
-def ssh1(u,p=22,username='',password='',timeout=5):
+def ssh1(u,p=22,username='',password='',timeout=7):
  p='ssh -p {} {}@{}'.format(p,username,u)
- x=False
  try:
   child = pexpect.spawn(p)
   while True:
@@ -333,7 +332,8 @@ def ssh1(u,p=22,username='',password='',timeout=5):
     child.expect(['.*:.*'],timeout=timeout)
    except:
     pass
-   c= child.after
+   c=child.before
+   c+= child.after
    if "yes/no" in c:
     child.send('yes\n')
    elif (('ogin' in c) or ('user' in c.lower())):
