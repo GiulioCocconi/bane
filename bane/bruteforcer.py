@@ -296,7 +296,7 @@ def telnet1(u,p=23,username='',password='',timeout=5):
     child.send(password+'\n')
     break
   try:
-   child.expect('.*@.*',timeout=timeout)
+   child.expect('.*=.*',timeout=timeout)
   except:
    pass
   c= child.before
