@@ -7,8 +7,6 @@ if android==False:
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
  import pexpect
-except:
- pass
 import mysql.connector as mconn
 from bane.pager import *
 from bane.wp import wpadmin
