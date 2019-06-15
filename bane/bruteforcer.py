@@ -1,7 +1,7 @@
 import requests,random,smtplib,telnetlib,sys,os,hashlib,base64
 from ftplib import FTP
 from bane.payloads import *
-if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True:
+if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True)):
  android=True
 if android==False:
  import paramiko
