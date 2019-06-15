@@ -1,5 +1,6 @@
 import requests,random,smtplib,telnetlib,sys,os,hashlib,base64
 from ftplib import FTP
+from bane.payloads import *
 if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True:
  android=True
 if android==False:
@@ -9,7 +10,6 @@ if android==False:
 except:
  pass
 import mysql.connector as mconn
-from bane.payloads import *
 from bane.pager import *
 from bane.wp import wpadmin
 from bane.hasher import *
