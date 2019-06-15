@@ -7,7 +7,7 @@ else:
  req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape"]
 setuptools.setup(
     name="bane",
-    version="1.9.7",
+    version="1.9.8",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
