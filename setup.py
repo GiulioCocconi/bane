@@ -1,10 +1,17 @@
-import sys,setuptools
+import sys,setuptools,os
 with open("README.md", "r") as fh:
     long_description = fh.read()
+android=False
+if (('linux' in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True):
+    android=True
 if  sys.version_info < (3,0):
  req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape"]
+ if android==True:
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape"]
 else:
  req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape"]
+ if android==True:
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape"]
 setuptools.setup(
     name="bane",
     version="1.9.7",
