@@ -14,10 +14,13 @@ else:
     from kamene.all import *
 from struct import *
 from bane.payloads import *
+if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True:
+ android=True
 from bane.proxer import *
-import stem
-from stem import Signal
-from stem.control import Controller
+if android==False:
+ import stem
+ from stem import Signal
+ from stem.control import Controller
 def kill():
  global stop
  stop=True
