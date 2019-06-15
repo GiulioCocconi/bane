@@ -1,7 +1,11 @@
-import pexpect,os,sys,socket,random,time,threading,smtplib,telnetlib
+import os,sys,socket,random,time,threading,smtplib,telnetlib
 from ftplib import FTP
-import paramiko
-from paramiko import SSHClient, AutoAddPolicy
+if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True)):
+ android=True
+if android==False:
+ import paramiko
+ from paramiko import SSHClient, AutoAddPolicy
+ import pexpect
 import mysql.connector as mconn
 from bane.bruteforcer import *
 from bane.payloads import wordlist
