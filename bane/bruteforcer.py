@@ -1,7 +1,13 @@
-import requests,pexpect,random,smtplib,telnetlib,sys,os,hashlib,base64
+import requests,random,smtplib,telnetlib,sys,os,hashlib,base64
 from ftplib import FTP
-import paramiko
-from paramiko import SSHClient, AutoAddPolicy
+if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True:
+ android=True
+if android==False:
+ import paramiko
+ from paramiko import SSHClient, AutoAddPolicy
+ import pexpect
+except:
+ pass
 import mysql.connector as mconn
 from bane.payloads import *
 from bane.pager import *
@@ -368,30 +374,7 @@ def smtp(u, p=25,username='',password='',ehlo=True,helo=False,ttls=False):
  except Exception as e:
   pass
  return False
-def telnet1(u,p=23,username='',password='',timeout=5):
- p='telnet {} {}'.format(u,p)
- try:
-  child = pexpect.spawn(p)
-  while True:
-   child.expect(['.*:'],timeout=timeout)
-   c= child.after
-   if (('ogin' in c) or ('sername' in c)):
-    child.send(username+'\n')
-   elif "assword" in c:
-    child.send(password+'\n')
-    break
-  try:
-   child.expect('.*=.*',timeout=timeout)
-  except:
-   pass
-  c= child.before
-  for x in prompts:
-   if x in c:
-    return True
- except:
-  pass
- return False
-def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
+def telnet(u,p=23,username='',password='',prompt='$',timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
@@ -408,7 +391,7 @@ def telnet2(u,p=23,username='',password='',prompt='$',timeout=5):
  except:
   pass
  return False
-def ssh1(u,p=22,username='',password='',timeout=7):
+def sshlin(u,p=22,username='',password='',timeout=7):
  p='ssh -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
@@ -437,7 +420,7 @@ def ssh1(u,p=22,username='',password='',timeout=7):
  except Exception as e:
   pass
  return False
-def ssh2(ip,username='',password='',p=22,timeout=5):
+def sshwin(ip,username='',password='',p=22,timeout=5):
  try:
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
@@ -498,6 +481,8 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
   s=mysql
  if proto=="wp":
   s=wpadmin
+ if ((android==True) and (proto=='ssh')):
+  return o
  for x in wl:
   user=x.split(':')[0].strip()
   pwd=x.split(':')[1].strip()
