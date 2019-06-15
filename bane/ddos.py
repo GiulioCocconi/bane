@@ -14,7 +14,7 @@ else:
     from kamene.all import *
 from struct import *
 from bane.payloads import *
-if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True:
+if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True)):
  android=True
 from bane.proxer import *
 if android==False:
