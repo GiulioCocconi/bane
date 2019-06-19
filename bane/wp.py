@@ -1,6 +1,6 @@
 import requests,random
 from bane.payloads import ua
-def wpadmin(u,path='/xmlrpc.php',username='',password='',timeout=10,proxy=None):
+def wpadmin(u,username,password,path='/xmlrpc.php',timeout=10,proxy=None):
  '''
    this function is to check the wordpress given logins using the xmlrpc.php file. if they are correct it returns True, else False
 '''

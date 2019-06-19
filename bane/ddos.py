@@ -15,9 +15,12 @@ else:
 from struct import *
 from bane.payloads import *
 from bane.proxer import *
-import stem
-from stem import Signal
-from stem.control import Controller
+if os.path.isdir('/data/data/com.termux/')==True:
+    termux=True
+if termux==False:
+ import stem
+ from stem import Signal
+ from stem.control import Controller
 def kill():
  global stop
  stop=True
@@ -36,7 +39,7 @@ def reset():
  ier=0
  global ue
  ue=[]
-def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,logs=True,returning=False):
+def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limiting=True,logs=True,returning=False):
   '''
    this function is for UDP flood attack tests.
    
@@ -112,7 +115,8 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,logs=Tr
      tm=time.time()
      rate1=0
      rate2=0
-    time.sleep(t)
+    if limiting==True:
+     time.sleep(t)
    except KeyboardInterrupt:
     break
    except Exception as e:
@@ -2976,7 +2980,7 @@ def cki():
  while(ier!=10):
    time.sleep(.1)
  time.sleep(1)
-def cfkiller(u,threads=500,maxtime=3,check=True,cook=True,interval=300,logs=True,returning=False):
+def cfkiller(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
  global prints
  global stop
  stop=False
@@ -3008,7 +3012,7 @@ def cfkiller(u,threads=500,maxtime=3,check=True,cook=True,interval=300,logs=True
  if coo==True:
   cki()
  else:
-  ual=ue
+  ual=ue[:]
  for x in range(threads):
   atcf().start()
   time.sleep(.001)
@@ -3045,7 +3049,3 @@ def cfkiller2(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wai
     break
  if returning==True:
     return counter
-
-
-
-

