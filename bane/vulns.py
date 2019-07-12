@@ -613,7 +613,7 @@ def buildget(u,p,timeout=5):
     s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((u,p))
-    if ((p==443 ) or (p=8443)):
+    if ((p==443 ) or (p==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
     s.send("User-Agent: {}\r\n".format(random.choice(ua)).encode("utf-8"))
@@ -731,7 +731,7 @@ def buildpost(u,p,timeout=5,size=10000):
  s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  s.settimeout(timeout)
  s.connect((u,p))
- if ((p==443 ) or (p=8443)):
+ if ((p==443 ) or (p==8443)):
   s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
  s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),size,u).encode("utf-8"))
  return s
@@ -788,7 +788,7 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((u,port))
-    if ((p==443 ) or (p=8443)):
+    if ((p==443 ) or (p==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while True:
      if time.time()-ti>=timer:
