@@ -135,7 +135,7 @@ def snmp_fact(u,timeout=3):
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'snmp','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def ping_fact(u,q='a',timeout=3):
+def echo_fact(u,q='a',timeout=3):
  req=IP( dst=u)/UDP(sport=random.randint(1025,65500),dport=7)/Raw(load=q)
  s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
  s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
