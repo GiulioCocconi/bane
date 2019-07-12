@@ -612,8 +612,8 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
 def buildget(u,p,timeout=5):
     s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(timeout)
-    s.connect((target,port))
-    if port==443:
+    s.connect((u,p))
+    if ((p==443 ) or (p=8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     s.send("GET {} HTTP/1.1\r\n".format(random.choice(paths)).encode("utf-8"))
     s.send("User-Agent: {}\r\n".format(random.choice(ua)).encode("utf-8"))
@@ -625,7 +625,7 @@ def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,timer))
  try:
-  s=buildget(u,port,timeout)
+  s=buildget(u,port,timeout=timeout)
   i+=1
  except:
   if logs==True:
@@ -661,7 +661,7 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nInterval between packets:{}\nTest timer: {} seconds".format(u,port,timeout,interval,timer))
  try:
-  s=buildget(u,port,timeout)
+  s=buildget(u,port,timeout=timeout)
   i+=1
  except:
   if logs==True:
@@ -715,7 +715,7 @@ def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,ret
     return connections 
    break
   try:
-   so=buildget(u,port,timeout)
+   so=buildget(u,port,timeout=timeout)
    l.append(so)
   except Exception as e:
    pass
@@ -727,11 +727,11 @@ def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,ret
      l.remove(s)
   if logs==True:
    print("[!]Sockets: {} Time: {} seconds".format(len(l),int(time.time()-ti)))
-def buildpost(u,port=80,timeout=5,size=10000):
+def buildpost(u,p,timeout=5,size=10000):
  s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  s.settimeout(timeout)
- s.connect((u,port))
- if port==443:
+ s.connect((u,p))
+ if ((p==443 ) or (p=8443)):
   s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
  s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),size,u).encode("utf-8"))
  return s
@@ -740,7 +740,7 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nData length to post: {}\nInitial connection timeout:{}\nTest timer: {} seconds".format(u,port,size,timeout,timer))
  try:
-  s=buildpost(u,port,timeout,size)
+  s=buildpost(u,port,timeout=timeout,size=size)
   i+=1
  except Exception as e:
   if logs==True:
@@ -788,7 +788,7 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((u,port))
-    if port==443:
+    if ((p==443 ) or (p=8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while True:
      if time.time()-ti>=timer:
