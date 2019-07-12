@@ -772,10 +772,17 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
     if randomly==True:
      time.sleep(random.randint(start,end))
     if randomly==False:
-     time.sleep(wait)
+     try:
+      time.sleep(wait)
+     except KeyboardInterrupt:
+      if logs==True:
+       print("[-]Cant send more\n==>Size: {}\n==>Time:{}".format(j,int(time.time()-t)))
+      if returning==True:
+       return int(time.time()-t)
+      break
    except Exception as e:
     if logs==True:
-     print("[-]Cant send more\n==>Size: {}\n==>Time:".format(j,time.time()-t))
+     print("[-]Cant send more\n==>Size: {}\n==>Time:{}".format(j,int(time.time()-t)))
     if returning==True:
      return int(time.time()-t)
     break
@@ -788,7 +795,7 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((u,port))
-    if ((p==443 ) or (p==8443)):
+    if ((port==443 ) or (port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while True:
      if time.time()-ti>=timer:
@@ -819,8 +826,8 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
       break
     s.close()
   except Exception as e:
-    pass
+    print e
   if logs==True:
-   print("==>connection closed at: "+str(int(time.time()-ti))+" seconds")
+   print("==>connection closed at: {} seconds".format(int(time.time()-ti)))
   if returning==True:
    return int(time.time()-ti)
