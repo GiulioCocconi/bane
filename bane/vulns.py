@@ -623,7 +623,7 @@ def buildget(u,p,timeout=5):
 def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,interval))
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,timer))
  try:
   s=buildget(u,port,timeout)
   i+=1
@@ -682,18 +682,18 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
     if randomly==True:
      t=random.randint(start,end)
     if logs==True:
-     print("[+]Sleeping for',t,'seconds...")
+     print("[+]Sleeping for {} seconds...".format(t))
     time.sleep(t)
    except Exception as e:
     pass
     if logs==True:
-     print("==>timed out at:',int(ti-j),'seconds")
+     print("==>timed out at: {} seconds".format(int(ti-j)))
     if returning==True:
      return int(ti-j)
     break
   if int(ti-j)>=timer:
    if logs==True:
-    print("==>Test has reached the max interval:',interval,'seconds without timing out")
+    print("==>Test has reached the max interval: {} seconds without timing out".format(timer))
    if returning==True:
     return int(ti-j)
 def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,returning=False,payloads=True):
@@ -726,7 +726,7 @@ def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,ret
     except:
      l.remove(s)
   if logs==True:
-   print("[!]Sockets:',len(l),'Time:',int(time.time()-ti),'seconds")
+   print("[!]Sockets: {} Time: {} seconds".format(len(l),int(time.time()-ti)))
 def buildpost(u,port=80,timeout=5,size=10000):
  s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  s.settimeout(timeout)
@@ -753,13 +753,13 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
   while True:
    if int(time.time()-t)>=timer:
     if logs==True:
-     print("[+]Maximum time has been reached!!!\n==>Size:",j,"\n==>Time:",int(time.time()-t))
+     print("[+]Maximum time has been reached!!!\n==>Size: {}\n==>Time: {}".format(j,int(time.time()-t)))
     if returning==True:
      return int(time.time()-t)
     break
    if j==size:
     if logs==True:
-     print("[+]Maximum size has been reached!!!\n==>Size:",j,"\n==>Time:",int(time.time()-t))
+     print("[+]Maximum size has been reached!!!\n==>Size: {}\n==>Time: {}".format(j,int(time.time()-t)))
     if returning==True:
      return int(time.time()-t)
     break
