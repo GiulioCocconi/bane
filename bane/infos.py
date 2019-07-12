@@ -1,4 +1,9 @@
-import requests,urllib,socket,random,time,re,threading
+import requests,urllib,socket,random,time,re,threading,sys
+if  sys.version_info < (3,0):
+    # Python 2.x
+    from scapy.all import *
+else:
+    from kamene.all import *
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
@@ -201,7 +206,52 @@ def dnslookup(u,logs=True,returning=False): #DNS lookup
    pass
  if returning==True:
   return i
-class scanp(threading.Thread):
+class uscanp(threading.Thread):
+ def run(self):
+  global portlist
+  p=por[flag2]
+  data=''
+  for x in range(64):
+   data+=random.choice(lis)
+  req=IP(dst=target)/UDP(sport=random.randint(1025,65500),dport=p)/Raw(load=data)
+  s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+  s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+  s.sendto(bytes(req),(target,p))
+  s.settimeout(timeout)
+  d=''
+  while True:
+   try:
+    o=''
+    o+=s.recv(4096)
+   except:
+    pass
+   if len(o)==0:
+    break
+   else:
+    d+=o
+  if len(d) > 0:
+   portlist.update({p:"Open"})
+  else:
+   portlist.update({p:"Closed"})
+  s.close()
+def udp_portscan(u,ports=[53],maxtime=5):
+ global flag2
+ global portlist
+ portlist={}
+ global timeout
+ timeout=maxtime
+ global por
+ por=ports
+ global target
+ target=u
+ for x in range(len(por)):
+   flag2=x
+   uscanp().start()
+   time.sleep(.001)
+ while(len(portlist)!=len(ports)):
+  time.sleep(.1)
+ return portlist
+class tscanp(threading.Thread):
  def run (self):
         global portlist
         p=por[flag2]
@@ -213,9 +263,10 @@ class scanp(threading.Thread):
         else:
          portlist.update({p:"Closed"})
         s.close()
-def portscan(u,ports=[21,22,23,25,43,50,80,443,2082,3306],maxtime=5):
+def tcp_portscan(u,ports=[21,22,23,25,43,53,80,443,2082,3306],maxtime=5):
  global flag2
  global portlist
+ portlist={}
  global timeout
  timeout=maxtime
  global por
@@ -224,7 +275,7 @@ def portscan(u,ports=[21,22,23,25,43,50,80,443,2082,3306],maxtime=5):
  target=u
  for x in range(len(por)):
    flag2=x
-   scanp().start()
+   tscanp().start()
    time.sleep(.001)
  while(len(portlist)!=len(ports)):
   time.sleep(.1)

@@ -59,6 +59,13 @@ sre2=0
 rre1=0
 rre2=0
 domainl=[
+"www.thepacketgeek.com",
+"noction.com",
+"defense.tn",
+"fbi.gov",
+"nasa.gov",
+"nsa.gov",
+"cia.gov",
 "google.com",
 "facebook.com",
 "twitter.com",
@@ -78,7 +85,11 @@ domainl=[
 ]
 dnsl=[]
 ntpl=[]
+chargenl=[]
 snmpl=[]
+ssdpl=[]
+meml=[]
+pingl=[]
 query=''
 quclass=''
 httplist=[]
@@ -11587,7 +11598,7 @@ ua=[
 "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; WOW64; SV1; uZardWeb/1.0; Server_CN)",
 "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; uZardWeb/1.0; Server_JP)"
 ]
-lis='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_%'
+lis='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
 ec=['gzip','compress','deflate','br,''identity', '*']
 a=["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","application/xml,application/xhtml+xml,text/html;q=0.9, text/plain;q=0.8,image/png,*/*;q=0.5","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","text/html, application/xhtml+xml, image/jxr, */*","text/html, application/xml;q=0.9, application/xhtml+xml, image/png, image/webp, image/jpeg, image/gif, image/x-xbitmap, */*;q=0.1"]#*/
 ac=["iso-8859-1", "utf-8, iso-8859-1;q=0.5", "utf-8,iso-8859-1;q=0.5, *;q=0.1"]

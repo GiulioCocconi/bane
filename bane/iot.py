@@ -10,6 +10,7 @@ if (sys.platform == "win32") or( sys.platform == "win64"):
 if termux==False:
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
+if linux==True:
  import pexpect
 import mysql.connector as mconn
 from bane.bruteforcer import *

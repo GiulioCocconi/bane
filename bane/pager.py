@@ -2,7 +2,7 @@ import requests,random,re
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
-def inputs(u,value=False,timeout=10,user_agent=None,bypass=False,proxy=None):
+def inputs(u,value=False,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function is to get the names and values of input fields on a given webpage to scan.
 
@@ -32,9 +32,13 @@ def inputs(u,value=False,timeout=10,user_agent=None,bypass=False,proxy=None):
   proxy={'http':'http://'+proxy}
  if bypass==True:
   u+='#'
+ if cookie:
+  hea={'User-Agent': us,'Cookie':cookie}
+ else:
+  hea={'User-Agent': us}
  l=[]
  try:
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
   soup= BeautifulSoup(c,'html.parser')
   p=soup.find_all('input')
   for r in p: 
@@ -56,7 +60,7 @@ def inputs(u,value=False,timeout=10,user_agent=None,bypass=False,proxy=None):
  except Exception as e:
   pass
  return l
-def forms(u,value=True,user_agent=None,timeout=10,bypass=False,proxy=None):
+def forms(u,value=True,user_agent=None,timeout=10,bypass=False,proxy=None,cookie=None):
  '''
    same as "inputs" function but it works on forms input fields only
  '''
@@ -68,9 +72,13 @@ def forms(u,value=True,user_agent=None,timeout=10,bypass=False,proxy=None):
   proxy={'http':'http://'+proxy}
  if bypass==True:
   u+='#'
+ if cookie:
+  hea={'User-Agent': us,'Cookie':cookie}
+ else:
+  hea={'User-Agent': us}
  l=[]
  try:
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
   soup= BeautifulSoup(c,'html.parser')
   i=soup.find_all('form')
   for f in i:
@@ -132,7 +140,7 @@ def loginform(u,timeout=10,user_agent=None,bypass=False,value=True,proxy=None):
  except Exception as e:
   pass
  return l
-def crawl(u,timeout=10,user_agent=None,bypass=False,proxy=None):
+def crawl(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function is used to crawl any given link and returns a list of all available links on that webpage with ability to bypass anti-crawlers
    
@@ -159,8 +167,12 @@ def crawl(u,timeout=10,user_agent=None,bypass=False,proxy=None):
  h=[]
  if bypass==True:
   u+='#'
+ if cookie:
+  hea={'User-Agent': us,'Cookie':cookie}
+ else:
+  hea={'User-Agent': us}
  try:
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   u=u.split(u.split("/")[3])[0]
   u=u[0:len(u)-1]
@@ -182,7 +194,7 @@ def crawl(u,timeout=10,user_agent=None,bypass=False,proxy=None):
  except:
   pass
  return h
-def pather(u,timeout=10,user_agent=None,bypass=False,proxy=None):
+def pather(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function is similar to the "crawl" function except that it returns only the paths not the full URL.
    
@@ -210,8 +222,12 @@ def pather(u,timeout=10,user_agent=None,bypass=False,proxy=None):
  p=[]
  if bypass==True:
   u+='#'
+ if cookie:
+  hea={'User-Agent': us,'Cookie':cookie}
+ else:
+  hea={'User-Agent': us}
  try:
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   u=u.split(u.split("/")[3])[0]
   u=u[0:len(u)-1]
@@ -235,7 +251,7 @@ def pather(u,timeout=10,user_agent=None,bypass=False,proxy=None):
  for x in h:
   p.append(x.split(u)[1])
  return p
-def media(u,timeout=10,user_agent=None,bypass=False,proxy=None):
+def media(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this funtion was made to collect the social media links related to the targeted link (facebook, twitter, instagram...).
 
@@ -257,13 +273,21 @@ def media(u,timeout=10,user_agent=None,bypass=False,proxy=None):
   us=user_agent
  else:
   us=random.choice(ua)
+ if cookie:
+   hea={'User-Agent': us,'Cookie':cookie}
+ else:
+   hea={'User-Agent': us}
  h=[]
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
   if bypass==True:
    u+='#'
-  c=requests.get(u,headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  if cookie:
+   hea={'User-Agent': us,'Cookie':cookie}
+  else:
+   hea={'User-Agent': us}
+  c=requests.get(u,headers = hea,proxies=proxy,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   ul=u.split('://')[1].split('"')[0]
   ur=ul.replace("www.",'') 
@@ -316,7 +340,7 @@ def subdomains(u,timeout=10,user_agent=None,proxy=None):
  except:
   pass
  return lit
-def subdomains2(u,timeout=10,user_agent=None,bypass=False,proxy=None):
+def subdomains2(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function collects the subdomains found on the targeted webpage.
 
@@ -341,10 +365,14 @@ def subdomains2(u,timeout=10,user_agent=None,bypass=False,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  h=[]
+ if cookie:
+  hea={'User-Agent': us,'Cookie':cookie}
+ else:
+  hea={'User-Agent': us}
  try:
   if bypass==True:
    u+='#'
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
   ul=u.split('://')[1].split('"')[0]
   soup = BeautifulSoup(c,"html.parser")
   for a in soup.findAll('a'):

