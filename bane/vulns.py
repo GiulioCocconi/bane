@@ -560,7 +560,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
     proxy={'http':'http://'+random.choice(proxies)}
    try:
     if logs==True:
-     print("[*]Trying:", u+l)
+     print("[*]Trying: "+ u+l)
     r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
@@ -585,7 +585,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
    l+='%00'
   try:
     if logs==True:
-     print("[*]Trying:", u+l)
+     print("[*]Trying: "+u+l)
     r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
@@ -620,10 +620,10 @@ def buildget(u,p,timeout=5):
     s.send("Accept-language: en-US,en,q=0.5\r\n".encode("utf-8"))
     s.send("Connection: keep-alive\r\n".encode("utf-8"))
     return s
-def timeouttest(u,port=80,timeout=5,interval=30,logs=True,returning=False):
+def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget:",u,"\nPort:",port,"\nInitial connection timeout:",timeout,"\nMax interval:",interval)
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,interval))
  try:
   s=buildget(u,port,timeout)
   i+=1
@@ -637,29 +637,29 @@ def timeouttest(u,port=80,timeout=5,interval=30,logs=True,returning=False):
   while True:
    try:
     j+=1
-    if j>interval:
+    if j>timer:
      break
     if logs==True:
      print("[*]Sending payload...")
     s.send("X-a: {}\r\n".format(random.randint(1, 5000)).encode("utf-8"))
     if logs==True:
-     print("[+]Sleeping for',j,'seconds...")
+     print("[+]Sleeping for {} seconds...".format(j))
     time.sleep(j)
    except:
     if logs==True:
-     print("==>timed out at:',j,'seconds")
+     print("==>timed out at: {} seconds".format(j))
      break
     if returning==True:
      return j
-  if j>interval:
+  if j>timer:
    if logs==True:
-    print("==>Test has reached the max interval:',interval,'seconds without timing out")
+    print("==>Test has reached the max interval: {} seconds without timing out".format(timer))
    if returning==True:
     return j
 def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=True,returning=False,start=1,end=5):
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget:",u,"\nPort:",port,"\nInitial connection timeout:",timeout,"\nTest timer:",timer,"seconds")
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nInterval between packets:{}\nTest timer: {} seconds".format(u,port,timeout,interval,timer))
  try:
   s=buildget(u,port,timeout)
   i+=1
@@ -699,7 +699,7 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
 def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,returning=False,payloads=True):
  l=[]
  if logs==True:
-  print("[*]Test has started:\nTarget:",u,"\nPort:",port,"\nConnections limit:",connections,"\nInitial connection timeout:",timeout,"\nTest timer:",timer,"seconds")
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nConnections limit: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,connections,timeout,timer))
  ti=time.time()
  while True:
   if int(time.time()-ti)>=timer:
@@ -782,7 +782,7 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
 def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randomly=False,wait=5,start=1,end=10):
   i=0
   if logs==True:
-   print("[*]Test has started:\nTarget: "+u+"\nPort: "+str(port)+"\nInitial connection timeout: "+str(timeout)+"\nTest timer: "+str(timer)+" seconds")
+   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,timeout,timer))
   ti=time.time()
   try: 
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
