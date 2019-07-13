@@ -1,4 +1,4 @@
-import cgi,requests,os,random,re,hashlib,urllib,sys
+import cgi,requests,os,random,re,hashlib,urllib,sys,cfscrape
 if  sys.version_info < (3,0):
     import HTMLParser
 else:
@@ -26,6 +26,13 @@ def read_file(w):
 def create_file(w):
     with open(w ,"a+") as f:
      pass   
+def get_cf_cookie(domain,user_agent):
+  try:
+   s = cfscrape.create_scraper()
+   c = s.get_cookie_string("http://"+target,user_agent=us)
+   return {user_agent: str(c).split("'")[1].split("'")[0]}
+  except:
+   return None
 def virustotal(f,proxy=None,timeout=10):
  if proxy:
   proxy={'http':'http://'+proxy}
