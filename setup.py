@@ -3,9 +3,9 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 termux=False
 if os.path.isdir('/home/')==True:
- os.system('sudo apt install sshpass')
- os.system('sudo apt install nodejs')
- os.system('sudo apt install expect')
+ os.system('sudo apt install sshpass -y')
+ os.system('sudo apt install nodejs -y')
+ os.system('sudo apt install expect -y')
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
@@ -17,11 +17,11 @@ else:
  if termux==True:
     req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape"]
 if termux==True:
- os.system('pkg install sshpass')
- os.system('pkg install nodejs')
+ os.system('pkg install sshpass -y')
+ os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="2.0.2",
+    version="2.0.3",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
