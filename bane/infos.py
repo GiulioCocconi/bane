@@ -212,7 +212,7 @@ def dnslookup2(u,server='8.8.8.8'):
  r.nameservers = ['8.8.8.8']
  a = r.query(u)
  for x in a:
-  o.append(x)
+  o.append(str(x))
  return o
 class uscanp(threading.Thread):
  def run(self):
