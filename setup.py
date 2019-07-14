@@ -1,7 +1,7 @@
 import sys,setuptools,os
 with open("README.md", "r") as fh:
     long_description = fh.read()
-os.system('pip uninstall dnspython')
+os.system('pip uninstall dnspython -y')
 termux=False
 if os.path.isdir('/home/')==True:
  os.system('sudo apt install sshpass -y')
