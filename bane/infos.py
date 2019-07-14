@@ -182,9 +182,11 @@ def reverseiplookup(u,timeout=10,logs=True,returning=False,proxy=None):
 '''
    end of the information gathering functions using: api.hackertarget.com
 '''
-def dnslookup(u,server='8.8.8.8'):
+def ips(u,server='8.8.8.8',timeout=1,lifetime=1):
  o=[]
  r = dns.resolver.Resolver()
+ r.timeout = 1
+ r.lifetime = 1
  r.nameservers = ['8.8.8.8']
  a = r.query(u)
  for x in a:
