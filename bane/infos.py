@@ -126,8 +126,7 @@ def whois(u,timeout=10,logs=True,returning=False):
   print("[*]Fetching information from https://www.whois.com ...")
  a=''
  try:
-  r=requests.get('https://www.whois.com/whois/'+u,headers = {'User-Agent': random.choice(ua)},timeout=timeout).text
-  a= r.split('Raw Whois Data</div><pre class="df-raw" id="registrarData">')[1].split('</pre>')[0]
+  a+=requests.post('https://check-host.net/ip-info/whois',data={'host':'50.63.33.34'}).text
  except:
   pass
  if logs==True:
