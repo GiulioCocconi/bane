@@ -1,4 +1,4 @@
-import requests,urllib,socket,random,time,re,threading,sys
+import requests,urllib,socket,random,time,re,threading,sys,dns.resolver
 if  sys.version_info < (3,0):
     # Python 2.x
     from scapy.all import *
@@ -190,8 +190,8 @@ def dnslookup(u,logs=True,returning=False): #DNS lookup
    returning: (set by default to: False) returning the report as a string format if it is set to: True.
    usage:
    >>>import bane
-   >>>bane.ips('www.google.com')
-   >>>a=bane.ips('www.facebook.com',returning=True)
+   >>>bane.dnslookup('www.google.com')
+   >>>a=bane.dnslookup('www.facebook.com',returning=True)
  '''
  i=[]
  try:
@@ -206,6 +206,14 @@ def dnslookup(u,logs=True,returning=False): #DNS lookup
    pass
  if returning==True:
   return i
+def dnslookup2(u,server='8.8.8.8'):
+ o=[]
+ r = dns.resolver.Resolver()
+ r.nameservers = ['8.8.8.8']
+ a = r.query(u)
+ for x in a:
+  o.append(x)
+ return o
 class uscanp(threading.Thread):
  def run(self):
   global portlist
