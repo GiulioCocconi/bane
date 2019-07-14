@@ -182,31 +182,7 @@ def reverseiplookup(u,timeout=10,logs=True,returning=False,proxy=None):
 '''
    end of the information gathering functions using: api.hackertarget.com
 '''
-def dnslookup(u,logs=True,returning=False): #DNS lookup
- '''
-   this function resolves the domain to all its associated ip addresses
-   u: ip or domain
-   logs: (set by default to: True) showing the process and the report, you can turn it off by setting it to:False
-   returning: (set by default to: False) returning the report as a string format if it is set to: True.
-   usage:
-   >>>import bane
-   >>>bane.dnslookup('www.google.com')
-   >>>a=bane.dnslookup('www.facebook.com',returning=True)
- '''
- i=[]
- try:
-   c= socket.getaddrinfo( u, 80)
-   for x in c:
-    x= x[4][0]
-    if (('.' in x) or (':' in x)) and (x not in i):
-     if logs==True:
-      print (x)
-     i.append(x)
- except:
-   pass
- if returning==True:
-  return i
-def dnslookup2(u,server='8.8.8.8'):
+def dnslookup(u,server='8.8.8.8'):
  o=[]
  r = dns.resolver.Resolver()
  r.nameservers = ['8.8.8.8']
