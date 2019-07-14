@@ -123,7 +123,7 @@ def myip(logs=True,returning=False):
 def whois(u,timeout=10,logs=True,returning=False):
  u=u.replace('www.','')
  if logs==True:
-  print("[*]Fetching information from https://www.whois.com ...")
+  print("[*]Fetching information ...")
  a=''
  try:
   a+=requests.post('https://check-host.net/ip-info/whois',data={'host':'50.63.33.34'}).text
