@@ -32,7 +32,7 @@ def get_cf_cookie(domain,user_agent):
    c = s.get_cookie_string("http://"+domain,user_agent=user_agent)
    return {user_agent: str(c).split("'")[1].split("'")[0]}
   except:
-   return None
+   return {}
 def virustotal(f,proxy=None,timeout=10):
  if proxy:
   proxy={'http':'http://'+proxy}
