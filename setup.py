@@ -1,6 +1,7 @@
 import sys,setuptools,os
 with open("README.md", "r") as fh:
     long_description = fh.read()
+os.system('pip uninstall dnspython')
 termux=False
 if os.path.isdir('/home/')==True:
  os.system('sudo apt install sshpass -y')
@@ -9,13 +10,13 @@ if os.path.isdir('/home/')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","dnspython"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape"]
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","dnspython"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","dnspython"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape"]
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","dnspython"]
 if termux==True:
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
