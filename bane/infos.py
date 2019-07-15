@@ -181,7 +181,7 @@ def reverseiplookup(u,timeout=10,logs=True,returning=False,proxy=None):
 '''
    end of the information gathering functions using: api.hackertarget.com
 '''
-def ips(u,server='8.8.8.8',timeout=1,lifetime=1):
+def resolve(u,server='8.8.8.8',timeout=1,lifetime=1):
  o=[]
  r = dns.resolver.Resolver()
  r.timeout = 1
