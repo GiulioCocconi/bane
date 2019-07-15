@@ -11,13 +11,13 @@ if os.path.isdir('/home/')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","dnspython"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","dnspython"]
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","dnspython"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","dnspython"]
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape"]
 if termux==True:
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
