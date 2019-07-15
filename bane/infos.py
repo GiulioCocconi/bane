@@ -126,7 +126,7 @@ def whois(u,timeout=10,logs=True,returning=False):
   print("[*]Fetching information ...")
  a=''
  try:
-  a+=requests.post('https://check-host.net/ip-info/whois',data={'host':'50.63.33.34'}).text
+  a+=requests.post('https://check-host.net/ip-info/whois',data={'host':u}).text
  except:
   pass
  if logs==True:
