@@ -38,7 +38,7 @@ def inputs(u,value=False,timeout=10,user_agent=None,bypass=False,proxy=None,cook
   hea={'User-Agent': us}
  l=[]
  try:
-  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   soup= BeautifulSoup(c,'html.parser')
   p=soup.find_all('input')
   for r in p: 
@@ -78,7 +78,7 @@ def forms(u,value=True,user_agent=None,timeout=10,bypass=False,proxy=None,cookie
   hea={'User-Agent': us}
  l=[]
  try:
-  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   soup= BeautifulSoup(c,'html.parser')
   i=soup.find_all('form')
   for f in i:
@@ -116,7 +116,7 @@ def loginform(u,timeout=10,user_agent=None,bypass=False,value=True,proxy=None):
   u+='#'
  l=[]
  try:
-  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = {'User-Agent': us},proxies=proxy,timeout=timeout, verify=False).text
   soup= BeautifulSoup(c,'html.parser')
   i=soup.find_all('form')
   for f in i:
@@ -172,7 +172,7 @@ def crawl(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  else:
   hea={'User-Agent': us}
  try:
-  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   soup = BeautifulSoup(c,"html.parser")
   u=u.split(u.split("/")[3])[0]
   u=u[0:len(u)-1]
@@ -227,7 +227,7 @@ def pather(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  else:
   hea={'User-Agent': us}
  try:
-  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   soup = BeautifulSoup(c,"html.parser")
   u=u.split(u.split("/")[3])[0]
   u=u[0:len(u)-1]
@@ -287,7 +287,7 @@ def media(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
    hea={'User-Agent': us,'Cookie':cookie}
   else:
    hea={'User-Agent': us}
-  c=requests.get(u,headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u,headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   soup = BeautifulSoup(c,"html.parser")
   ul=u.split('://')[1].split('"')[0]
   ur=ul.replace("www.",'') 
@@ -372,7 +372,7 @@ def subdomains2(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None
  try:
   if bypass==True:
    u+='#'
-  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout).text
+  c=requests.get(u, headers = hea,proxies=proxy,timeout=timeout, verify=False).text
   ul=u.split('://')[1].split('"')[0]
   soup = BeautifulSoup(c,"html.parser")
   for a in soup.findAll('a'):
