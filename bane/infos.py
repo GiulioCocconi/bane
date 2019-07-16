@@ -3,8 +3,6 @@ if  sys.version_info < (3,0):
     # Python 2.x
     from scapy.all import *
 else:
-    import warnings
-    warnings.filterwarnings("ignore")
     from kamene.all import *
 import bs4
 from bs4 import BeautifulSoup
