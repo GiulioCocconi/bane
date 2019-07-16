@@ -18,7 +18,7 @@ def wpadmin(u,username,password,path='/xmlrpc.php',timeout=10,proxy=None):
 </params>
 </methodCall>""".format(username,password)
  try:
-  r = requests.post(u, data=post,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r = requests.post(u, data=post,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False)
   if "isAdmin" in r.text:
    s=True
  except:
@@ -37,7 +37,7 @@ def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,co
  b=False
  u+=path
  try:
-  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False)
   if ('{"id":'in r.text) and('"name":"' in r.text):
    s+=u
    b=True
@@ -63,7 +63,7 @@ def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=F
  b=False
  u+=path+str(user)
  try:
-  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False)
   if ('{"id":'in r.text) and('"name":"' in r.text):
    s+=u
    b=True
@@ -89,7 +89,7 @@ def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,co
  b=False
  u+=path
  try:
-  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False)
   if ('{"id":'in r.text) and('"date":"' in r.text):
    s+=u
    b=True
@@ -115,7 +115,7 @@ def wppost(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=F
  b=False
  u+=path+str(post)
  try:
-  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout)
+  r=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False)
   if ('{"id":'in r.text) and('"date":"' in r.text):
    s+=u
    b=True
