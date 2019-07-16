@@ -4,6 +4,8 @@ if  sys.version_info < (3,0):
     from scapy.all import *
 else:
     from kamene.all import *
+import warnings
+warnings.filterwarnings("ignore")
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
