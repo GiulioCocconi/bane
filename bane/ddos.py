@@ -13,9 +13,9 @@ else:
     httplib = http.client
     import urllib.request
     urllib2=urllib.request
+    import warnings
+    warnings.filterwarnings("ignore")
     from kamene.all import *
-import warnings
-warnings.filterwarnings("ignore")
 from struct import *
 from bane.iot import getip
 from bane.payloads import *
