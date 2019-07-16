@@ -35,7 +35,7 @@ def access(u,timeout=10,bypass=False,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
-   r=requests.get(u,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout) 
+   r=requests.get(u,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout, verify=False) 
    if r.status_code == requests.codes.ok:
     if (("Uncaught exception" not in r.text) or ("404 Not Found" not in r.text)):
      return True
@@ -93,7 +93,7 @@ def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
          b=x.split(':')[1]
          extra.update({a:b})
   se=requests.session()
-  r=se.post(u,data=pl,headers = {'User-Agent': us},allow_redirects=False,proxies=proxy,timeout=timeout)
+  r=se.post(u,data=pl,headers = {'User-Agent': us},allow_redirects=False,proxies=proxy,timeout=timeout, verify=False)
   if r.status_code==302:
    return True
  except Exception as e:
@@ -195,7 +195,7 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,
    g=u+i
    if logs==True:
     print("[*]Trying:",g)
-   r=requests.get(g,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout) 
+   r=requests.get(g,  headers = {'User-Agent': random.choice(ua)} , allow_redirects=False,proxies=proxy,timeout=timeout, verify=False) 
    if r.status_code == requests.codes.ok:
     if (("Uncaught exception" not in r.text) and ("404 Not Found" not in r.text)):
      if 'could not be found' not in r.text:
@@ -320,7 +320,7 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
    g=u+i
    if logs==True:
     print("[*]Trying:",g)
-   r=requests.get(g,headers = {'User-Agent': random.choice(ua)},allow_redirects=False,proxies=proxy,timeout=timeout) 
+   r=requests.get(g,headers = {'User-Agent': random.choice(ua)},allow_redirects=False,proxies=proxy,timeout=timeout, verify=False) 
    if r.status_code == requests.codes.ok:
     if logs==True:
      print("[+]FOUND!!!")
