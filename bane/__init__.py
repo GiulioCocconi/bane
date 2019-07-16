@@ -17,7 +17,7 @@ from bane.payloads import *
 from bane.ddos import *
 from bane.hasher import *
 from bane.pager import *
-from bane.infos import *
+from bane.info_s import *
 from bane.extrafun import *
 from bane.bruteforcer import *
 from bane.vulns import *
