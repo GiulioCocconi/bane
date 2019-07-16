@@ -1,4 +1,6 @@
 import requests,random
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from bane.payloads import ua
 def wpadmin(u,username,password,path='/xmlrpc.php',timeout=10,proxy=None):
  '''
