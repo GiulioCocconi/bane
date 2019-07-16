@@ -826,7 +826,7 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
       break
     s.close()
   except Exception as e:
-    print e
+    pass
   if logs==True:
    print("==>connection closed at: {} seconds".format(int(time.time()-ti)))
   if returning==True:
