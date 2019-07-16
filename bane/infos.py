@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 from bane.payloads import *
 def info(u,timeout=10,proxy=None):
  '''
-   this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as a list of strings
+   this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as string
    with this format:
    'requested information: result'
     
@@ -25,7 +25,7 @@ def info(u,timeout=10,proxy=None):
  if proxy:
   proxy={'http':'http://'+proxy}
  try:
-  h=[]
+  h=''
   u='https://check-host.net/ip-info?host='+u
   c=requests.get(u, headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
@@ -48,7 +48,7 @@ def info(u,timeout=10,proxy=None):
       c=c.split('<img')[1].split('!')[0]
       c=c.split('/>')[1].split('!')[0]
      n=a.strip()+': '+c.strip()
-     h.append(n)
+     h+=n+'\n'
    except Exception as e:
     pass
  except Exception as e:
