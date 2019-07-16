@@ -1,4 +1,6 @@
 import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ftplib import FTP
 from bane.payloads import *
 if os.path.isdir('/data/data/com.termux/')==True:
