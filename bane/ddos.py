@@ -1,4 +1,6 @@
 import requests,cfscrape,socks,os,sys,urllib,socket,random,time,threading,ssl
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 if  sys.version_info < (3,0):
     # Python 2.x
     import httplib
