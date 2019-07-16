@@ -13,6 +13,8 @@ linkedin:
 
       https://www.linkedin.com/in/ala-bouali-bb17ab132/
 '''
+import warnings
+warnings.filterwarnings("ignore")
 from bane.payloads import *
 from bane.ddos import *
 from bane.hasher import *
