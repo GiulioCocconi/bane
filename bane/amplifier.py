@@ -3,6 +3,8 @@ if  sys.version_info < (3,0):
     from scapy.all import *
 else:
     from kamene.all import *
+import warnings
+warnings.filterwarnings("ignore")
 import random,socket,requests
 def get_public_dns(timeout=10):
  try:
