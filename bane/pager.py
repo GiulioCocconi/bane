@@ -1,4 +1,6 @@
 import requests,random,re
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
