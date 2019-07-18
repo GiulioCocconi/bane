@@ -84,28 +84,19 @@ def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
   pass
  if returning==True:
   return s.strip()
-def myip(logs=True,returning=False):
+def myip():
  '''
    this function is for getting your ip using: ipinfo.io
-   it takes 2 arguments:   
-   logs: (set by default to: True) showing the process and the report, you can turn it off by setting it to:False
-   returning: (set by default to: False) returning the report as a string format if it is set to: True
    usage:
    >>>import bane
    >>>bane.myip()
    xxx.xx.xxx.xxx
-   >>>print bane.myip(returnin=True,logs=False)
-   xxx.xxx.xx.xxx
 '''
- c=""
  try:
-   c+=requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)} ,timeout=10).text
+   return requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)} ,timeout=10).text.strip()
  except:
   pass
- if logs==True:
-  print (c.strip())
- if returning==True:
-  return c.strip()
+ return ''
 '''
    functions below are using: api.hackertarget.com services to gather up any kind of informations about any given ip or domain
    they take 3 arguments:
