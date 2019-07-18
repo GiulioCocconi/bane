@@ -140,7 +140,7 @@ def geoip(u):
  try:
    r=requests.get('https://geoip-db.com/jsonp/'+u).text
    return json.loads(r.split('(')[1].split(')')[0])
-except:
+ except:
   pass
 return {}
 def headers(u,timeout=10,logs=True,returning=False,proxy=None):
