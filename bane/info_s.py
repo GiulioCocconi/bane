@@ -142,7 +142,7 @@ def geoip(u):
    return json.loads(r.split('(')[1].split(')')[0])
  except:
   pass
-return {}
+ return {}
 def headers(u,timeout=10,logs=True,returning=False,proxy=None):
  try:
    s=requests.session()
