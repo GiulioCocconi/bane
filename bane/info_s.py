@@ -1,4 +1,4 @@
-import requests,urllib,socket,random,time,re,threading,sys,dns.resolver,whois
+import requests,urllib,socket,random,time,re,threading,sys,dns.resolver,whois,json
 if  sys.version_info < (3,0):
     # Python 2.x
     from scapy.all import *
@@ -129,8 +129,8 @@ def whois(u):
   return whois.whois(w)
  except:
   pass
-  return {}
-def geoip(u,logs=True,returning=False,proxy=None):
+ return {}
+def geoip(u):
  '''
    this function is for getting: geoip informations
  '''
@@ -138,13 +138,11 @@ def geoip(u,logs=True,returning=False,proxy=None):
   proxy={'http':'http://'+proxy}
  c=""
  try:
-   c=requests.get("https://api.hackertarget.com/geoip/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=10).text
- except:
+   r=requests.get('https://geoip-db.com/jsonp/'+u).text
+   return json.loads(r.split('(')[1].split(')')[0])
+except:
   pass
- if logs==True:
-  print (c.strip())
- if returning==True:
-  return c.strip()
+return {}
 def headers(u,timeout=10,logs=True,returning=False,proxy=None):
  try:
    s=requests.session()
@@ -162,19 +160,17 @@ def reverseiplookup(u,timeout=10,logs=True,returning=False,proxy=None):
  '''
  if proxy:
   proxy={'http':'http://'+proxy}
- a=''
+ a=[]
  try:
   name, alias, addresslist = socket.gethostbyaddr(u)
-  a+=name
+  return a.append(name)
  except Exception as e:
   try:
-   a+=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=timeout).text
+   r=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=timeout).text
+   return r.split('\n')
   except Exception as ex:
    pass
- if logs==True:
-  print(a)
- if returning==True:
-  return a.strip()
+ return []
 '''
    end of the information gathering functions using: api.hackertarget.com
 '''
