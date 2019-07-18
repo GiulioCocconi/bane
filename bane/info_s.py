@@ -1,4 +1,4 @@
-import requests,urllib,socket,random,time,re,threading,sys,dns.resolver
+import requests,urllib,socket,random,time,re,threading,sys,dns.resolver,whois
 if  sys.version_info < (3,0):
     # Python 2.x
     from scapy.all import *
@@ -120,19 +120,16 @@ def myip(logs=True,returning=False):
    >>>bane.nmap(ip)
    etc...
 '''
-def whois(u,timeout=10,logs=True,returning=False):
+def whois(u):
  u=u.replace('www.','')
  if logs==True:
   print("[*]Fetching information ...")
  a=''
  try:
-  a+=requests.post('https://check-host.net/ip-info/whois',data={'host':u}).text
+  return whois.whois(w)
  except:
   pass
- if logs==True:
-  print (a.strip())
- if returning==True:
-  return a.strip()
+  return {}
 def geoip(u,logs=True,returning=False,proxy=None):
  '''
    this function is for getting: geoip informations
