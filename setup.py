@@ -11,19 +11,19 @@ if os.path.isdir('/home/')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape"]
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape"]
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
 if termux==True:
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="2.1.4",
+    version="2.1.5",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
