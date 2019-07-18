@@ -26,3 +26,4 @@ from bane.wp import *
 from bane.filt import *
 from bane.proxer import *
 from bane.amplifier import *
+from bane.updating import *
