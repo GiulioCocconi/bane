@@ -117,16 +117,12 @@ def myip(logs=True,returning=False):
    >>>ip='50.63.33.34'
    >>>bane.dnslookup(ip)
    >>>bane.traceroute(ip)
-   >>>bane.nmap(ip)
    etc...
 '''
 def whois(u):
  u=u.replace('www.','')
- if logs==True:
-  print("[*]Fetching information ...")
- a=''
  try:
-  return whois.whois(w)
+  return whois.whois(u)
  except:
   pass
  return {}
@@ -134,9 +130,6 @@ def geoip(u):
  '''
    this function is for getting: geoip informations
  '''
- if proxy:
-  proxy={'http':'http://'+proxy}
- c=""
  try:
    r=requests.get('https://geoip-db.com/jsonp/'+u).text
    return json.loads(r.split('(')[1].split(')')[0])
