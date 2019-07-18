@@ -119,7 +119,8 @@ def myip(logs=True,returning=False):
    >>>bane.traceroute(ip)
    etc...
 '''
-def whois(u):
+def who_is(u):
+ import whois
  u=u.replace('www.','')
  try:
   return whois.whois(u)
