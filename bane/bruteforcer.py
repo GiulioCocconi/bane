@@ -86,7 +86,7 @@ def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
         if (x.split(':')[1]!=''):
          extr.append(x)
        for x in extr:
-        if x.split(':')[0] in l:
+        if x.split(':')[0] in k:
          extr.remove(x)
        extra={}
        if len(extr)!=0:
@@ -94,11 +94,12 @@ def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
          a=x.split(':')[0]
          b=x.split(':')[1]
          extra.update({a:b})
+  pl.update(extra)
   se=requests.session()
   r=se.post(u,data=pl,headers = {'User-Agent': us},allow_redirects=False,proxies=proxy,timeout=timeout, verify=False)
   if r.status_code==302:
-   return True
- except Exception as e:
+    return True
+ except:
   pass
  return False
 def adminbf(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
@@ -149,7 +150,7 @@ def adminbf(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=Non
       b=x.split(':')[1]
       if a not in pl:
        extra.update({a:b})
-    res=adminlogin(u,pl,extra=extra,timeout=timeout,proxy=proxy)
+    res=adminlogin(u,pl,fresh=fresh,extra=extra,timeout=timeout,proxy=proxy)
     if res==True:
      if logs==True:
       print("[+]Found!!!")
