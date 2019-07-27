@@ -261,6 +261,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
 
    >>>bane.xss('http://www.example.com/',payload="<script>alert(123);</script>")
   '''
+  global stop
+  stop=False
   if proxy:
    proxy=proxy
   if proxies:
@@ -294,6 +296,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
    if '?' in u:
     u=u.split('?')[0].split(',')[0]
    for i in l:
+    if stop==True:
+     break
     user=None
     i=i.split(':')[0]
     try:
@@ -308,6 +312,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
        extra.update({a:b})
      if get==True: 
       if fresh==True:
+       if stop==True:
+        break
        extr=[]
        user=random.choice(ua)
        k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True,cookie=cookie)
@@ -323,6 +329,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          a=x.split(':')[0]
          b=x.split(':')[1]
          extra.update({a:b})
+      if stop==True:
+       break
       if xssget(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
          x="parameter: "+i+" method: GET=> [+]Payload was found"
       else:
@@ -332,6 +340,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
        print (x)
      if post==True:
       if fresh==True:
+       if stop==True:
+        break
        extr=[]
        user=random.choice(ua)
        k=inputs(u,user_agent=user,proxy=proxy,timeout=timeout,value=True,cookie=cookie)
@@ -347,6 +357,8 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          a=x.split(':')[0]
          b=x.split(':')[1]
          extra.update({a:b})
+      if stop==True:
+       break
       if xsspost(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
       	x="parameter: "+i+" method: POST=> [+]Payload was found"
       else:
