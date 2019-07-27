@@ -550,6 +550,8 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
    this function is for FI vulnerability test using a link
 '''
  x={}
+ global stop
+ stop=False
  if proxy:
   proxy={'http':'http://'+proxy}
  if user_agent:
@@ -570,6 +572,8 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
   u=u.split("=")[0]+'='
  if mapping==True:
   for i in range(1,rounds+1):
+   if stop==True:
+    break
    if proxies:
     proxy={'http':'http://'+random.choice(proxies)}
    try:
@@ -635,6 +639,8 @@ def buildget(u,p,timeout=5):
     s.send("Connection: keep-alive\r\n".encode("utf-8"))
     return s
 def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
+ global stop
+ stop=False
  i=0
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,timer))
@@ -649,6 +655,8 @@ def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
  if i>0:
   j=0
   while True:
+   if stop==True:
+    break
    try:
     j+=1
     if j>timer:
@@ -671,6 +679,8 @@ def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
    if returning==True:
     return j
 def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=True,returning=False,start=1,end=5):
+ global stop
+ stop=False
  i=0
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nInterval between packets:{}\nTest timer: {} seconds".format(u,port,timeout,interval,timer))
@@ -685,6 +695,8 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
  if i>0:
   j=time.time()
   while True:
+   if stop==True:
+    break
    try:
     ti=time.time()
     if int(ti-j)>=timer:
@@ -711,11 +723,15 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
    if returning==True:
     return int(ti-j)
 def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,returning=False,payloads=True):
+ global stop
+ stop=False
  l=[]
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nConnections limit: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,connections,timeout,timer))
  ti=time.time()
  while True:
+  if stop==True:
+    break
   if int(time.time()-ti)>=timer:
    if logs==True:
     print("[+]Maximum time for test has been reached!!!")
@@ -750,6 +766,8 @@ def buildpost(u,p,timeout=5,size=10000):
  s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),size,u).encode("utf-8"))
  return s
 def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=False,randomly=False,wait=1,start=1,end=5):
+ global stop
+ stop=False
  i=0
  if logs==True:
   print("[*]Test has started:\nTarget: {}\nPort: {}\nData length to post: {}\nInitial connection timeout:{}\nTest timer: {} seconds".format(u,port,size,timeout,timer))
@@ -765,6 +783,8 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
  if i>0:
   t=time.time()
   while True:
+   if stop==True:
+    break
    if int(time.time()-t)>=timer:
     if logs==True:
      print("[+]Maximum time has been reached!!!\n==>Size: {}\n==>Time: {}".format(j,int(time.time()-t)))
@@ -801,6 +821,8 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
      return int(time.time()-t)
     break
 def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randomly=False,wait=5,start=1,end=10):
+  global stop
+  stop=False
   i=0
   if logs==True:
    print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,timeout,timer))
@@ -812,6 +834,8 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
     if ((port==443 ) or (port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     while True:
+     if stop==True:
+      break
      if time.time()-ti>=timer:
       if logs==True:
        print("[+]Maximum time has been reached!!!")
