@@ -1,9 +1,9 @@
-import hashlib,base64
-def md5(w):
+import hashlib,base64,ctypes
+def md_5(w):
  '''
    function to return md5 encrypted string
  '''
- return hashlib.md5(w.encode("utf-8")).hexdigest()
+ return hashlib.md5(w).hexdigest()
 def sha1(w): 
  '''
    function to return sha1 encrypted string
@@ -56,7 +56,7 @@ def md5fl(f):
    for x in l:
     w+=x
   f.close()
-  s= md5(w)
+  s= md_5(w)
   return s
 def sha1fl(f):
   w=""
