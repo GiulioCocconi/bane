@@ -1,4 +1,6 @@
 import cgi,requests,os,random,re,hashlib,urllib,sys,cfscrape
+from bane.payloads import ua
+from bane.hasher import *
 if  sys.version_info < (3,0):
     import HTMLParser
 else:
@@ -33,6 +35,14 @@ def get_cf_cookie(domain,user_agent):
    return {user_agent: str(c).split("'")[1].split("'")[0]}
   except:
    return {}
+def HTB_invitation():
+ try:
+  r=requests.post('https://www.hackthebox.eu/api/invite/generate',headers={'User-Agent':random.choice(ua)},data={'':''}).text
+  a=r.split('"code":"')[1].split('"')[0]
+  return base64decode(a)
+ except:
+  return None
+
 def virustotal(f,proxy=None,timeout=10):
  if proxy:
   proxy={'http':'http://'+proxy}

@@ -525,13 +525,13 @@ def hydra(u,p=25,proto="ssh",wl=[],logs=True,returning=False,mapping=False,timeo
   return o
 def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=False,sha512h=False,base64h=False,caesarh=False,logs=True,returning=False):
  if logs==True:
-  print('[!]hash:',u,'\nbruteforcing has started!!!\n')
+  print('[!]hash: '+u+'\nbruteforcing has started!!!\n')
  s=False
  for x in wl:
   if md5h==True:
    if dmd5(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: md5")
+     print("[+]Hash match found: "+x+" | Type: md5")
      s=True
      break
     if returning==True:
@@ -539,7 +539,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if sha1h==True:
    if dsha1(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: sha1")
+     print("[+]Hash match found: "+x+" | Type: sha1")
      s=True
      break
     if returning==True:
@@ -547,7 +547,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if sha256h==True:
    if dsha256(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: sha256")
+     print("[+]Hash match found: "+x+" | Type: sha256")
      s=True
      break
     if returning==True:
@@ -555,7 +555,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if sha224h==True:
    if dsha224(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: sha224")
+     print("[+]Hash match found: "+x+" | Type: sha224")
      s=True
      break
     if returning==True:
@@ -563,7 +563,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if sha384h==True:
    if dsha384(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: sha384")
+     print("[+]Hash match found: "+x+" | Type: sha384")
      s=True
      break
     if returning==True:
@@ -571,7 +571,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if sha512h==True:
    if dsha512(x,u)==True:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: sha512")
+     print("[+]Hash match found: "+x+" | Type: sha512")
      s=True
      break
     if returning==True:
@@ -579,7 +579,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
   if base64h==True:
    if base64decode(x)==u:
     if logs==True:
-     print("[+]Hash match found:",x,"| Type: base64")
+     print("[+]Hash match found: "+x+" | Type: base64")
      s=True
      break
     if returning==True:
@@ -588,7 +588,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
    for i in range(1,27):
     if dcaesar(x,i)==u:
      if logs==True:
-      print("[+]Hash match found:",x,"| Type: caesar | Key:",i)
+      print("[+]Hash match found: "+x+" | Type: caesar | Key: "+str(i))
       s=True
       break
      if returning==True:
