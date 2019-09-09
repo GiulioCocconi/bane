@@ -71,11 +71,12 @@ def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
   per_page=100
  url="https://www.google.com/search"
  ls=[]
+ agent=random.choice(ua)
  y=per_page
  q=q.replace(" ","+")
- while len(ls)<maxi:
+ while True:
   pl = {"num":per_page, 'q' :q,'start' : y}
-  hd = { 'User-agent' : 'Mozilla/11.0'}
+  hd = { 'User-agent' : agent}#'Mozilla/11.0'}
   try:
    r = requests.get(url, params=pl, headers=hd,proxies=proxy,timeout=timeout )
    soup = BeautifulSoup( r.text, 'html.parser' )
@@ -85,7 +86,7 @@ def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
    for h3 in h3tags:
     try:
      url1= re.search('url\?q=(.+?)\&sa', h3.a['href']).group(1)
-     ur= urllib.unquote(url1).decode('utf8')
+     ur= urllib.unquote(str(url1))#.decode('utf8')
      if (ur not in ls):
       ls.append(ur)
      if len(ls)==maxi:
