@@ -9,7 +9,7 @@ if os.path.isdir('/data/data/com.termux/')==True:
 wido=False
 if (sys.platform == "win32") or( sys.platform == "win64"):
  wido=True
-if ((termux==False) or (adr==False)):
+if ((wido==True) or (linux==True)):
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
 if linux==True:
