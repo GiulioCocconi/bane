@@ -74,7 +74,6 @@ def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
  y=per_page
  q=q.replace(" ","+")
  while len(ls)<maxi:
-  y+=per_page
   pl = {"num":per_page, 'q' :q,'start' : y}
   hd = { 'User-agent' : 'Mozilla/11.0'}
   try:
@@ -95,6 +94,7 @@ def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
      continue
   except Exception as z:
     break
+  y+=per_page
  return ls
 def escape_html(s):
  '''
