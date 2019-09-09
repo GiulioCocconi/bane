@@ -18,9 +18,11 @@ from struct import *
 from bane.iot import getip
 from bane.payloads import *
 from bane.proxer import *
+if os.path.isdir('/data/data')==True:
+    adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
-if termux==False:
+if ((termux==False) or (adr==False)):
  import stem
  from stem import Signal
  from stem.control import Controller
