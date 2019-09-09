@@ -3,9 +3,11 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ftplib import FTP
 from bane.payloads import *
+if os.path.isdir('/data/data')==True:
+    adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
-if termux==False:
+if ((termux==False) or (adr==False)):
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
  import pexpect
