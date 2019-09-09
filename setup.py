@@ -10,9 +10,9 @@ if os.path.isdir('/home/')==True:
  os.system('sudo apt install expect -y')
 if os.path.isdir('/data/data')==True:
     if  sys.version_info < (3,0):
-        req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois"]
+        req=["requests","PySocks","bs4","mysql-connector","scapy","python-whois"]
     else:
-        req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
+        req=["requests","PySocks","bs4","mysql-connector","kamene","python-whois"]
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
