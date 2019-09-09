@@ -2,12 +2,14 @@ import os,sys,socket,random,time,threading,smtplib,telnetlib
 from bane.payloads import *
 from ftplib import FTP
 linux=True
+if os.path.isdir('/data/data')==True:
+    adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
- termux=True
+    termux=True
 wido=False
 if (sys.platform == "win32") or( sys.platform == "win64"):
  wido=True
-if termux==False:
+if ((termux==False) or (adr==False)):
  import paramiko
  from paramiko import SSHClient, AutoAddPolicy
 if linux==True:
