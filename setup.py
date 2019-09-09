@@ -21,7 +21,7 @@ if  sys.version_info < (3,0):
  if wido==True:
         req=["requests","PySocks","bs4","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois"]
  if termux==True:
     req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois"]
 else:
@@ -29,7 +29,7 @@ else:
  if wido==True:
     req=["requests","PySocks","bs4","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois"]
  if termux==True:
     req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
 if termux==True:
@@ -37,7 +37,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="2.2.6",
+    version="2.2.7",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
