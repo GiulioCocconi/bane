@@ -8,6 +8,11 @@ if os.path.isdir('/home/')==True:
  os.system('sudo apt install sshpass -y')
  os.system('sudo apt install nodejs -y')
  os.system('sudo apt install expect -y')
+if os.path.isdir('/data/data')==True:
+    if  sys.version_info < (3,0):
+        req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois"]
+    else:
+        req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
@@ -23,7 +28,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="2.2.2",
+    version="2.2.3",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
