@@ -1,5 +1,6 @@
 prints=True
 py3=False
+adr=False
 termux=False
 ua2=[
 "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_5_7; en-US) AppleWebKit/532.0 (KHTML, like Gecko) Chrome/3.0.198 Safari/532.0",
