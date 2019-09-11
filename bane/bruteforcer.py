@@ -8,7 +8,7 @@ if os.path.isdir('/data/data')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if ((termux==False) or (adr==False)):
- from sshbf import 
+ from sshbf import *
 import mysql.connector as mconn
 from bane.pager import *
 from bane.wp import wpadmin
