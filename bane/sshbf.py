@@ -1,6 +1,12 @@
-"""import paramiko
-from paramiko import SSHClient, AutoAddPolicy
-import pexpect"""
+try:
+ import paramiko
+ from paramiko import SSHClient, AutoAddPolicy
+except:
+ pass
+try:
+ import pexpect
+except:
+ pass
 def sshlin(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
  try:
