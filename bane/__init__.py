@@ -20,6 +20,7 @@ from bane.pager import *
 from bane.info_s import *
 from bane.extrafun import *
 from bane.bruteforcer import *
+from from bane.iot import *
 from bane.vulns import *
 from bane.wp import *
 from bane.filt import *
