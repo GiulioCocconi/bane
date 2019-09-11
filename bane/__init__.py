@@ -21,7 +21,6 @@ from bane.info_s import *
 from bane.extrafun import *
 from bane.bruteforcer import *
 from bane.vulns import *
-from bane.iot import *
 from bane.wp import *
 from bane.filt import *
 from bane.proxer import *
