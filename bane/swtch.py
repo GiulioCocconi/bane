@@ -1,7 +1,10 @@
 import os
-import stem
-from stem import Signal
-from stem.control import Controller
+try:
+ import stem
+ from stem import Signal
+ from stem.control import Controller
+except:
+ pass
 def torswitch1(new=30,logs=True):
  '''
     this function is for auto ip switching of tor's nodes, it doesnt work on windows because it use the command on linux to restart tor' service in a chosen interval.
