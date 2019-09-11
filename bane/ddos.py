@@ -23,7 +23,7 @@ if os.path.isdir('/data/data')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if ((termux==False) or (adr==False)):
- from swtch import *
+ from bane.swtch import *
 def kill():
  global stop
  stop=True
