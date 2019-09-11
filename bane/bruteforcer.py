@@ -8,9 +8,7 @@ if os.path.isdir('/data/data')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if ((termux==False) or (adr==False)):
- import paramiko
- from paramiko import SSHClient, AutoAddPolicy
- import pexpect
+ from sshbf import 
 import mysql.connector as mconn
 from bane.pager import *
 from bane.wp import wpadmin
