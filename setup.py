@@ -26,6 +26,7 @@ else:
  if termux==True:
     req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
 if termux==True:
+ os.system('pkg install ssh -y')
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
 setuptools.setup(
