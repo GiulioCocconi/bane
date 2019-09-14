@@ -3,6 +3,26 @@ import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
 from bane.pager import crawl
+def mdpr():
+ hsl=[]
+ ur=["http://www.gatherproxy.com/proxylist/anonymity/?t=Elite","http://www.gatherproxy.com/proxylist/anonymity/?t=Anonymous","http://www.gatherproxy.com/proxylist/anonymity/?t=Transparent"]
+ for u in ur:
+  try:
+   y=[]
+   c=requests.get(u).text
+   soup = BeautifulSoup(c,"html.parser")
+   for r in soup.find_all("script"):
+    h= ''.join(map(str, r.contents))
+    if 'gp.insertPrx' in h:
+     s = h.split(":")
+     ip= s[3].split(",")[0].replace('\"','')
+     p = str(int(s[5].split(",")[0].replace('\"',''), 16))
+     pr=ip+':'+p
+     if pr not in hsl:
+       hsl.append(pr)
+  except Exception as e:
+   pass
+ return hsl
 def masshttp(*args):
  '''
    this function gather up thousands of HTTP / HTTPS proxies from www.proxyserverlist24.top and proxy-daily.com
