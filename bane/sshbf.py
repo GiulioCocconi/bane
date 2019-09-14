@@ -7,6 +7,19 @@ try:
  import pexpect
 except:
  pass
+import subprocess
+def sshandro(u,username,password,timeout=5):
+ l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo alaala; exit".format(password,timeout,username,u)
+ ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ p= ssh.communicate()
+ try:
+   ssh.kill()
+ except:
+   pass
+ if 'alaala' in str(p[0]):
+  return True
+ else:
+  return False
 def sshlin(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
  try:
