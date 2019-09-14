@@ -39,6 +39,7 @@ def sshlin(u,username,password,p=22,timeout=7):
  return False
 def sshwin(ip,username,password,p=22,timeout=5):
  try:
+  paramiko.util.log_to_file("filename.log")
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
   s.connect(ip, p,username=username, password=password,timeout=timeout)
