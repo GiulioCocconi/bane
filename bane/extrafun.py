@@ -1,4 +1,5 @@
 import cgi,requests,os,random,re,hashlib,urllib,sys,cfscrape
+from googlesearch import search
 from bane.payloads import ua
 from bane.hasher import *
 if  sys.version_info < (3,0):
@@ -64,39 +65,14 @@ def virustotal(f,proxy=None,timeout=10):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,maxi=100,per_page=10,proxy=None,timeout=10):
- if proxy:
-  proxy={'http':'http://'+proxy}
- if per_page>100:
-  per_page=100
- url="https://www.google.com/search"
- ls=[]
- agent=random.choice(ua)
- y=per_page
- q=q.replace(" ","+")
- while True:
-  pl = {"num":per_page, 'q' :q,'start' : y}
-  hd = { 'User-agent' : agent}#'Mozilla/11.0'}
-  try:
-   r = requests.get(url, params=pl, headers=hd,proxies=proxy,timeout=timeout )
-   soup = BeautifulSoup( r.text, 'html.parser' )
-   h3tags = soup.find_all( 'h3', class_='r' )
-   if h3tags==[]:
-    break
-   for h3 in h3tags:
-    try:
-     url1= re.search('url\?q=(.+?)\&sa', h3.a['href']).group(1)
-     ur= urllib.unquote(str(url1))#.decode('utf8')
-     if (ur not in ls):
-      ls.append(ur)
-     if len(ls)==maxi:
-      break
-    except Exception as w:
-     continue
-  except Exception as z:
-    break
-  y+=per_page
- return ls
+def googledk(q,max_results=100,language='en',start_from=1, stop_on=None,top_level_domain='com',pause=2):
+ j=[]
+ j+=search(q,num=max_results,lang=language,start=start_from, stop=stop_on,tld="com", pause=2)
+ l=[]
+ for x in j:
+  if x not in l:
+   l.append(x)
+ return l
 def escape_html(s):
  '''
    function to return escaped html string
