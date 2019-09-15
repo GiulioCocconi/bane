@@ -43,7 +43,12 @@ def HTB_invitation():
   return base64decode(a)
  except:
   return None
-
+def facebook_id(u):
+ try:
+  r=requests.post('https://lookup-id.com/#',data={"fburl":u,"check":"Lookup"}).text
+  return r.split('<p id="code-wrap"><span id="code">')[1].split('<')[0]
+ except:
+  return None
 def virustotal(f,proxy=None,timeout=10):
  if proxy:
   proxy={'http':'http://'+proxy}
