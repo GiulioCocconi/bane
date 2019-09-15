@@ -14,24 +14,24 @@ if os.path.isdir('/data/data')==True:
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois","google"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois","google"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois"]
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois","google"]
 if termux==True:
  os.system('pkg install ssh -y')
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.0.3",
+    version="3.0.4",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
