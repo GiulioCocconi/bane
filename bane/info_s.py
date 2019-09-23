@@ -1,4 +1,4 @@
-import requests,urllib,socket,random,time,re,threading,sys,dns.resolver,whois,json
+import requests,urllib,socket,random,time,re,threading,sys,whois,json
 if  sys.version_info < (3,0):
     # Python 2.x
     from scapy.all import *
@@ -7,6 +7,8 @@ else:
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
+if os.path.isdir('/data/data/com.termux/')==False:
+    import dns.resolver
 def info(u,timeout=10,proxy=None):
  '''
    this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as string
