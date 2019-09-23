@@ -1,8 +1,6 @@
 import sys,setuptools,os
 with open("README.md", "r") as fh:
     long_description = fh.read()
-os.system('pip uninstall dnspython -y')
-os.system('pip install dnspython')
 termux=False
 if os.path.isdir('/home/')==True:
  os.system('sudo apt install sshpass -y')
@@ -13,6 +11,9 @@ if os.path.isdir('/data/data')==True:
     adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
+if termux==False:
+    os.system('pip uninstall dnspython -y')
+    os.system('pip install dnspython')
 if  sys.version_info < (3,0):
  req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois","google"]
  if adr==True:
@@ -31,7 +32,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.0.5",
+    version="3.0.6",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
