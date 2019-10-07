@@ -3119,7 +3119,6 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
  for x in range(threads):
   t=pdose()
   t.start()
- swi().start()
  c=time.time()
  while True:
   if stop==True:
