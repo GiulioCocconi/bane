@@ -110,6 +110,8 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
     for x in range(random.randint(10,30)):
      msg+=str(random.randint(0,1000000))+random.choice(lis)
     msg=msg*m
+    if len(msg)>1400:
+       msg=msg[0:1400]
     s.sendto((msg.encode('utf-8')),(u,p))
     counter+=1
     rate1+=1
