@@ -403,6 +403,7 @@ def https(logs=True,count=200,timeout=15):
     pass
  except:
   pass
+ """
  ur=['https://list.proxylistplus.com/ssl-List-1', 'https://list.proxylistplus.com/ssl-List-2']
  for u in ur:
   if len(hl)==count:
@@ -438,6 +439,7 @@ def https(logs=True,count=200,timeout=15):
      pass
   except Exception as e:
    pass
+ """
  return hl
 def socks5(logs=True,count=100,timeout=15):
  '''
@@ -479,6 +481,7 @@ def socks5(logs=True,count=100,timeout=15):
      pass
  except:
    pass
+ """
  ur=["https://list.proxylistplus.com/Socks-List-1"," https://list.proxylistplus.com/Socks-List-2"]
  for u in ur:
   if len(s5l)==count:
@@ -509,6 +512,7 @@ def socks5(logs=True,count=100,timeout=15):
      pass
   except Exception as e:
    pass
+ """
  return s5l
 def socks4(logs=True,count=30,timeout=15):
  '''
@@ -550,7 +554,7 @@ def socks4(logs=True,count=30,timeout=15):
      pass
  except Exception as e:
   pass
- ur=["https://list.proxylistplus.com/Socks-List-1"," https://list.proxylistplus.com/Socks-List-2"]
+ """ur=["https://list.proxylistplus.com/Socks-List-1"," https://list.proxylistplus.com/Socks-List-2"]
  for u in ur:
   if len(s4l)==count:
    break
@@ -580,6 +584,7 @@ def socks4(logs=True,count=30,timeout=15):
      pass
   except Exception as e:
    pass
+ """
  return s4l
 def proxy_check(ip,p,proto='http',timeout=5):
  '''
