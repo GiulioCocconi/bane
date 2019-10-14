@@ -403,6 +403,7 @@ def https(logs=True,count=200,timeout=15):
     pass
  except:
   pass
+ hl=hl[0:len(hl)-4]
  """
  ur=['https://list.proxylistplus.com/ssl-List-1', 'https://list.proxylistplus.com/ssl-List-2']
  for u in ur:
