@@ -93,7 +93,7 @@ def masshttp(count=None,timeout=15):
   t+=p[0]
  except:
   pass
- if args:
+ if count!=None:
   while True:
    o=random.choice(t)
    h.append(o)
@@ -165,7 +165,7 @@ def massocks4(count=None,timeout=15):
    except Exception as x:
     pass
  t+=p[2]
- if args:
+ if count!=None:
   while True:
    o=random.choice(t)
    s4.append(o)
@@ -249,7 +249,7 @@ def massocks5(count=None,timeout=15):
      t.append(x)
   except Exception as e:
    pass
- if args:
+ if count!=None:
   while True:
    o=random.choice(t)
    s5.append(o)
