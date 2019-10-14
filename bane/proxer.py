@@ -242,7 +242,7 @@ def massocks5(count=None,timeout=15):
   pass
  for u in l:
   try:
-   a=requests.get(u,headers={'User-Agent': random.choice(ua)},,timeout=timeout)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    for x in ips:
     if (x not in t):
