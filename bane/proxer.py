@@ -299,6 +299,7 @@ def http(logs=True,count=300,timeout=15):
     pass
  except Exception as e:
   pass
+ """
  for i in range(1,7):
   if len(hsl)==count:
     break
@@ -328,6 +329,7 @@ def http(logs=True,count=300,timeout=15):
      pass
   except Exception as e:
    pass
+ """ 
  ur=["http://www.gatherproxy.com/proxylist/anonymity/?t=Elite","http://www.gatherproxy.com/proxylist/anonymity/?t=Anonymous"]
  for u in ur:
   if len(hsl)==count:
