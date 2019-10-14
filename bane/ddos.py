@@ -1306,9 +1306,16 @@ class loris(threading.Thread):
      counter=counter-1
      if counter<0:
       counter=0
+   if stop==True:
+    break
    if prints==True:
     sys.stdout.write("\r\tSockets alive: {}".format(counter))
     sys.stdout.flush()
+  for soc in ls:
+    try:
+     soc.close()
+    except:
+     pass
   ls=[]
 def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
  '''
