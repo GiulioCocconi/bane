@@ -3,7 +3,7 @@ import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
 from bane.pager import crawl
-def masshttp(*args):
+def masshttp(count=None,timeout=15):
  '''
    this function gather up thousands of HTTP / HTTPS proxies from www.proxyserverlist24.top and proxy-daily.com
    those proxies are not recommended to be used as reliable ones all the time, i use them here just to distribute my attacks
@@ -19,8 +19,8 @@ def masshttp(*args):
 
    >>>bane.masshttp(1500)
  '''
- if args:
-  m=args[0]
+ if count!=None:
+  m=count
  else:
   m=999999
  u="http://www.proxyserverlist24.top/#"
@@ -28,7 +28,7 @@ def masshttp(*args):
  l=[]
  h=[]
  try:
-  h3tags = crawl(u)
+  h3tags = crawl(u,timeout=timeout)
   for a in h3tags:
     try:
      if (("proxy-server" in str(a)) and("#" not in (str(a)))) :
@@ -44,7 +44,7 @@ def masshttp(*args):
   pass
  for u in l:
   try:
-   a=requests.get(u,{'User-Agent': random.choice(ua)},timeout=10)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    t+=ips
   except Exception as e:
@@ -52,7 +52,7 @@ def masshttp(*args):
  l=[]
  u="https://www.dailyfreeproxy.com/#"
  try:
-  h3tags = crawl(u)
+  h3tags = crawl(u,timeout=timeout)
   for a in h3tags:
     try:
      if (("-http" in str(a)) and("#" not in (str(a)))) :
@@ -68,14 +68,14 @@ def masshttp(*args):
   pass
  for u in l:
   try:
-   a=requests.get(u,{'User-Agent': random.choice(ua)},timeout=10)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    t+=ips
   except Exception as e:
    pass
   u="http://proxy-daily.com/#"
   try:
-   r=requests.get(u,{'User-Agent': random.choice(ua)}).text
+   r=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout).text
    soup= BeautifulSoup ( r, 'html.parser')
    l = soup.findAll('div')
   except:
@@ -102,7 +102,7 @@ def masshttp(*args):
  else:
   h=t
  return h
-def massocks4(*args):
+def massocks4(count=None,timeout=15):
  '''
    this function gather up thousands of SOCKS4 proxies from www.proxyserverlist24.top and proxy-daily.com
    those proxies are not recommended to be used as reliable ones all the time, i use them here just to distribute my attacks
@@ -118,8 +118,8 @@ def massocks4(*args):
 
    >>>bane.massocks4(100)
  '''
- if args:
-  m=args[0]
+ if count!=None:
+  m=count
  else:
   m=999999
  s4=[]
@@ -127,7 +127,7 @@ def massocks4(*args):
  l=[]
  u="https://www.dailyfreeproxy.com/#"
  try:
-  h3tags = crawl(u)
+  h3tags = crawl(u,timeout=timeout)
   for a in h3tags:
     try:
      if (("-socks4" in str(a)) and("#" not in (str(a)))) :
@@ -143,7 +143,7 @@ def massocks4(*args):
   pass
  for u in l:
   try:
-   a=requests.get(u,timeout=10)
+   a=requests.get(u,timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    t+=ips
   except Exception as e:
@@ -151,7 +151,7 @@ def massocks4(*args):
  l=[]
  u="http://proxy-daily.com/#"
  try:
-   r=requests.get(u,{'User-Agent': random.choice(ua)}).text
+   r=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout).text
    soup= BeautifulSoup ( r, 'html.parser')
    l = soup.findAll('div')
  except Exception as e:
@@ -174,7 +174,7 @@ def massocks4(*args):
  else:
   s4=t
  return s4
-def massocks5(*args):
+def massocks5(count=None,timeout=15):
  '''
    this function gather up thousands of SOCKS5 proxies from www.proxyserverlist24.top and proxy-daily.com
    those proxies are not recommended to be used as reliable ones all the time, i use them here just to distribute my attacks
@@ -190,15 +190,15 @@ def massocks5(*args):
 
    >>>bane.massocks5(500)
  '''
- if args:
-  m=args[0]
+ if count!=None:
+  m=count
  else:
   m=999999
  l=[]
  t=[]
  u="https://www.dailyfreeproxy.com/#"
  try:
-  h3tags = crawl(u)
+  h3tags = crawl(u,timeout=timeout)
   for a in h3tags:
     try:
      if (("-socks5" in str(a)) and("#" not in (str(a)))) :
@@ -214,7 +214,7 @@ def massocks5(*args):
   pass
  for u in l:
   try:
-   a=requests.get(u,{'User-Agent': random.choice(ua)},timeout=10)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    t+=ips
   except Exception as e:
@@ -223,7 +223,7 @@ def massocks5(*args):
  l=[]
  s5=[]
  try:
-  r=requests.get(u,{'User-Agent': random.choice(ua)}).text
+  r=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout).text
   soup= BeautifulSoup ( r, 'html.parser')
   h3 = soup.find_all( 'h3',class_='post-title entry-title' )
   for ha in h3:
@@ -242,7 +242,7 @@ def massocks5(*args):
   pass
  for u in l:
   try:
-   a=requests.get(u,{'User-Agent': random.choice(ua)},timeout=10)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},,timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    for x in ips:
     if (x not in t):
@@ -258,7 +258,7 @@ def massocks5(*args):
  else:
   s5=t
  return s5
-def http(logs=True,count=300):
+def http(logs=True,count=300,timeout=15):
  '''
    this function gather up hundreds of HTTP proxies from many sources.
    those proxies are recommended to be used as reliable ones all the time.
@@ -278,7 +278,7 @@ def http(logs=True,count=300):
  try:
   if logs==True:
    print("[+]Checking: {}".format(u))
-  c=requests.get(u).text
+  c=requests.get(u,timeout=timeout).text
   a=0
   soup = BeautifulSoup(c,"html.parser")
   y=soup.find_all('tr')
@@ -306,7 +306,7 @@ def http(logs=True,count=300):
    u='https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-'+str(i)
    if logs==True:
     print("[+]Checking: {}".format(u))
-   c=requests.get(u).text
+   c=requests.get(u,timeout=timeout).text
    soup = BeautifulSoup(c,"html.parser")
    y= soup.find_all("tr")
    for x in y:
@@ -336,7 +336,7 @@ def http(logs=True,count=300):
    if logs==True:
     print("[+]Checking: {}".format(u))
    y=[]
-   c=requests.get(u).text
+   c=requests.get(u,timeout=timeout).text
    soup = BeautifulSoup(c,"html.parser")
    for r in soup.find_all("script"):
     h= ''.join(map(str, r.contents))
@@ -352,7 +352,7 @@ def http(logs=True,count=300):
   except Exception as e:
    pass
  return hsl
-def https(logs=True,count=200):
+def https(logs=True,count=200,timeout=15):
  '''
    this function gather up hundreds of HTTPS proxies from many sources.
    those proxies are recommended to be used as reliable ones all the time.
@@ -374,7 +374,7 @@ def https(logs=True,count=200):
  try:
   if logs==True:
    print("[+]Checking: {}".format(u))
-  c=requests.get(u).text
+  c=requests.get(u,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   y= soup.find_all("tr")
   a=0
@@ -408,7 +408,7 @@ def https(logs=True,count=200):
   try:
    if logs==True:
     print("[+]Checking: {}".format(u))
-   c=requests.get(u).text
+   c=requests.get(u,timeout=timeout).text
    soup = BeautifulSoup(c,"html.parser")
    y= soup.find_all("tr")
    for x in y:
@@ -437,7 +437,7 @@ def https(logs=True,count=200):
   except Exception as e:
    pass
  return hl
-def socks5(logs=True,count=100):
+def socks5(logs=True,count=100,timeout=15):
  '''
    this function gather up hundreds of SOCKS5 proxies from many sources.
    those proxies are recommended to be used as reliable ones all the time.
@@ -457,7 +457,7 @@ def socks5(logs=True,count=100):
  try:
   if logs==True:
    print("[+]Checking: {}".format(u))
-  c=requests.get(u).text
+  c=requests.get(u,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   y= soup.find_all("tr")
   for x in y:
@@ -484,7 +484,7 @@ def socks5(logs=True,count=100):
   try:
    if logs==True:
     print("[+]Checking: {}".format(u))
-   c=requests.get(u).text
+   c=requests.get(u,timeout=timeout).text
    s = BeautifulSoup(c,"html.parser")
    y=s.find_all('tr')
    for x in y:
@@ -508,7 +508,7 @@ def socks5(logs=True,count=100):
   except Exception as e:
    pass
  return s5l
-def socks4(logs=True,count=30):
+def socks4(logs=True,count=30,timeout=15):
  '''
    this function gather up hundreds of SOCKS4 proxies from many sources.
    those proxies are recommended to be used as reliable ones all the time.
@@ -528,7 +528,7 @@ def socks4(logs=True,count=30):
  try:
   if logs==True:
    print("[+]Checking: {}".format(u))
-  c=requests.get(u).text
+  c=requests.get(u,timeout=timeout).text
   soup = BeautifulSoup(c,"html.parser")
   y= soup.find_all("tr")
   for x in y:
@@ -555,7 +555,7 @@ def socks4(logs=True,count=30):
   try:
    if logs==True:
     print("[+]Checking: {}".format(u))
-   c=requests.get(u).text
+   c=requests.get(u,timeout=timeout).text
    s = BeautifulSoup(c,"html.parser")
    y=s.find_all('tr')
    for x in y:
