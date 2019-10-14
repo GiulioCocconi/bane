@@ -172,7 +172,7 @@ class tcflood(threading.Thread):
       if prints==True:
        print("[!]Packets: {} | Bytes: {}".format(counter,len(m)))
      except Exception as dx:
-      pass
+      break
      time.sleep(self.speed)
     s.close()
    except Exception as e:
@@ -316,7 +316,7 @@ class htflood(threading.Thread):
       if prints==True:
        print("[!]Request: {} | Type: {} | Bytes: {}".format(counter,req,len(m)))
      except:
-      pass
+      break
      time.sleep(self.speed)
     s.close()
    except:
@@ -489,7 +489,7 @@ class prflood(threading.Thread):
       if prints==True:
        print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,counter,req,len(m)))
      except:
-      pass
+      break
      time.sleep(self.speed)
     s.close()
    except:
