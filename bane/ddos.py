@@ -1789,8 +1789,8 @@ def synflood(u,p=80,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ac
   stop=False
   global max_win
   max_win=max_window
-  if max_win>5840:
-   max_win=5840
+  if max_win>256:
+   max_win=256
   global min_win
   min_win=min_window
   if min_win<0:
@@ -2001,7 +2001,7 @@ class ln(threading.Thread):
     time.sleep(.1)
    except Exception as e:
     pass
-def land(u,p=80,threads=100,max_window=5840,min_window=1,low=64,maxi=64,ampli=15,tcp=False,payloads=False,window=-1,interval=300,logs=True,returning=False):
+def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,tcp=False,payloads=False,window=-1,interval=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
@@ -2009,8 +2009,8 @@ def land(u,p=80,threads=100,max_window=5840,min_window=1,low=64,maxi=64,ampli=15
  stop=False
  global max_win
  max_win=max_window
- if max_win>5840:
-   max_win=5840
+ if max_win>256:
+   max_win=256
  global min_win
  min_win=min_window
  if min_win<0:
