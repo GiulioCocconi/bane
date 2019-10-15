@@ -1,3 +1,5 @@
+max_win=5840
+min_win=0
 prints=True
 py3=False
 adr=False

