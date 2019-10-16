@@ -1,4 +1,8 @@
-max_win=5840
+ip_seg='{}.{}.{}.{}'
+min_por=1024
+max_por=65535
+s_port=-1
+max_win=256
 min_win=0
 prints=True
 py3=False
