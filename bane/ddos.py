@@ -24,6 +24,11 @@ if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
 if ((termux==False) or (adr==False)):
  from bane.swtch import *
+def get_public_dns(timeout=15):
+ try:
+  return (requests.get('https://public-dns.info/nameservers.txt',timeout=timeout).text).split('\n')
+ except:
+  return []
 def kill():
  global stop
  stop=True
@@ -2176,7 +2181,7 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
  global dnsl
  dnsl=dnslist
  if dnsl==[]:
-  dnsl=bane.get_public_dns()
+  dnsl=get_public_dns()
  global query
  query=q
  wh=0
