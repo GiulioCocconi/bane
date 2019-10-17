@@ -1,4 +1,12 @@
 ip_seg='{}.{}.{}.{}'
+fo=''
+pag='/'
+max_fo=1000000
+min_fo=10000
+r_wait=5
+r_max=5
+r_min=1
+form_lng=15000
 udp_counter=0
 tcp_counter=0
 http_counter=0

