@@ -2150,7 +2150,7 @@ class dampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
    except Exception as e:
     pass
-    time.sleep(.1)
+   time.sleep(.1)
 def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
