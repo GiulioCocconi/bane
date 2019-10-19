@@ -1,4 +1,4 @@
-import os
+import os,sys
 try:
  import stem
  from stem import Signal
