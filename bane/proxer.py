@@ -52,7 +52,7 @@ def masshttp(count=None,timeout=15):
  l=[]
  u="https://www.dailyfreeproxy.com/#"
  try:
-  h3tags = crawl(u,timeout=timeout)
+  h3tags = crawl(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
   for a in h3tags:
     try:
      if (("-http" in str(a)) and("#" not in (str(a)))) :
@@ -143,7 +143,7 @@ def massocks4(count=None,timeout=15):
   pass
  for u in l:
   try:
-   a=requests.get(u,timeout=timeout)
+   a=requests.get(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
    ips = re.findall("(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3})\.(?:[\d]{1,3}):(?:[\d]{1,5})",a.text)
    t+=ips
   except Exception as e:
@@ -164,7 +164,10 @@ def massocks4(count=None,timeout=15):
      p.append(ips)
    except Exception as x:
     pass
- t+=p[2]
+ try:
+  t+=p[2]
+ except:
+  pass
  if count!=None:
   while True:
    o=random.choice(t)
