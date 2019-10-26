@@ -680,7 +680,7 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
  for x in range(threads):
      t =reqpost()
      t.start()
-     t.append(t)
+     thr.append(t)
  c=time.time()
  while True:
   if stop==True:
