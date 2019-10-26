@@ -27,3 +27,6 @@ from bane.filt import *
 from bane.proxer import *
 from bane.amplifier import *
 from bane.updating import *
+from bane.wp_scanning import *
+from bane.sshbf import *
+from bane.swtch import *
