@@ -19,7 +19,7 @@ except ImportError:
     print '---------------------------------------------------'
     print '[*] pip install requests'
     print '   [-] you need to install requests Module'
-    sys.exit()
+    #sys.exit()
 
 try:
     from colorama import Fore, Back, Style
@@ -36,18 +36,19 @@ except ImportError:
     print '---------------------------------------------------'
     print '[*] pip install colorama'
     print '   [-] you need to install colorama Module'
-    sys.exit()
-
+    #sys.exit()
+global wp_url
+wp_url=''
 
 class S0u1wp():
     def __init__(self):
         try:
-            self.url = sys.argv[1]
+            self.url = wp_url
         except IndexError:
             self.cls()
             self.print_logo()
             self.__option()
-            sys.exit()
+            #sys.exit()
         if self.url.startswith('http://'):
             self.url = self.url.replace('http://', '')
         elif self.url.startswith("https://"):
@@ -74,14 +75,14 @@ class S0u1wp():
                 self.cls()
                 self.print_logo()
                 self.Worng2()
-                sys.exit()
+                #sys.exit()
         except socket.gaierror:
             self.cls()
             self.print_logo()
             print y + '---------------------------------------------------'
             print g + '    [' + y + '+' + g + ']' + r + ' Error: ' + y + '    [ ' + w + \
                   ' Something worng! target.com without / in end ' + y + ']'
-            sys.exit()
+            #sys.exit()
         except requests.exceptions.ReadTimeout:
             self.cls()
             self.print_logo()
@@ -358,6 +359,8 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                 print r + '    [' + y + '+' + r + ']' + w + ' Themes Name: ' + m + Name_Theme
                 self.Plugin_NamE_Vuln_TeST(Name_Theme)
 
-def wp_scan():
- Rock = S0u1wp()
- Rock
+def wp_scan(u):
+ global wp_url
+ wp_url=u
+ S0u1wp()
+ print Style.RESET_ALL
