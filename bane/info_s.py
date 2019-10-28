@@ -86,7 +86,7 @@ def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
   pass
  if returning==True:
   return s.strip()
-def myip(proxy=None,type=None):
+def myip(proxy=None,proxy_type=None):
  '''
    this function is for getting your ip using: ipinfo.io
    usage:
@@ -96,20 +96,20 @@ def myip(proxy=None,type=None):
 '''
  proxies={}
  if proxy:
-  if type.lower="http":
+  if proxy_type.lower()=="http":
    proxies = {
      "http": "http://"+proxy,
      }
-  if type.lower="socks4":
+  if proxy_type.lower()=="socks4":
    proxies = {
      "http": "socks4://"+proxy,
       }
-  if type.lower="socks5":
+  if proxy_type.lower()=="socks5":
    proxies = {
      "http": "socks5://"+proxy,
       } 
  try:
-   return requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)}, , proxies=proxies ,timeout=10).text.strip()
+   return requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)},  proxies=proxies ,timeout=10).text.strip()
  except:
   pass
  return ''
