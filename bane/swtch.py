@@ -27,7 +27,7 @@ def torswitch1(new=30,logs=True):
  if i==True:
   while True:
    try:
-    os.system('sudo systemctl reload tor')
+    os.system('systemctl reload tor')
     if logs==True:
      print("IP changed, sleeping for {} seconds...".format(new))
     time.sleep(new)
