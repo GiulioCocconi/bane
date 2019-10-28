@@ -86,7 +86,7 @@ def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
   pass
  if returning==True:
   return s.strip()
-def myip(proxy=None,proxy_type=None):
+def myip(proxy=None,proxy_type=None,timeout=15):
  '''
    this function is for getting your ip using: ipinfo.io
    usage:
@@ -109,7 +109,7 @@ def myip(proxy=None,proxy_type=None):
      "http": "socks5://"+proxy,
       } 
  try:
-   return requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)},  proxies=proxies ,timeout=10).text.strip()
+   return requests.get("http://ipinfo.io/ip",headers = {'User-Agent': random.choice(ua)},  proxies=proxies ,timeout=timeout).text.strip()
  except:
   pass
  return ''
@@ -134,12 +134,12 @@ def who_is(u):
  except:
   pass
  return {}
-def geoip(u):
+def geoip(u,timeout=15):
  '''
    this function is for getting: geoip informations
  '''
  try:
-   r=requests.get('https://geoip-db.com/jsonp/'+u).text
+   r=requests.get('https://geoip-db.com/jsonp/'+u,timeout=timeout).text
    return json.loads(r.split('(')[1].split(')')[0])
  except:
   pass
