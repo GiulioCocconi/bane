@@ -19,24 +19,26 @@ if termux==False:
     os.system('pip3 uninstall dnspython -y')
     os.system('pip3 install dnspython')
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois","google"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois","google","colorama"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google","colorama"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google"]
+    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google","colorama"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois","google"]
+ req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois","google","colorama"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google"]
+    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google","colorama"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois","google"]
+    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois","google","colorama"]
+if (sys.platform == "win32") or( sys.platform == "win64"):
+ req+=["win_inet_pton"]
 if termux==True:
  os.system('pkg install ssh -y')
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.3.1",
+    version="3.3.2",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
