@@ -20,6 +20,9 @@ def memcache_fact(u,timeout=3):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -41,6 +44,9 @@ def dns_fact(u,timeout=3,q='google.com',t='ANY'):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -62,6 +68,9 @@ def chargen_fact(u,timeout=3,q='0'):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -83,6 +92,9 @@ def ntp_fact(u,timeout=3):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -104,6 +116,9 @@ def ssdp_fact(u,timeout=3):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -125,6 +140,9 @@ def snmp_fact(u,timeout=3):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
@@ -146,6 +164,9 @@ def echo_fact(u,q='a',timeout=3):
   try:
    o=''
    o+=s.recv(4096)
+  except KeyboardInterrupt:
+   s.close()
+   break
   except:
    pass
   if len(o)==0:
