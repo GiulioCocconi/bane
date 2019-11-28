@@ -163,7 +163,7 @@ def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,p
       print("[-]Failed")
   if returning==True:
    return op
-def filemanager_finder_finder(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
+def filemanager_finder(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
  '''
    if you are lucky and smart enough, using google dorking you can gain an unauthorised access to private file managers and manipulate files
    (delete, upload, edit...) and exploit this weakness on the security of the target for further purposes.
