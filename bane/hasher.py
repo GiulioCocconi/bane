@@ -1,4 +1,4 @@
-import hashlib,base64,ctypes
+import hashlib,base64
 def md_5(w):
  '''
    function to return md5 encrypted string
@@ -40,7 +40,7 @@ def sha512(w):
  '''
  return hashlib.sha512(w.encode("utf-8")).hexdigest()
 '''
-  the following functions are taking a file path and return ecrypted content of  the file with the defined encryption method in the function's
+  the following functions are taking a file path and return encrypted content of  the file with the defined encryption method in the function's
   name.
 
   usage:

@@ -307,7 +307,7 @@ def media(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  except:
   pass
  return h
-def subdomains(u,timeout=10,user_agent=None,proxy=None):
+def subdomains_undirect(u,timeout=10,user_agent=None,proxy=None):
  '''
    this function collects the subdomains found on the targeted webpage.
 
@@ -342,7 +342,7 @@ def subdomains(u,timeout=10,user_agent=None,proxy=None):
  except:
   pass
  return lit
-def subdomains2(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
+def subdomains_direct(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function collects the subdomains found on the targeted webpage.
 

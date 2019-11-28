@@ -5,7 +5,7 @@ try:
  from stem.control import Controller
 except:
  pass
-def torswitch1(new=30,logs=True):
+def tor_switch_no_password(interval=30,logs=True):
  '''
     this function is for auto ip switching of tor's nodes, it doesnt work on windows because it use the command on linux to restart tor' service in a chosen interval.
 
@@ -29,11 +29,11 @@ def torswitch1(new=30,logs=True):
    try:
     os.system('systemctl reload tor')
     if logs==True:
-     print("IP changed, sleeping for {} seconds...".format(new))
-    time.sleep(new)
+     print("IP changed, sleeping for {} seconds...".format(interval))
+    time.sleep(interval)
    except KeyboardInterrupt:
     break
-def torswitch2(new=30,password=None,p=9051,logs=True):
+def tor_switch_with_password(interval=30,password=None,p=9051,logs=True):
  '''
    this one does work on any OS, you just need to activate tor's control port 9051 and set the password.
 
@@ -45,7 +45,7 @@ def torswitch2(new=30,password=None,p=9051,logs=True):
    logs: (set by default to: True) showing the screen prints
 '''
  if password==None:
-  print('[-]you need to put your control port password for authentication!!!')
+  print("[-]you need to put your control port's password for authentication!!!")
  else:
   while True:
    try:
@@ -54,7 +54,7 @@ def torswitch2(new=30,password=None,p=9051,logs=True):
      controller.signal(Signal.NEWNYM)
      controller.close()
     if logs==True:
-     print("IP changed, sleeping for {} seconds...".format(new))
-    time.sleep(new)
+     print("IP changed, sleeping for {} seconds...".format(interval))
+    time.sleep(interval)
    except KeyboardInterrupt:
     break

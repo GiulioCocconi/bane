@@ -5,7 +5,7 @@ import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
 from bane.pager import inputs
-def sqlieb(u,logs=True,user_agent=None,returning=False,timeout=10,proxy=None,cookie=None):
+def sqli_error_based(u,logs=True,user_agent=None,returning=False,timeout=10,proxy=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding "'" at the end of the line and
    check the response body for any SQL syntax errors.
@@ -57,7 +57,7 @@ def sqlieb(u,logs=True,user_agent=None,returning=False,timeout=10,proxy=None,coo
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None,user_agent=None,cookie=None):
+def sqli_boolean_based(u,logs=True,returning=False,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding boolean opertations to the link
    and check the response body for any change.
@@ -111,7 +111,7 @@ def sqlibb(u,logs=True,returning=False,timeout=10,proxy=None,user_agent=None,coo
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None,user_agent=None,cookie=None):
+def sqli_time_based(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None,user_agent=None,cookie=None):
  '''
    this function is to test a given link to check it the target is vulnerable to SQL Injection or not by adding a delay statement at the end
    of the line and check the delay of the response.
@@ -171,7 +171,7 @@ def sqlitb(u,delay=15,db="mysql",logs=True,returning=False,timeout=25,proxy=None
    print("[+]Vulnerable!!!")
  if returning==True:
   return s
-def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
+def xss_get(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
   '''
    this function is for xss test with GET requests.
 
@@ -206,7 +206,7 @@ def xssget(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
   except Exception as e:
    pass
   return False
-def xsspost(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
+def xss_post(u,pl,user_agent=None,extra=None,timeout=10,proxy=None,cookie=None):
   '''
    this function is for xss test with POST requests.
 
@@ -331,7 +331,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          extra.update({a:b})
       if stop==True:
        break
-      if xssget(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
+      if xss_get(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
          x="parameter: "+i+" method: GET=> [+]Payload was found"
       else:
        x="parameter: "+i+" method: GET=> [-]Payload was not found"
@@ -359,7 +359,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
          extra.update({a:b})
       if stop==True:
        break
-      if xsspost(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
+      if xss_post(u,pl,user_agent=user,extra=extra,proxy=proxy,timeout=timeout,cookie=cookie)==True:
       	x="parameter: "+i+" method: POST=> [+]Payload was found"
       else:
        x="parameter: "+i+" method: POST=> [-]Payload was not found"
@@ -370,7 +370,7 @@ def xss(u,payload=None,fresh=False,get=True,post=True,logs=True,returning=False,
      break
    if returning==True:
     return lst
-def execlink(u,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
+def command_exec_link(u,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
  '''
    this function is for command execution test using a given link
 '''
@@ -400,7 +400,7 @@ def execlink(u,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,c
    print("[-]Not vulnerable")
  if returning==True:
   return s
-def execget(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
+def command_exec_get(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for command execution test using a given link and GET parameter
 '''
@@ -424,7 +424,7 @@ def execget(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None
  except:
   pass
  return False
-def execpost(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
+def command_exec_post(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for command execution test using a given link and POST parameter
 '''
@@ -450,7 +450,7 @@ def execpost(u,param='',value='',extra=None,timeout=10,proxy=None,user_agent=Non
  except exception as e:
   pass
  return False
-def phpget(u,param='',value='',end=False,extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
+def php_code_inject_get(u,param='',value='',end=False,extra=None,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link and GET parameter
 '''
@@ -480,7 +480,7 @@ def phpget(u,param='',value='',end=False,extra=None,timeout=10,proxy=None,user_a
  except:
   pass
  return False
-def phplink(u,closed=True,end=False,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
+def php_code_inject_link(u,closed=True,end=False,timeout=10,proxy=None,logs=True,returning=False,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link
 '''
@@ -515,7 +515,7 @@ def phplink(u,closed=True,end=False,timeout=10,proxy=None,logs=True,returning=Fa
    print("[-]Not vulnerable")
  if returning==True:
   return s
-def phppost(u,param='',value='',extra=None,end=False,timeout=10,proxy=None,user_agent=None,cookie=None):
+def php_code_inject_post(u,param='',value='',extra=None,end=False,timeout=10,proxy=None,user_agent=None,cookie=None):
  '''
   this function is for PHP code execution test using a given link and POST parameter
 '''
@@ -545,7 +545,7 @@ def phppost(u,param='',value='',extra=None,end=False,timeout=10,proxy=None,user_
  except:
   pass
  return False
-def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,proxies=None,timeout=10,user_agent=None,cookie=None):
+def file_inclusion(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=None,proxies=None,timeout=10,user_agent=None,cookie=None):
  '''
    this function is for FI vulnerability test using a link
 '''
@@ -627,7 +627,7 @@ def fi(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=False,proxy=
 '''
   the following functions are used to check any kind of Slow HTTP attacks vulnerabilities that will lead to a possible DoS.
 '''
-def buildget(u,p,timeout=5):
+def build_get(u,p,timeout=5):
     s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(timeout)
     s.connect((u,p))
@@ -638,14 +638,14 @@ def buildget(u,p,timeout=5):
     s.send("Accept-language: en-US,en,q=0.5\r\n".encode("utf-8"))
     s.send("Connection: keep-alive\r\n".encode("utf-8"))
     return s
-def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
+def headers_timeout_test(u,port=80,timeout=5,max_timeout=30,logs=True,returning=False):
  global stop
  stop=False
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,timer))
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nMax interval: {}".format(u,port,timeout,max_timeout))
  try:
-  s=buildget(u,port,timeout=timeout)
+  s=build_get(u,port,timeout=timeout)
   i+=1
  except:
   if logs==True:
@@ -659,7 +659,7 @@ def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
     break
    try:
     j+=1
-    if j>timer:
+    if j>max_timeout:
      break
     if logs==True:
      print("[*]Sending payload...")
@@ -673,19 +673,19 @@ def timeouttest(u,port=80,timeout=5,timer=30,logs=True,returning=False):
      break
     if returning==True:
      return j
-  if j>timer:
+  if j>max_timeout:
    if logs==True:
-    print("==>Test has reached the max interval: {} seconds without timing out".format(timer))
+    print("==>Test has reached the max interval: {} seconds without timing out".format(duration))
    if returning==True:
     return j
-def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=True,returning=False,start=1,end=5):
+def slow_get_test(u,port=80,timeout=5,interval=5,randomly=False,duration=180,logs=True,returning=False,start=1,end=5):
  global stop
  stop=False
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nInterval between packets:{}\nTest timer: {} seconds".format(u,port,timeout,interval,timer))
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nInterval between packets:{}\nTest duration: {} seconds".format(u,port,timeout,interval,duration))
  try:
-  s=buildget(u,port,timeout=timeout)
+  s=build_get(u,port,timeout=timeout)
   i+=1
  except:
   if logs==True:
@@ -699,7 +699,7 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
     break
    try:
     ti=time.time()
-    if int(ti-j)>=timer:
+    if int(ti-j)>=duration:
      break
     if logs==True:
      print("[*]Sending payload...")
@@ -717,22 +717,22 @@ def slowgettest(u,port=80,timeout=5,interval=5,randomly=False,timer=180,logs=Tru
     if returning==True:
      return int(ti-j)
     break
-  if int(ti-j)>=timer:
+  if int(ti-j)>=duration:
    if logs==True:
-    print("==>Test has reached the max interval: {} seconds without timing out".format(timer))
+    print("==>Test has reached the max interval: {} seconds without timing out".format(duration))
    if returning==True:
     return int(ti-j)
-def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,returning=False,payloads=True):
+def max_connections_limit(u,port=80,connections=150,timeout=5,duration=180,logs=True,returning=False,payloads=True):
  global stop
  stop=False
  l=[]
  if logs==True:
-  print("[*]Test has started:\nTarget: {}\nPort: {}\nConnections limit: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,connections,timeout,timer))
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nConnections to create: {}\nInitial connection timeout: {}\nTest duration: {} seconds".format(u,port,connections,timeout,duration))
  ti=time.time()
  while True:
   if stop==True:
     break
-  if int(time.time()-ti)>=timer:
+  if int(time.time()-ti)>=duration:
    if logs==True:
     print("[+]Maximum time for test has been reached!!!")
     break
@@ -745,7 +745,7 @@ def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,ret
     return connections 
    break
   try:
-   so=buildget(u,port,timeout=timeout)
+   so=build_get(u,port,timeout=timeout)
    l.append(so)
   except Exception as e:
    pass
@@ -757,7 +757,7 @@ def connectionslimit(u,port=80,connections=150,timeout=5,timer=180,logs=True,ret
      l.remove(s)
   if logs==True:
    print("[!]Sockets: {} Time: {} seconds".format(len(l),int(time.time()-ti)))
-def buildpost(u,p,timeout=5,size=10000):
+def build_post(u,p,timeout=5,size=10000):
  s =socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  s.settimeout(timeout)
  s.connect((u,p))
@@ -765,14 +765,14 @@ def buildpost(u,p,timeout=5,size=10000):
   s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
  s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),size,u).encode("utf-8"))
  return s
-def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=False,randomly=False,wait=1,start=1,end=5):
+def slow_post_test(u,port=80,logs=True,timeout=5,size=10000,duration=180,returning=False,randomly=False,wait=1,start=1,end=5):
  global stop
  stop=False
  i=0
  if logs==True:
-  print("[*]Test has started:\nTarget: {}\nPort: {}\nData length to post: {}\nInitial connection timeout:{}\nTest timer: {} seconds".format(u,port,size,timeout,timer))
+  print("[*]Test has started:\nTarget: {}\nPort: {}\nData length to post: {}\nInitial connection timeout:{}\nTest duration: {} seconds".format(u,port,size,timeout,duration))
  try:
-  s=buildpost(u,port,timeout=timeout,size=size)
+  s=build_post(u,port,timeout=timeout,size=size)
   i+=1
  except Exception as e:
   if logs==True:
@@ -785,7 +785,7 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
   while True:
    if stop==True:
     break
-   if int(time.time()-t)>=timer:
+   if int(time.time()-t)>=duration:
     if logs==True:
      print("[+]Maximum time has been reached!!!\n==>Size: {}\n==>Time: {}".format(j,int(time.time()-t)))
     if returning==True:
@@ -820,12 +820,12 @@ def slowposttest(u,port=80,logs=True,timeout=5,size=10000,timer=180,returning=Fa
     if returning==True:
      return int(time.time()-t)
     break
-def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randomly=False,wait=5,start=1,end=10):
+def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,randomly=False,wait=5,start=1,end=10):
   global stop
   stop=False
   i=0
   if logs==True:
-   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nTest timer: {} seconds".format(u,port,timeout,timer))
+   print("[*]Test has started:\nTarget: {}\nPort: {}\nInitial connection timeout: {}\nTest duration: {} seconds".format(u,port,timeout,duration))
   ti=time.time()
   try: 
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -836,7 +836,7 @@ def slowreadtest(u,port=80,logs=True,timeout=5,timer=180,returning=False,randoml
     while True:
      if stop==True:
       break
-     if time.time()-ti>=timer:
+     if time.time()-ti>=duration:
       if logs==True:
        print("[+]Maximum time has been reached!!!")
       if returning==True:

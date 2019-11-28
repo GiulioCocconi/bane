@@ -70,7 +70,7 @@ def virustotal(f,proxy=None,timeout=10):
    return {"status":r.status_code,"reason":"something went wrong"}
  except Exception as e:
   return {"status":e,"reason":"error with the process"}
-def googledk(q,max_results=100,language='en',start_from=1, stop_on=None,top_level_domain='com',pause=2):
+def google_dorking(q,max_results=100,language='en',start_from=1, stop_on=None,top_level_domain='com',pause=2):
  j=[]
  j+=search(q,num=max_results,lang=language,start=start_from, stop=stop_on,tld="com", pause=2)
  l=[]
@@ -88,7 +88,7 @@ def unescape_html(s):
    function to return unescaped html string
  '''
  return HTMLParser.HTMLParser().unescape(s).encode("utf-8")
-def webhint(ur,proxy=None,timeout=10):
+def webhint_report(ur,proxy=None,timeout=10):
  '''
    this function takes any webpage link and returns a report link from webhint.io.
 '''
@@ -113,7 +113,7 @@ def webhint(ur,proxy=None,timeout=10):
  except Exception as e:
   pass
  return r
-def youtube(q,proxy=None,timeout=10):
+def youtube_search(q,proxy=None,timeout=10):
  '''
    this function is for searching on youtub and returning a links of related videos.
 '''

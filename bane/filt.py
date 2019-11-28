@@ -42,7 +42,7 @@ def filter_injections(s,xssf=True):
  if xssf==True:
   return filter_xss(s,tags=None)
  return s
-def filter_fi(s,ext='php',remote=None,xssf=True):
+def filter_file_inclusion(s,ext='php',remote=None,xssf=True):
  '''
  this function is used to remove any possible expolitaion for File Inclusion (Local and Remote) vulnerability and return safe input only
  

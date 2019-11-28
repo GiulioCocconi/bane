@@ -8,7 +8,7 @@ try:
 except:
  pass
 import subprocess
-def sshandro(u,username,password,timeout=5):
+def ssh_andro(u,username,password,timeout=5):
  l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo alaala; exit".format(password,timeout,username,u)
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  p= ssh.communicate()
@@ -20,7 +20,7 @@ def sshandro(u,username,password,timeout=5):
   return True
  else:
   return False
-def sshlin(u,username,password,p=22,timeout=7):
+def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
  try:
   child = pexpect.spawn(p)
@@ -50,7 +50,7 @@ def sshlin(u,username,password,p=22,timeout=7):
  except Exception as e:
   pass
  return False
-def sshwin(ip,username,password,p=22,timeout=5):
+def ssh_win(ip,username,password,p=22,timeout=5):
  try:
   paramiko.util.log_to_file("filename.log")
   s = SSHClient()

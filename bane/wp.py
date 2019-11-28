@@ -26,7 +26,7 @@ def wpadmin(u,username,password,path='/xmlrpc.php',timeout=10,proxy=None):
  except:
   pass
  return s
-def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,content=True,proxy=None):
+def wp_users_list(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to get WP users
 '''
@@ -52,7 +52,7 @@ def wpusers(u,path='/wp-json/wp/v2/users',timeout=10,boolean=False,link=False,co
   return b
  if content==True:
   return c
-def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
+def wp_user(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to return all informations about a WP user with a given index integer
 '''
@@ -78,7 +78,7 @@ def wpuser(u,path='/wp-json/wp/v2/users/',user=1,timeout=10,boolean=False,link=F
   return b
  if content==True:
   return c
-def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,content=True,proxy=None):
+def wp_posts_list(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to get WP posts
 '''
@@ -104,7 +104,7 @@ def wpposts(u,path='/wp-json/wp/v2/posts',timeout=10,boolean=False,link=False,co
   return b
  if content==True:
   return c
-def wppost(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
+def wp_post(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=False,content=True,proxy=None):
  '''
    this function is to return all informations about a WP post with a given index integer
 '''

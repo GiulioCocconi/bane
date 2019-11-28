@@ -214,6 +214,7 @@ class uscanp(threading.Thread):
    portlist.update({p:"Closed"})
   s.close()
 def udp_portscan(u,ports=[53],maxtime=5):
+ thr=[]
  global flag2
  global portlist
  portlist={}
@@ -225,10 +226,12 @@ def udp_portscan(u,ports=[53],maxtime=5):
  target=u
  for x in range(len(por)):
    flag2=x
-   uscanp().start()
+   thr.append(uscanp().start())
    time.sleep(.001)
  while(len(portlist)!=len(ports)):
   time.sleep(.1)
+ for x in thr:
+     del x
  return portlist
 class tscanp(threading.Thread):
  def run (self):
@@ -243,6 +246,7 @@ class tscanp(threading.Thread):
          portlist.update({p:"Closed"})
         s.close()
 def tcp_portscan(u,ports=[21,22,23,25,43,53,80,443,2082,3306],maxtime=5):
+ thr=[]
  global flag2
  global portlist
  portlist={}
@@ -254,8 +258,10 @@ def tcp_portscan(u,ports=[21,22,23,25,43,53,80,443,2082,3306],maxtime=5):
  target=u
  for x in range(len(por)):
    flag2=x
-   tscanp().start()
+   thr.append(tscanp().start())
    time.sleep(.001)
  while(len(portlist)!=len(ports)):
   time.sleep(.1)
+ for x in thr:
+     del x
  return portlist
