@@ -17,12 +17,11 @@ def access(u,timeout=10,bypass=False,proxy=None):
  '''
    this function isused to check if the given link is returning 200 ok response or not.
    
-   the function takes those arguments:
-   
    u: the targeted link
    timeout: (set by default to 10) timeout flag for the request
    bypass: (set by default to False) option to bypass anti-crawlers by simply adding "#" to the end of the link :)
-
+   proxy: (set by default to None) set a http proxy: 45.22.123.147:8080
+   
    usage:
 
    >>>import bane
@@ -59,12 +58,10 @@ def admin_login(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None)
    this function try to use the values you insert in the dictionary field "p" to make a POST request in the login page and check it the 
    credentials are correct or not by checking the response code.
    
-   it takes 3 arguments:
-
    u: login link
-   p: dictionary contains input names and values: {input's name : value} => example: {'user':'ala','pass':'ala'}
-   timeout: (set by default to: 10) timeout flag for the request
-
+   pl: dictionary contains input names and values: {input's name : value} => example: {'user':'ala','pass':'ala'}
+   fresh: (set by default to False) refresh html input tokens
+   
    usage:
 
    >>>import bane
@@ -105,6 +102,8 @@ def admin_login(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None)
 def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
   '''
    bruteforce admin logins
+
+   wl: usernames and passwords list ( wl=["admin:admin","admin:1234"] )
   '''
   op=''
   hu=True
@@ -165,13 +164,6 @@ def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,p
    return op
 def filemanager_finder(u,logs=True,mapping=False,returning=False,timeout=10,proxy=None,proxies=None):
  '''
-   if you are lucky and smart enough, using google dorking you can gain an unauthorised access to private file managers and manipulate files
-   (delete, upload, edit...) and exploit this weakness on the security of the target for further purposes.
-   this funtion try to gain access to any giving website's filemanager_finder by bruteforcing the links (list called "filemanager_finder") and trying to get
-   200 ok response directly without redirectes which indicates in most of the cases to an unprotected accessebleb filemanager_finder.
-
-   the function takes the following arguments:
-
    u: the link: http://www.example.com
    logs: (set by default to True) the show the process and requests
    mapping: (set by default to: False) if it is set to True, it will stop the prcess when it finds the link, else: it continue for more
@@ -361,13 +353,13 @@ def admin_panel_finder(u,logs=True,mapping=False,returning=False,ext='php',timeo
 '''
 def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  try:
-  s= smtplib.SMTP(u, p)
+  s= smtplib.SMTP(u, p)#connect to smtp server
   if ehlo==True:
-   s.ehlo()
+   s.ehlo()#ehlo
    if ttls==True:
-    s.starttls()
+    s.starttls()#ttls
   if helo==True:
-   s.helo()
+   s.helo()#helo
    if ttls==True:
     s.starttls()
   s.login(username, password)
@@ -379,26 +371,27 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.read_until(":",timeout=timeout)
+   s=t.read_until(":",timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    if (('user' in s.lower()) or ('login' in s.lower())):
-    t.write(username + "\n")
+    t.write(username + "\n")#send username
    elif ("pass" in s.lower()):
-    t.write(password + "\n")
+    t.write(password + "\n")#send password
     break
   c= t.read_until(prompt,timeout=timeout)
   for x in prompts:
-   if x in c:
+   if x in c:#if the shell was accessed successfully
     return True
  except:
   pass
  return False
 def ssh_linux(u,username,password,p=22,timeout=7):
- p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
+ p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
+ # "StrictHostKeyChecking=no" option was added to add the host automatically
  try:
   child = pexpect.spawn(p)
   while True:
    try:
-    child.expect(['.*:'],timeout=timeout)
+    child.expect(['.*:'],timeout=timeout)#read until it reads ":"
    except:
     pass
    c=child.before
@@ -406,12 +399,12 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    #if "yes/no" in c:
     #child.send('yes\n')
    if (('login' in c.lower()) or ('user' in c.lower())):
-    child.send(username+'\n')
+    child.send(username+'\n')#send username
    elif "pass" in c.lower():
-    child.send(password+'\n')
+    child.send(password+'\n')#send password
     break
   try:
-   child.expect('.*=.*',timeout=timeout)
+   child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
   except:
    pass
   c= child.before
@@ -423,6 +416,7 @@ def ssh_linux(u,username,password,p=22,timeout=7):
   pass
  return False
 def ssh_win(ip,username,password,p=22,timeout=5):
+ #ssh login for windows
  try:
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
@@ -430,12 +424,13 @@ def ssh_win(ip,username,password,p=22,timeout=5):
   stdin, stdout, stderr = s.exec_command ("echo alawashere",timeout=timeout)
   r=stdout.read()
   s.close()
-  if "alawashere" in r:
+  if "alawashere" in r:# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
    return True
  except Exception as e:
   pass
  return False
 def ftp_anon(ip,timeout=5):
+  #anonymous ftp login
   try:
     ftp = FTP(ip,timeout=timeout)
     ftp.login()
@@ -444,7 +439,9 @@ def ftp_anon(ip,timeout=5):
     pass
   return False
 def ssh_andro(u,username,password,timeout=5):
+ # ssh login on termux
  l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo 1; exit".format(password,timeout,username,u)
+ #we use the "sshpass" command to send the password or the password prompt will pop up
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  p= ssh.communicate()
  try:

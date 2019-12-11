@@ -18,7 +18,14 @@ b = Fore.BLUE
 y = Fore.YELLOW
 m = Fore.MAGENTA
 res = Style.RESET_ALL
-
+if (sys.platform == "win32") or( sys.platform == "win64"):
+ r=""
+ g=""
+ w=""
+ b=""
+ y=""
+ m=""
+ res=""
 class S0u1wp():
     def __init__(self,wp_url):
         try:
@@ -235,7 +242,7 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                     Get_title = requests.get('http://' + uz, timeout=5)
                     Title = re.findall('<title>(.*)</title>'.encode('utf-8'), Get_title.text.encode('utf-8'))
                     print (r + '        [' + y + 'MiGhT bE VuLn' + r + '] ' + w + uz + ' --- ' + r + \
-                          str(Title[0]).split('-')[0])
+                          (str(Title[0]).split('-')[0]).replace("&lt;",''))
                     cal = cal + 2
                 cal = 0
                 num = num + 1
