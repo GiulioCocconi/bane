@@ -151,3 +151,11 @@ def wp_users_enumeration(u,path='/',timeout=15,proxy=None,count=15,logs=True,ret
       pass
  if returning==True:
      return l
+def wp_version(u,timeout=15,proxy=None):
+ if proxy:
+  proxy={'http':'http://'+proxy}
+ try:
+  r=requests.get(u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False).text
+  return r.split('<meta name="generator" content="')[1].split('"')[0].strip()
+ except:
+  pass
