@@ -9,7 +9,8 @@
 import json, re, os, time, random, socket
 import sys
 
-import requests
+import requests,urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from colorama import Fore, Back, Style
 r = Fore.RED
 g = Fore.GREEN
@@ -27,9 +28,15 @@ if (sys.platform == "win32") or( sys.platform == "win64"):
  m=""
  res=""
 path='/'
+timeout=15
 class S0u1wp():
-    def __init__(self,wp_url,path='/',check_wp=False):
+    def __init__(self,wp_url,path='/',check_wp=False,timeout=15,proxy=None):
         self.check=True
+        self.timeout=timeout
+        if proxy:
+         self.proxy={'http':'http://'+proxy}
+        else:
+         self.proxy=None
         try:
             self.url = wp_url
             self.wp_path=path
@@ -48,7 +55,7 @@ class S0u1wp():
         self.url+=self.wp_path
         try:
             ip = socket.gethostbyname(__kill_ip)
-            self.CheckWordpress = requests.get('http://' + self.url, timeout=5)
+            self.CheckWordpress = requests.get('http://' + self.url, timeout=self.timeout,proxies=self.proxy, verify=False)
             if check_wp==True:
              if '/wp-content/' in self.CheckWordpress.text:
                 self.check=True
@@ -172,10 +179,10 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
     def UserName_Enumeration(self):
         _cun = 1
         Flag = True
-        __Check2 = requests.get('http://' + self.url + '/?author=1', timeout=10)
+        __Check2 = requests.get('http://' + self.url + '/?author=1', timeout=self.timeout,proxies=self.proxy, verify=False)
         try:
             while Flag:
-                GG = requests.get('http://' + self.url + '/wp-json/wp/v2/users/' + str(_cun), timeout=5)
+                GG = requests.get('http://' + self.url + '/wp-json/wp/v2/users/' + str(_cun), timeout=self.timeout,proxies=self.proxy, verify=False)
                 __InFo = json.loads(GG.text)
                 if 'id' not in __InFo:
                     Flag = False
@@ -206,9 +213,9 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
 
     def CpaNel_UserName_Enumeration(self):
         try:
-            Get_page = requests.get('http://' + self.url, timeout=10)
+            Get_page = requests.get('http://' + self.url, timeout=self.timeout,proxies=self.proxy, verify=False)
             if '/wp-content/' in Get_page.text:
-                Hunt_path = requests.get('http://' + self.url + '/wp-includes/ID3/module.audio.ac3.php', timeout=10)
+                Hunt_path = requests.get('http://' + self.url + '/wp-includes/ID3/module.audio.ac3.php', timeout=self.timeout,proxies=self.proxy, verify=False)
 
                 def Hunt_Path_User():
                     try:
@@ -273,7 +280,7 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
 
     def Version_Wp(self):
         try:
-            Check_oNe = requests.get('http://' + self.url + '/readme.html', timeout=10)
+            Check_oNe = requests.get('http://' + self.url + '/readme.html', timeout=self.timeout,proxies=self.proxy, verify=False)
             find = re.findall('Version (.+)', Check_oNe.text)
             try:
                 version = find[0].strip()
@@ -372,6 +379,6 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                 print (r + '    [' + y + '+' + r + ']' + w + ' Themes Name: ' + m + Name_Theme)
                 self.Plugin_NamE_Vuln_TeST(Name_Theme)
 
-def wp_scan(u,path='/',check_wp=False):
- S0u1wp(u,path=path,check_wp=check_wp)
+def wp_scan(u,path='/',check_wp=False,timeout=15,proxy=None):
+ S0u1wp(u,path=path,check_wp=check_wp,timeout=timeout,proxy=proxy)
  print (Style.RESET_ALL)
