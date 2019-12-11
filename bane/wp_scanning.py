@@ -26,10 +26,13 @@ if (sys.platform == "win32") or( sys.platform == "win64"):
  y=""
  m=""
  res=""
+path='/'
 class S0u1wp():
-    def __init__(self,wp_url):
+    def __init__(self,wp_url,path='/',check_wp=False):
+        self.check=True
         try:
             self.url = wp_url
+            self.wp_path=path
         except IndexError:
             self.cls()
             self.print_logo()
@@ -42,21 +45,42 @@ class S0u1wp():
         else:
             pass
         __kill_ip = self.url
+        self.url+=self.wp_path
         try:
             ip = socket.gethostbyname(__kill_ip)
             self.CheckWordpress = requests.get('http://' + self.url, timeout=5)
-            if '/wp-content/' in self.CheckWordpress.text:
+            if check_wp==True:
+             if '/wp-content/' in self.CheckWordpress.text:
+                self.check=True
+             else:
+                self.check=False
+            if self.check==True:
                 self.cls()
                 self.print_logo()
-                print (r + '    [' + y + '+' + r + ']' + w + ' URL      : ' + m + self.url)
+                print (r + '    [' + y + '+' + r + ']' + w + ' URL      : ' + m + str(self.url.split(self.wp_path)[0]))
                 print (r + '    [' + y + '+' + r + ']' + w + ' IP Server: ' + m + ip)
                 print (r + '    [' + y + '+' + r + ']' + w + ' Server   : ' + m + self.CheckWordpress.headers[
                     'server'])
-                self.UserName_Enumeration()
-                self.CpaNel_UserName_Enumeration()
-                self.Version_Wp()
-                self.GeT_Theme_Name()
-                self.GeT_PluGin_Name()
+                try:
+                 self.UserName_Enumeration()
+                except:
+                    pass
+                try:
+                 self.CpaNel_UserName_Enumeration()
+                except:
+                    pass
+                try:
+                 self.Version_Wp()
+                except:
+                    pass
+                try:
+                 self.GeT_Theme_Name()
+                except:
+                 pass
+                try:
+                 self.GeT_PluGin_Name()
+                except:
+                    pass
             else:
                 self.cls()
                 self.print_logo()
@@ -242,7 +266,7 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                     Get_title = requests.get('http://' + uz, timeout=5)
                     Title = re.findall('<title>(.*)</title>'.encode('utf-8'), Get_title.text.encode('utf-8'))
                     print (r + '        [' + y + 'MiGhT bE VuLn' + r + '] ' + w + uz + ' --- ' + r + \
-                          (str(Title[0]).split('-')[0]).replace("&lt;",''))
+                          ((str(Title[0]).split('-')[0]).replace("&lt;",'')).replace('&amp;',''))
                     cal = cal + 2
                 cal = 0
                 num = num + 1
@@ -287,6 +311,7 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                     else:
                         plugin_NamEz[name] = s
                 else:
+                 try:
                     OK_Ver = name + ' ' + version[0]
                     Dup_Remove_Plug = name
                     if '-' in OK_Ver:
@@ -297,6 +322,8 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                         plugin_NamEz[ff] = s
                     else:
                         plugin_NamEz[OK_Ver] = s
+                 except:
+                     pass
             else:
                 if Dup_Remove_Plug in name:
                     pass
@@ -345,6 +372,6 @@ $R@i.~~ !     :   ~$$$$$B$$en:``
                 print (r + '    [' + y + '+' + r + ']' + w + ' Themes Name: ' + m + Name_Theme)
                 self.Plugin_NamE_Vuln_TeST(Name_Theme)
 
-def wp_scan(u):
- S0u1wp(u)
+def wp_scan(u,path='/',check_wp=False):
+ S0u1wp(u,path=path,check_wp=check_wp)
  print (Style.RESET_ALL)

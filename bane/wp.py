@@ -159,3 +159,4 @@ def wp_version(u,timeout=15,proxy=None):
   return r.split('<meta name="generator" content="')[1].split('"')[0].strip()
  except:
   pass
+ 
