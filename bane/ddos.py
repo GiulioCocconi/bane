@@ -3092,7 +3092,7 @@ class icmpcl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmp(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
+def icmpflood(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for ICMP flood attack
 '''
