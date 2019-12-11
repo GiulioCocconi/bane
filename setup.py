@@ -1,3 +1,4 @@
+#for windows you need to download: winpcap: http://www.win10pcap.org/download/
 import sys,setuptools,os
 with open("README.md", "r") as fh:
     long_description = fh.read()
