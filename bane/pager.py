@@ -320,7 +320,6 @@ def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,reque
   try:
    s=requests.session()
    r=s.post('https://scan.penteston.com/scan_system.php',data={"scan_method":"S201","test_protocol":https_flag,"test_host":host},timeout=requests_timeout).text
-   print(r)
    if '"isFinished":"no"' not in str(r):
     if logs==True:
      print("[+]Scan results:")
