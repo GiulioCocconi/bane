@@ -307,46 +307,6 @@ def media(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  except:
   pass
  return h
-def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,requests_timeout=15,https=False):
- https_flag=0
- if (https==True) or('https://' in u):
-     https_flag=1
- if "://" in u:
-  host=u.split('://')[1].split('/')[0]
- else:
-  host=u
- sd=[]
- while True:
-  try:
-   s=requests.session()
-   r=s.post('https://scan.penteston.com/scan_system.php',data={"scan_method":"S201","test_protocol":https_flag,"test_host":host},timeout=requests_timeout).text
-   if '"isFinished":"no"' not in str(r):
-    if logs==True:
-     print("[+]Scan results:")
-    c=r.split('strong><br\/>')[1].replace('"}','')
-    for x in (c.split('<br\/>')):
-     if x.strip():
-      if logs==True:
-       print(x)
-      sd.append(x)
-    if returning==True:
-     return sd
-    break
-   else:
-    if logs==True:
-     print("[*]Scan in progress...")
-  except KeyboardInterrupt:
-      break
-  except:
-    pass
-  try:
-   time.sleep(process_check_interval)
-  except KeyboardInterrupt:
-      break
-  except:
-    pass
- if returning==True:
-  return []
 
 def subdomains_extract(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''

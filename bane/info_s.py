@@ -1,9 +1,4 @@
-import requests,urllib,socket,random,time,re,threading,sys,whois,json
-if  sys.version_info < (3,0):
-    # Python 2.x
-    from scapy.all import *
-else:
-    from kamene.all import *
+import requests,urllib,socket,random,time,re,threading,sys,whois,json,os
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
@@ -155,7 +150,7 @@ def headers(u,timeout=10,logs=True,returning=False,proxy=None):
    print("{} : {}".format(x,a[x]))
  if returning==True:
   return a
-def reverseiplookup(u,timeout=10,logs=True,returning=False,proxy=None):
+def reverse_ip_lookup(u,timeout=10,logs=True,returning=False,proxy=None):
  '''
    this function is for: reverse ip look up
  '''
@@ -185,83 +180,84 @@ def resolve(u,server='8.8.8.8',timeout=1,lifetime=1):
  for x in a:
   o.append(str(x))
  return o
-class uscanp(threading.Thread):
- def run(self):
-  global portlist
-  p=por[flag2]
-  data=''
-  for x in range(64):
-   data+=random.choice(lis)
-  req=IP(dst=target)/UDP(sport=random.randint(1025,65500),dport=p)/Raw(load=data)
-  s= socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_UDP)
-  s.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-  s.sendto(bytes(req),(target,p))
-  s.settimeout(timeout)
-  d=''
-  while True:
-   try:
-    o=''
-    o+=s.recv(4096)
-   except:
-    pass
-   if len(o)==0:
+"""
+this slass is used to scan a target for open ports
+
+usage:
+
+a=bane.ports_scan("8.8.8.8",ports=[21,22,23,80,443,3306],timeout=5)
+print(a.result)
+
+this should give you a dict like this:
+
+{'443': 'Open', '22': 'Closed', '21': 'Closed', '23': 'Closed', '80': 'Closed', '3306': 'Closed'}
+
+"""
+class ports_scan:
+ def scan (self):
+        p=self.por[self.flag2]
+        s= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(self.timeout)
+        r = s.connect_ex((self.target, int(p)))
+        if r == 0:
+         self.result.update({str(p):"Open"})
+        else:
+         self.result.update({str(p):"Closed"})
+        s.close()
+ def __init__(self,u,ports=[21,22,23,25,43,53,80,443,2082,3306],timeout=5):
+  try:
+   thr=[]
+   self.result={}
+   self.timeout=timeout
+   self.por=ports
+   self.target=u
+   for x in range(len(self.por)):
+    self.flag2=x
+    thr.append(threading.Thread(target=self.scan).start())
+    time.sleep(.001)
+   while(len(self.result)!=len(ports)):
+    time.sleep(.1)
+  except:
+      pass
+  for x in thr:
+     del x
+def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,requests_timeout=15,https=False):
+ https_flag=0
+ if (https==True) or('https://' in u):
+     https_flag=1
+ if "://" in u:
+  host=u.split('://')[1].split('/')[0]
+ else:
+  host=u
+ sd=[]
+ while True:
+  try:
+   s=requests.session()
+   r=s.post('https://scan.penteston.com/scan_system.php',data={"scan_method":"S201","test_protocol":https_flag,"test_host":host},timeout=requests_timeout).text
+   if '"isFinished":"no"' not in r:
+    if logs==True:
+     print("[+]Scan results:")
+    c=r.split('strong><br\/>')[1].replace('"}','')
+    for x in (c.split('<br\/>')):
+     if x.strip():
+      if logs==True:
+       print(x)
+      sd.append(x)
+    if returning==True:
+     return sd
     break
    else:
-    d+=o
-  if len(d) > 0:
-   portlist.update({p:"Open"})
-  else:
-   portlist.update({p:"Closed"})
-  s.close()
-def udp_portscan(u,ports=[53],maxtime=5):
- thr=[]
- global flag2
- global portlist
- portlist={}
- global timeout
- timeout=maxtime
- global por
- por=ports
- global target
- target=u
- for x in range(len(por)):
-   flag2=x
-   thr.append(uscanp().start())
-   time.sleep(.001)
- while(len(portlist)!=len(ports)):
-  time.sleep(.1)
- for x in thr:
-     del x
- return portlist
-class tscanp(threading.Thread):
- def run (self):
-        global portlist
-        p=por[flag2]
-        s= socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(timeout)
-        r = s.connect_ex((target, p))
-        if r == 0:
-         portlist.update({p:"Open"})
-        else:
-         portlist.update({p:"Closed"})
-        s.close()
-def tcp_portscan(u,ports=[21,22,23,25,43,53,80,443,2082,3306],maxtime=5):
- thr=[]
- global flag2
- global portlist
- portlist={}
- global timeout
- timeout=maxtime
- global por
- por=ports
- global target
- target=u
- for x in range(len(por)):
-   flag2=x
-   thr.append(tscanp().start())
-   time.sleep(.001)
- while(len(portlist)!=len(ports)):
-  time.sleep(.1)
- for x in thr:
-     del x
- return portlist
+    if logs==True:
+     print("[*]Scan in progress...")
+  except KeyboardInterrupt:
+      break
+  except:
+    pass
+  try:
+   time.sleep(process_check_interval)
+  except KeyboardInterrupt:
+      break
+  except:
+    pass
+ if returning==True:
+  return []
