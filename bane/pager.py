@@ -307,42 +307,34 @@ def media(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  except:
   pass
  return h
-def subdomains_undirect(u,timeout=10,user_agent=None,proxy=None):
- '''
-   this function collects the subdomains found on the targeted webpage.
-
-   the function takes those arguments:
-   
-   u: the targeted link
-   timeout: (set by default to 10) timeout flag for the request
-   bypass: (set by default to False) option to bypass anti-crawlers by simply adding "#" to the end of the link :)
-
-   usage:
-
-   >>>import bane
-   >>>domain='example.com'
-   >>>bane.subdomains(domain)
-'''
- lit=[]
- if user_agent:
-  us=user_agent
+def subdomains_finder(u,process_check_interval=5,requests_timeout=15,https=False):
+ https_flag=0
+ if (https==True) or('https://' in u):
+     https_flag=1
+ if "://" in u:
+  host=u.split('://')[1].split('/')[0]
  else:
-  us=random.choice(ua)
- if proxy:
-  proxy={'http':'http://'+proxy}
- try:
-  r=requests.get('https://findsubdomains.com/subdomains-of/'+u,timeout=timeout).text
-  soup = BeautifulSoup(r,"html.parser")
-  for a in soup.find_all('table'):
-   for x in a.find_all('a'):
-    x=str(x)
-    if '"/subdomains-of/' in x:
-     x=x.split('">')[1].split('<')[0]
-     lit.append(x)
- except:
-  pass
- return lit
-def subdomains_direct(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
+  host=u
+ sd=[]
+ while True:
+  try:
+   s=requests.session()
+   r=s.post('https://scan.penteston.com/scan_system.php',data={"scan_method":"S201","test_protocol":https_flag,"test_host":host},timeout=requests_timeout).text
+   print (r)
+   if 'Scanning...' not in str(r):
+    c=r.split('strong><br\/>')[1].replace('"}','')
+    for x in (c.split('<br\/>')):
+     if x.strip():
+      sd.append(x)
+    return sd
+  except KeyboardInterrupt:
+      break
+  except:
+    pass
+  time.sleep(process_check_interval)  
+ return []
+
+def subdomains_extract(u,timeout=10,user_agent=None,bypass=False,proxy=None,cookie=None):
  '''
    this function collects the subdomains found on the targeted webpage.
 
@@ -356,9 +348,9 @@ def subdomains_direct(u,timeout=10,user_agent=None,bypass=False,proxy=None,cooki
 
    >>>import bane
    >>>url='http://www.example.com'
-   >>>bane.subdomains(url)
+   >>>bane.subdomains_extract(url)
    
-   >>>bane.subdomains(url,bypass=True)
+   >>>bane.subdomains_extract(url,bypass=True)
 '''
  if user_agent:
   us=user_agent
