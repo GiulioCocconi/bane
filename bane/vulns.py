@@ -680,7 +680,7 @@ def headers_timeout_test(u,port=80,timeout=5,max_timeout=30,logs=True,returning=
     print("==>Test has reached the max interval: {} seconds without timing out".format(duration))
    if returning==True:
     return j
-def slow_get_test(u,port=80,timeout=5,interval=5,randomly=False,duration=180,logs=True,returning=False,start=1,end=5):
+def slow_get_test(u,port=80,timeout=5,interval=5,randomly=False,duration=180,logs=True,returning=False,min_wait=1,max_wait=5):
  global stop
  stop=False
  i=0
@@ -708,7 +708,7 @@ def slow_get_test(u,port=80,timeout=5,interval=5,randomly=False,duration=180,log
     s.send("X-a: {}\r\n".format(random.randint(1, 5000)).encode("utf-8"))
     t=interval
     if randomly==True:
-     t=random.randint(start,end)
+     t=random.randint(min_wait,max_wait)
     if logs==True:
      print("[+]Sleeping for {} seconds...".format(t))
     time.sleep(t)
@@ -767,7 +767,7 @@ def build_post(u,p,timeout=5,size=10000):
   s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
  s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n".format(random.choice(paths),random.choice(ua),random.randint(300,1000),size,u).encode("utf-8"))
  return s
-def slow_post_test(u,port=80,logs=True,timeout=5,size=10000,duration=180,returning=False,randomly=False,wait=1,start=1,end=5):
+def slow_post_test(u,port=80,logs=True,timeout=5,size=10000,duration=180,returning=False,randomly=False,wait=1,min_wait=1,max_wait=5):
  global stop
  stop=False
  i=0
@@ -806,7 +806,7 @@ def slow_post_test(u,port=80,logs=True,timeout=5,size=10000,duration=180,returni
     if logs==True:
      print("Posted: {}".format(h))
     if randomly==True:
-     time.sleep(random.randint(start,end))
+     time.sleep(random.randint(min_wait,max_wait))
     if randomly==False:
      try:
       time.sleep(wait)
@@ -822,7 +822,7 @@ def slow_post_test(u,port=80,logs=True,timeout=5,size=10000,duration=180,returni
     if returning==True:
      return int(time.time()-t)
     break
-def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,randomly=False,wait=5,start=1,end=10):
+def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,randomly=False,wait=5,min_wait=1,max_wait=10):
   global stop
   stop=False
   i=0
@@ -856,10 +856,10 @@ def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,ra
        s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),u,q).encode("utf-8"))
       d=s.recv(random.randint(1,3))
       if logs==True:
-       print("Received: {}".format(d))
+       print("Received: {}".format(str(d.decode('utf-8'))))
       print("sleeping...")
       if randomly==True:
-       time.sleep(random.randint(start,end))
+       time.sleep(random.randint(min_wait,max_wait))
       if randomly==False:
        time.sleep(wait)
      except:

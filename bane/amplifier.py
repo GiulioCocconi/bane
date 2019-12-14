@@ -15,7 +15,7 @@ def get_public_dns(timeout=10):
 """
 the following functions are used to calculate the amplification factor for any given server
 """
-def memcache_fact(u,timeout=3):
+def memcache_factor(u,timeout=3):
  """
 calculate the amplification factor for any given memcache server
  """
@@ -29,7 +29,7 @@ calculate the amplification factor for any given memcache server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -43,7 +43,7 @@ calculate the amplification factor for any given memcache server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'memcache','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def dns_fact(u,timeout=3,q='google.com',t='ANY'):
+def dns_factor(u,timeout=3,q='google.com',t='ANY'):
  #q: the domain name to resolve
  #t: the dns query type
  """
@@ -58,7 +58,7 @@ calculate the amplification factor for any given dns server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -72,7 +72,7 @@ calculate the amplification factor for any given dns server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'dns','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def chargen_fact(u,timeout=3,q='0'):
+def chargen_factor(u,timeout=3,q='0'):
  #q: the character to send
  """
 calculate the amplification factor for any given chargen server
@@ -86,7 +86,7 @@ calculate the amplification factor for any given chargen server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -100,7 +100,7 @@ calculate the amplification factor for any given chargen server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'chargen','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def ntp_fact(u,timeout=3):
+def ntp_factor(u,timeout=3):
  """
 calculate the amplification factor for any given ntp server
  """
@@ -113,7 +113,7 @@ calculate the amplification factor for any given ntp server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -127,7 +127,7 @@ calculate the amplification factor for any given ntp server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'ntp','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def ssdp_fact(u,timeout=3):
+def ssdp_factor(u,timeout=3):
  """
 calculate the amplification factor for any given ssdp server
  """
@@ -140,7 +140,7 @@ calculate the amplification factor for any given ssdp server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -154,7 +154,7 @@ calculate the amplification factor for any given ssdp server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'ssdp','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def snmp_fact(u,timeout=3):
+def snmp_factor(u,timeout=3):
  """
 calculate the amplification factor for any given snmp server
  """
@@ -167,7 +167,7 @@ calculate the amplification factor for any given snmp server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
@@ -181,7 +181,7 @@ calculate the amplification factor for any given snmp server
  b=len(d)
  c=round(((len(d)*1.)/len(req)),3)
  return {'protocol':'snmp','ip':u,'sent':a,'received':b,'amplification_factor':c}
-def echo_fact(u,q='a',timeout=3):
+def echo_factor(u,q='a',timeout=3):
  """
 calculate the amplification factor for any given echo server
  """
@@ -194,7 +194,7 @@ calculate the amplification factor for any given echo server
  while True:
   try:
    o=''
-   o+=s.recv(4096)
+   o+=str(s.recv(4096))
   except KeyboardInterrupt:
    s.close()
    break
