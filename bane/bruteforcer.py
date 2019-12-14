@@ -99,11 +99,11 @@ def admin_login(u,pl,user_agent=None,extra={},fresh=False,timeout=10,proxy=None)
  except:
   pass
  return False
-def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
+def admin_brute_force(u,word_list=[],fresh=False,logs=True,returning=False,proxy=None,proxies=None,timeout=10):
   '''
    bruteforce admin logins
 
-   wl: usernames and passwords list ( wl=["admin:admin","admin:1234"] )
+   word_list: usernames and passwords list ( word_list=["admin:admin","admin:1234"] )
   '''
   op=''
   hu=True
@@ -127,7 +127,7 @@ def admin_brute_force(u,wl=[],fresh=False,logs=True,returning=False,proxy=None,p
    l=[]
    for x in l2:
     l.append(x.split(':')[0])
-   for i in wl:
+   for i in word_list:
     user=i.split(':')[0]
     pwd=i.split(':')[1]
     print("[*]Trying: {} {}".format(user,pwd))
@@ -468,7 +468,7 @@ def mysql(u,username='root',password=''):
  except Exception as e:
   pass
  return False
-def hydra(u,p=22,protocol="ssh",wl=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
+def hydra(u,p=22,protocol="ssh",word_list=[],logs=True,returning=False,mapping=False,timeout=5,ehlo=False,helo=True,ttls=False,proxy=None,proxies=None):
  '''
    this function is similar to hydra tool to bruteforce attacks on different ports.
 
@@ -489,7 +489,7 @@ def hydra(u,p=22,protocol="ssh",wl=[],logs=True,returning=False,mapping=False,ti
   s=mysql
  if protocol=="wp":
   s=wpadmin
- for x in wl:
+ for x in word_list:
   user=x.split(':')[0].strip()
   pwd=x.split(':')[1].strip()
   if logs==True:
@@ -520,11 +520,11 @@ def hydra(u,p=22,protocol="ssh",wl=[],logs=True,returning=False,mapping=False,ti
     print("[-]Failed")
  if returning==True:
   return o
-def decrypt(u,wl=[],md5_hash=True,sha1_hash=False,sha256_hash=False,sha224_hash=False,sha384_hash=False,sha512_hash=False,base64_hash=False,caesar_hash=False,logs=True,returning=False):
+def decrypt(u,word_list=[],md5_hash=True,sha1_hash=False,sha256_hash=False,sha224_hash=False,sha384_hash=False,sha512_hash=False,base64_hash=False,caesar_hash=False,logs=True,returning=False):
  if logs==True:
   print('[!]hash: '+u+'\nbruteforcing has started!!!\n')
  s=False
- for x in wl:
+ for x in word_list:
   if md5_hash==True:
    if dmd5(x,u)==True:
     if logs==True:

