@@ -99,7 +99,11 @@ def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=Non
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iott(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -152,7 +156,11 @@ def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_ran
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotf1(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -204,7 +212,11 @@ def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_ra
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotf2(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -250,7 +262,11 @@ def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None):
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotsm(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -303,7 +319,11 @@ def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotmy(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -355,7 +375,11 @@ def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotmy2(threading.Thread):
  def run(self):
   s=mysql
@@ -405,7 +429,11 @@ def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bo
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
 class iotadb(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
@@ -454,4 +482,8 @@ def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=Non
     stop=True
     break
  for x in thr:
-     del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x

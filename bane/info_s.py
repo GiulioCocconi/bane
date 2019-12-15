@@ -220,7 +220,11 @@ class ports_scan:
   except:
       pass
   for x in thr:
-     del x
+    try:
+      x.join(1)
+    except:
+      pass
+    del x
 def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,requests_timeout=15,https=False):
  https_flag=0
  if (https==True) or('https://' in u):
