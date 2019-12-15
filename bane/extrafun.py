@@ -49,7 +49,7 @@ def facebook_id(u):
   return r.split('<p id="code-wrap"><span id="code">')[1].split('<')[0]
  except:
   return None
-def virustotal(f,proxy=None,timeout=10):
+def check_file_virustotal(f,proxy=None,timeout=10):
  if proxy:
   proxy={'http':'http://'+proxy}
  s=sha256fl(f)

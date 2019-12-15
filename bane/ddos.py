@@ -244,8 +244,16 @@ def tcp_flood_attack(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return tcp_counter
 class htflood(threading.Thread):
@@ -420,8 +428,16 @@ def http_flood_attack(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return http_counter
 class prflood(threading.Thread):
@@ -607,8 +623,16 @@ def prox_http_flood_attack(u,p=80,threads=100,scraping_timeout=15,timeout=7,http
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return lulzer_counter
 class reqpost(threading.Thread):
@@ -707,8 +731,16 @@ def torshammer_attack(u,p=80,threads=500,timeout=5,set_tor=False,duration=300,lo
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class pham(threading.Thread):
  def run(self):
   self.target=target
@@ -822,8 +854,16 @@ def prox_hammer_attack(u,p=80,scraping_timeout=15,max_content_length=15000,min_c
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class rudypost(threading.Thread):
  def run(self):
   self.r_wait=r_wait
@@ -946,8 +986,16 @@ def rudy_attack(u,p=80,threads=500,form='q',form_length=0,max_form_length=100000
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class xer(threading.Thread):
  def run(self):
   x=pointer#thread's ID
@@ -1031,8 +1079,16 @@ def xerxes_attack(u,p=80,threads=500,timeout=5,duration=300,logs=True,set_tor=Fa
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class pxer(threading.Thread):
  def run(self):
   x=pointer
@@ -1134,8 +1190,16 @@ def prox_xerxes_attack(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_lis
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class slrd(threading.Thread):
  def run(self):
   self.target=target
@@ -1246,8 +1310,16 @@ def slow_read_attack(u,p=80,threads=500,timeout=5,min_speed=3,max_speed=5,max_re
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class apa(threading.Thread):
  def run(self):
   global apache_killer_counter
@@ -1400,8 +1472,16 @@ def prox_slow_attack(u,p=80,scraping_timeout=15,threads=500,timeout=5,min_speed=
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return proxslow_counter
 def apache_killer_attack(u,p=80,threads=256,timeout=5,round_min=5,round_max=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
@@ -1468,8 +1548,16 @@ def apache_killer_attack(u,p=80,threads=256,timeout=5,round_min=5,round_max=15,l
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return apache_killer_counter
 class loris(threading.Thread):
@@ -1580,9 +1668,17 @@ def slowloris_attack(u,p=80,threads=20,timeout=5,duration=300,logs=True,set_tor=
   except KeyboardInterrupt:
    stop=True
    break
+ print("")
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
- print('')
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class plor(threading.Thread):
  def run(self):
   #global prox_loris_counter
@@ -1696,8 +1792,16 @@ def prox_slowloris_attack(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 class phu(threading.Thread):
  def run(self):
   global proxhulk_counter
@@ -1830,8 +1934,16 @@ def hulk_attack(u,threads=700,timeout=10,duration=300,logs=True,returning=False,
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return hulk_counter
 def prox_hulk_attack(u,threads=700,scraping_timeout=15,http_list=None,timeout=10,duration=300,logs=True,returning=False):
@@ -1887,8 +1999,16 @@ def prox_hulk_attack(u,threads=700,scraping_timeout=15,http_list=None,timeout=10
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-  del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
   return proxhulk_counter
 def checksum(msg):
@@ -2141,8 +2261,16 @@ def syn_flood_attack(u,p=80,limiting=True,min_size=10,max_size=50,level=1,source
     except KeyboardInterrupt:
      stop=True
      break
+   if logs==True:
+     print("[*]Killing all threads...")
    for x in thr:
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
     del x
+   if logs==True:
+     print("[*]Done!")
    if returning==True:
     return synflood_counter  
 class udpsp(threading.Thread):
@@ -2254,8 +2382,16 @@ def spoofed_source_udp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return udpstorm_counter
 class ln(threading.Thread):
@@ -2411,8 +2547,16 @@ def land_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,threads=100
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return land_counter
 class dampli(threading.Thread):
@@ -2512,8 +2656,16 @@ def dns_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return dnsamplif_counter
 class nampli(threading.Thread):
@@ -2603,8 +2755,16 @@ def ntp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return ntpamplif_counter
 class memampli(threading.Thread):
@@ -2694,8 +2854,16 @@ def memcache_amplification_attack(u,p=80,limiting=True,level=1,servers=[],thread
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return memcacheamplif_counter
 class charampli(threading.Thread):
@@ -2785,8 +2953,16 @@ def chargen_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return chargenamplif_counter
 class ssampli(threading.Thread):
@@ -2876,8 +3052,16 @@ def ssdp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=10
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return ssdpamplif_counter
 class snampli(threading.Thread):
@@ -2967,8 +3151,16 @@ def snmp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=10
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return snmpamplif_counter
 class echst(threading.Thread):
@@ -3057,8 +3249,16 @@ def echo_reflection_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return echo_ref_counter
 class icmpcl(threading.Thread):
@@ -3150,8 +3350,16 @@ def icmp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_t
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return icmp_counter
 class icmpst(threading.Thread):
@@ -3250,8 +3458,16 @@ def spoofed_source_icmp_attack(u,p=80,min_size=10,max_size=50,limiting=True,leve
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return icmpstorm_counter
 class blnu(threading.Thread):
@@ -3339,8 +3555,16 @@ def blacknurse_attack(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_
    except KeyboardInterrupt:
     stop=True
     break
+  if logs==True:
+     print("[*]Killing all threads...")
   for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+  if logs==True:
+     print("[*]Done!")
   if returning==True:
     return blacknurse_counter
 class gldn(threading.Thread):
@@ -3469,8 +3693,16 @@ def goldeneye_attack(u,p=80,threads=700,flood_method=3,timeout=5,duration=300,lo
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
     return goldeneye_counter
 class dosecl(threading.Thread):
@@ -3646,8 +3878,16 @@ def doser_attack(u,threads=700,flood_method=1,timeout=5,duration=300,logs=True,r
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
     return doser_counter
 class prdose(threading.Thread):
@@ -3775,8 +4015,16 @@ def prox_doser_attack(u,scraping_timeout=15,threads=700,http_list=None,flood_met
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
     return proxdoser_counter
 class atcf(threading.Thread):
@@ -3852,13 +4100,14 @@ class cooi(threading.Thread):
   except:
    pass
   ier+=1
-def cki():
+def cki(logs=False):
  thr=[]
  global flag
  flag=-1
  global ier
  ier=0
- print("[+]Getting yummy hot cookies...")
+ if logs==True:
+  print("[+]Getting yummy hot cookies...")
  for x in range(10):
   flag+=1
   try:
@@ -3869,8 +4118,16 @@ def cki():
  while(ier!=10):
    time.sleep(.1)
  time.sleep(1)
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
 def cf_kill_ua(u,threads=500,timeout=5,check_ua_protection=True,need_cookie=False,duration=300,logs=True,returning=False):
  thr=[]
  global cf_doser_counter
@@ -3905,7 +4162,7 @@ def cf_kill_ua(u,threads=500,timeout=5,check_ua_protection=True,need_cookie=Fals
   else:
    print("I'm under attack protection: Off")
  if coo==True:
-  cki()
+  cki(logs=logs)
  else:
   ual=ue[:]
  for x in range(threads):
@@ -3926,8 +4183,16 @@ def cf_kill_ua(u,threads=500,timeout=5,check_ua_protection=True,need_cookie=Fals
   except KeyboardInterrupt:
    stop=True
    break
+ if logs==True:
+     print("[*]Killing all threads...")
  for x in thr:
-   del x
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+ if logs==True:
+     print("[*]Done!")
  if returning==True:
     return cf_doser_counter
 def cf_kill_ua_rate_limiting(u,threads=500,timeout=5,duration=300,logs=True,returning=False,wait=10):
