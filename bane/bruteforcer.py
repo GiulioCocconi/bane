@@ -377,6 +377,8 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
    elif ("pass" in s.lower()):
     t.write(password + "\n")#send password
     break
+   else:
+    return None
   c= t.read_until(prompt,timeout=timeout)
   for x in prompts:
    if x in c:#if the shell was accessed successfully
