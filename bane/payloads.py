@@ -11909,4 +11909,4 @@ referers=[
 	'https://play.google.com/store/search?q=',
 	'http://www.usatoday.com/search/results?q=',
 	'http://engadget.search.aol.com/search?q=']
-prompts=['$','#','>','%']
+prompts=['$','#','>']
