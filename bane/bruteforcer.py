@@ -371,19 +371,18 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.read_until(":",timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
-   if (('user' in s.lower()) or ('login' in s.lower())):
-    t.write(username + "\n")#send username
-   elif ("pass" in s.lower()):
-    t.write(password + "\n")#send password
-    break
+   s=t.read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   if (('user' in str(s.lower())) or ('login' in str(s.lower()))):
+    t.write(bytes(username + "\n"))#send username
+   elif ("pass" in str(s.lower())):
+    t.write(bytes(password + "\n"))#send password
    else:
-    return None#if it didn't ask for both username and password (it happens sometimes)
-  c= t.read_until(prompt,timeout=timeout)
-  for x in prompts:
-   if x in c:#if the shell was accessed successfully
+    t.write(b"echo ala_is_king\n")#if it didn't ask for both username and password (it happens sometimes)
+    break
+  c= t.read_until(b":",timeout=timeout)
+  if 'ala_is_king' in str(c):#if the shell was accessed successfully
     return True
- except:
+ except Exception as e:
   pass
  return False
 def ssh_linux(u,username,password,p=22,timeout=7):

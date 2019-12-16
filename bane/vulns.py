@@ -1,5 +1,5 @@
 #coding: utf-8
-import subprocess,os
+import subprocess,os,telnetlib
 import requests,socket,random,time,ssl
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -882,3 +882,15 @@ def adb_exploit(u,timeout=5,port=5555):
     except:
         pass
     return False
+def exposed_telnet(u,p=23,prompt='$',timeout=5):
+ try:
+  t = telnetlib.Telnet(u,p,timeout=timeout)
+  c= t.read_until(b":",timeout=timeout)
+  t.write(b"echo ala_is_king\n")
+  c= t.read_until(b":",timeout=timeout)
+  print(str(c))
+  if 'echo ala_is_king' in str(c):#if the shell was accessed successfully
+    return True
+ except Exception as e:
+  print(e)
+ return False
