@@ -877,7 +877,7 @@ def adb_exploit(u,timeout=5,port=5555):
         s.settimeout(timeout)
         s.connect((u,port))
         s.send(b"\x43\x4e\x58\x4e\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x00\x32\x02\x00\x00\xbc\xb1\xa7\xb1\x68\x6f\x73\x74\x3a\x3a\x00") 
-        if "product.name=" in str(s.recv(4096)):
+        if "CNXN" in str(s.recv(4096)):
             return True
     except:
         pass
