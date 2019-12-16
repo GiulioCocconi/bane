@@ -372,13 +372,14 @@ def telnet(u,username,password,p=23,timeout=5):
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
    s=t.read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
-   if (('user' in str(s.lower())) or ('login' in str(s.lower()))):
-    t.write(bytes(username + "\n"))#send username
-   elif ("pass" in str(s.lower())):
-    t.write(bytes(password + "\n"))#send password
-   else:
-    t.write(b"echo ala_is_king\n")#if it didn't ask for both username and password (it happens sometimes)
+   if (('user' in str(s).lower()) or ('login' in str(s).lower())):
+    t.write("{}\n".format(username).encode('utf-8'))#send username
+   elif ("pass" in str(s).lower()):
+    t.write("{}\n".format(password).encode('utf-8'))#send password
     break
+   else:
+    break
+  t.write("echo ala_is_king\n".encode('utf-8'))#if it didn't ask for both username and password (it happens sometimes)
   c= t.read_until(b":",timeout=timeout)
   if 'ala_is_king' in str(c):#if the shell was accessed successfully
     return True
@@ -405,8 +406,8 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    elif "pass" in c.lower():
     child.send(password+'\n')#send password
    else:
-    child.send(command+'\n')
     break
+  child.send(command+'\n')
   try:
    child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
   except:
@@ -424,23 +425,14 @@ def ssh_win(ip,username,password,p=22,timeout=5):
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
   s.connect(ip, p,username=username, password=password,timeout=timeout)
-  stdin, stdout, stderr = s.exec_command ("echo ala_is_king",timeout=timeout)
+  stdin, stdout, stderr = s.exec_command ("echo ala_is_king".encode('utf-8'),timeout=timeout)
   r=stdout.read()
   s.close()
-  if "ala_is_king" in r:# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
+  if "ala_is_king" in str(r):# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
    return True
  except Exception as e:
   pass
  return False
-def ftp_anon(ip,timeout=5):
-  #anonymous ftp login
-  try:
-    ftp = FTP(ip,timeout=timeout)
-    ftp.login()
-    return True
-  except Exception as e:
-    pass
-  return False
 def ssh_andro(u,username,password,timeout=5):
  # ssh login on termux
  l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo ala_is_king; exit".format(password,timeout,username,u)
@@ -454,6 +446,15 @@ def ssh_andro(u,username,password,timeout=5):
  if p[0].strip()=='ala_is_king':
   return True
  else:
+  return False
+def ftp_anon(ip,timeout=5):
+  #anonymous ftp login
+  try:
+    ftp = FTP(ip,timeout=timeout)
+    ftp.login()
+    return True
+  except Exception as e:
+    pass
   return False
 def ftp(ip,username,password,timeout=5):
    try:

@@ -8,59 +8,64 @@ try:
 except:
  pass
 import subprocess
+def ssh_linux(u,username,password,p=22,timeout=7):
+ p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
+ command="echo ala_is_king"
+ # "StrictHostKeyChecking=no" option was added to add the host automatically
+ try:
+  child = pexpect.spawn(p)
+  while True:
+   try:
+    child.expect(['.*:'],timeout=timeout)#read until it reads ":"
+   except:
+    pass
+   c=child.before
+   c+= child.after
+   #if "yes/ no" in c:
+    #child.send('yes\n')
+   if (('login' in c.lower()) or ('user' in c.lower())):
+    child.send(username+'\n')#send username
+   elif "pass" in c.lower():
+    child.send(password+'\n')#send password
+   else:
+    break
+  child.send(command+'\n')
+  try:
+   child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
+  except:
+   pass
+  c= child.before
+  child.close()
+  if "ala_is_king" in c:
+    return True
+ except Exception as e:
+  pass
+ return False
+def ssh_win(ip,username,password,p=22,timeout=5):
+ #ssh login for windows
+ try:
+  s = SSHClient()
+  s.set_missing_host_key_policy(AutoAddPolicy())
+  s.connect(ip, p,username=username, password=password,timeout=timeout)
+  stdin, stdout, stderr = s.exec_command ("echo ala_is_king".encode('utf-8'),timeout=timeout)
+  r=stdout.read()
+  s.close()
+  if "ala_is_king" in str(r):# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
+   return True
+ except Exception as e:
+  pass
+ return False
 def ssh_andro(u,username,password,timeout=5):
- l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo alaala; exit".format(password,timeout,username,u)
+ # ssh login on termux
+ l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo ala_is_king; exit".format(password,timeout,username,u)
+ #we use the "sshpass" command to send the password or the password prompt will pop up
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  p= ssh.communicate()
  try:
    ssh.kill()
  except:
    pass
- if 'alaala' in str(p[0]):
+ if p[0].strip()=='ala_is_king':
   return True
  else:
   return False
-def ssh_linux(u,username,password,p=22,timeout=7):
- p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)
- try:
-  child = pexpect.spawn(p)
-  while True:
-   try:
-    child.expect(['.*:'],timeout=timeout)
-   except:
-    pass
-   c=child.before
-   c+= child.after
-   #if "yes/no" in c:
-    #child.send('yes\n')
-   if (('login' in c.lower()) or ('user' in c.lower())):
-    child.send(username+'\n')
-   elif "pass" in c.lower():
-    child.send(password+'\n')
-    break
-  try:
-   child.expect('.*=.*',timeout=timeout)
-  except:
-   pass
-  c= child.before
-  child.close()
-  for x in prompts:
-   if x in c:
-    return True
- except Exception as e:
-  pass
- return False
-def ssh_win(ip,username,password,p=22,timeout=5):
- try:
-  paramiko.util.log_to_file("filename.log")
-  s = SSHClient()
-  s.set_missing_host_key_policy(AutoAddPolicy())
-  s.connect(ip, p,username=username, password=password,timeout=timeout)
-  stdin, stdout, stderr = s.exec_command ("echo alawashere",timeout=timeout)
-  r=stdout.read()
-  s.close()
-  if "alawashere" in r:
-   return True
- except Exception as e:
-  pass
- return False
