@@ -888,7 +888,7 @@ def exposed_telnet(u,p=23,prompt='$',timeout=5):
   c= t.read_until(b":",timeout=timeout)
   t.write(b"echo ala_is_king\n")
   c= t.read_until(b":",timeout=timeout)
-  if 'ala_is_king' in str(c):#if the shell was accessed successfully
+  if ("#" in str(c)) or ('$' in str(c)) or (">" in str(c)):#if the shell was accessed successfully
     return True
  except Exception as e:
   pass

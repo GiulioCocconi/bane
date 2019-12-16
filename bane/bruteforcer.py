@@ -369,29 +369,35 @@ def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  return False
 def telnet(u,username,password,p=23,timeout=5):
  try:
+  usr=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
    s=t.read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
-   if (('user' in str(s).lower()) or ('login' in str(s).lower())):
+   if (('username:' in str(s).lower()) or ('login:' in str(s).lower())):
+    if usr==True:
+       break
     t.write("{}\n".format(username).encode('utf-8'))#send username
-   elif ("pass" in str(s).lower()):
+    usr=True
+   elif ("password:" in str(s).lower()):
     t.write("{}\n".format(password).encode('utf-8'))#send password
     break
    else:
     break
-  t.write("echo ala_is_king\n".encode('utf-8'))#if it didn't ask for both username and password (it happens sometimes)
+  t.write(b"echo ala_is_king\n")
   c= t.read_until(b":",timeout=timeout)
-  if 'ala_is_king' in str(c):#if the shell was accessed successfully
+  for x in ['#','$','>']:
+   if x in str(c):#if the shell was accessed successfully
     return True
  except Exception as e:
   pass
  return False
 def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
- command="echo ala_is_king"
+ #command="echo ala_is_king"
  # "StrictHostKeyChecking=no" option was added to add the host automatically
  try:
   child = pexpect.spawn(p)
+  usr=False
   while True:
    try:
     child.expect(['.*:'],timeout=timeout)#read until it reads ":"
@@ -401,20 +407,25 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    c+= child.after
    #if "yes/no" in c:
     #child.send('yes\n')
-   if (('login' in c.lower()) or ('user' in c.lower())):
+   if (('login:' in c.lower()) or ('username:' in c.lower())):
+    if usr==True:
+       break
     child.send(username+'\n')#send username
-   elif "pass" in c.lower():
+    usr=True
+   elif "password:" in c.lower():
     child.send(password+'\n')#send password
+    break
    else:
     break
-  child.send(command+'\n')
+  #child.send(command+'\n')
   try:
    child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
   except:
    pass
   c= child.before
   child.close()
-  if "ala_is_king" in c:
+  for x in ['#','$','>']:
+   if x in str(c):#if the shell was accessed successfully
     return True
  except Exception as e:
   pass
@@ -425,10 +436,10 @@ def ssh_win(ip,username,password,p=22,timeout=5):
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
   s.connect(ip, p,username=username, password=password,timeout=timeout)
-  stdin, stdout, stderr = s.exec_command ("echo ala_is_king".encode('utf-8'),timeout=timeout)
+  stdin, stdout, stderr = s.exec_command ("echo ala_is_king",timeout=timeout)
   r=stdout.read()
   s.close()
-  if "ala_is_king" in str(r):# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
+  if "ala_is_king" in r:# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
    return True
  except Exception as e:
   pass
