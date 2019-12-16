@@ -367,7 +367,7 @@ def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  except Exception as e:
   pass
  return False
-def telnet(u,username,password,p=23,prompt='$',timeout=5):
+def telnet(u,username,password,p=23,timeout=5):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
@@ -387,6 +387,7 @@ def telnet(u,username,password,p=23,prompt='$',timeout=5):
  return False
 def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
+ command="echo ala_is_king"
  # "StrictHostKeyChecking=no" option was added to add the host automatically
  try:
   child = pexpect.spawn(p)
@@ -403,6 +404,8 @@ def ssh_linux(u,username,password,p=22,timeout=7):
     child.send(username+'\n')#send username
    elif "pass" in c.lower():
     child.send(password+'\n')#send password
+   else:
+    child.send(command+'\n')
     break
   try:
    child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
@@ -410,8 +413,7 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    pass
   c= child.before
   child.close()
-  for x in prompts:
-   if x in c:
+  if "ala_is_king" in c:
     return True
  except Exception as e:
   pass
@@ -422,10 +424,10 @@ def ssh_win(ip,username,password,p=22,timeout=5):
   s = SSHClient()
   s.set_missing_host_key_policy(AutoAddPolicy())
   s.connect(ip, p,username=username, password=password,timeout=timeout)
-  stdin, stdout, stderr = s.exec_command ("echo alawashere",timeout=timeout)
+  stdin, stdout, stderr = s.exec_command ("echo ala_is_king",timeout=timeout)
   r=stdout.read()
   s.close()
-  if "alawashere" in r:# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
+  if "ala_is_king" in r:# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
    return True
  except Exception as e:
   pass
@@ -441,7 +443,7 @@ def ftp_anon(ip,timeout=5):
   return False
 def ssh_andro(u,username,password,timeout=5):
  # ssh login on termux
- l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo 1; exit".format(password,timeout,username,u)
+ l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo ala_is_king; exit".format(password,timeout,username,u)
  #we use the "sshpass" command to send the password or the password prompt will pop up
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
  p= ssh.communicate()
@@ -449,7 +451,7 @@ def ssh_andro(u,username,password,timeout=5):
    ssh.kill()
  except:
    pass
- if p[0].strip()=='1':
+ if p[0].strip()=='ala_is_king':
   return True
  else:
   return False
