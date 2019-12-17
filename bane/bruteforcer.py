@@ -490,6 +490,8 @@ def hydra(u,p=22,protocol="ssh",word_list=[],logs=True,returning=False,mapping=F
    protocol: (set by default to: ssh) set the chosen protocol (ftp, ssh, telnet, smtp and mysql) and don't forget to set the port.
 '''
  o=''
+ if protocol=="telnet":
+     s=telnet
  if protocol=="ssh":
   s=ssh_linux
   if (sys.platform == "win32") or( sys.platform == "win64"):
@@ -509,6 +511,8 @@ def hydra(u,p=22,protocol="ssh",word_list=[],logs=True,returning=False,mapping=F
   pwd=x.split(':')[1].strip()
   if logs==True:
    print("[*]Trying: {}:{}".format(user,pwd))
+  if protocol=="telnet":
+      r=s(u,user,pwd,timeout=timeout,p=p)
   if (protocol=="mysql"):
    r=s(u,user,pwd)
   elif (protocol=="ftp"):
