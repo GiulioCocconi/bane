@@ -153,18 +153,17 @@ def headers(u,timeout=10,logs=True,returning=False,proxy=None):
 def reverse_ip_lookup(u,timeout=10,logs=True,returning=False,proxy=None):
  '''
    this function is for: reverse ip look up
+   if you've used it 100 times in 24 hours, your IP will be banned by "api.hackertarget.com" so i highly recommand you to use the "proxy" option by adding a http(s) proxy:
+
+   bane.reverse_ip_lookup('XXX.XXX.XXX.XXX',proxy='IP:PORT')
+
  '''
  if proxy:
   proxy={'http':'http://'+proxy}
- a=[]
  try:
-  name, alias, addresslist = socket.gethostbyaddr(u)
-  return a.append(name)
- except Exception as e:
-  try:
    r=requests.get("https://api.hackertarget.com/reverseiplookup/?q="+u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=timeout).text
    return r.split('\n')
-  except Exception as ex:
+ except Exception as ex:
    pass
  return []
 '''
