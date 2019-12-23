@@ -39,7 +39,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.6.8",
+    version="3.6.9",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
