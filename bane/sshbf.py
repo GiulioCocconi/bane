@@ -10,7 +10,7 @@ except:
 import subprocess
 def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
- command="echo ala_is_king"
+ #command="echo ala_is_king"
  # "StrictHostKeyChecking=no" option was added to add the host automatically
  try:
   child = pexpect.spawn(p)
@@ -22,6 +22,7 @@ def ssh_linux(u,username,password,p=22,timeout=7):
     pass
    c=child.before
    c+= child.after
+   c=str(c)
    #if "yes/no" in c:
     #child.send('yes\n')
    if (('login:' in c.lower()) or ('username:' in c.lower())):
@@ -34,17 +35,19 @@ def ssh_linux(u,username,password,p=22,timeout=7):
     break
    else:
     break
-  child.send(command+'\n')
+  #child.send(command+'\n')
   try:
    child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
   except:
    pass
   c= child.before
+  c=str(c)
   child.close()
-  if (('username:' not in str(c).lower()) and ('login:' not in str(c).lower()) and ("password:" not in str(c).lower())):
+  if (('username:' not in c.lower()) and ('login:' not in c.lower()) and ("password:" not in c.lower())):
    for x in ['#','$','>']:
-    if x in str(c):#if the shell was accessed successfully
-     return True
+    if x in c:#if the shell was accessed successfully
+     if ((c.count('#')<2) or (c.count('>')<2) or (c.count('$')<2)):
+      return True
  except Exception as e:
   pass
  return False
@@ -72,7 +75,7 @@ def ssh_andro(u,username,password,timeout=5):
    ssh.kill()
  except:
    pass
- if p[0].strip()=='ala_is_king':
+ if str(p[0]).strip()=='ala_is_king':
   return True
  else:
   return False
