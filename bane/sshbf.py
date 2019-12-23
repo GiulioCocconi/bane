@@ -10,7 +10,7 @@ except:
 import subprocess
 def ssh_linux(u,username,password,p=22,timeout=7):
  p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
- #command="echo ala_is_king"
+ command="echo ala_is_king"
  # "StrictHostKeyChecking=no" option was added to add the host automatically
  try:
   child = pexpect.spawn(p)
@@ -34,7 +34,7 @@ def ssh_linux(u,username,password,p=22,timeout=7):
     break
    else:
     break
-  #child.send(command+'\n')
+  child.send(command+'\n')
   try:
    child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
   except:

@@ -121,7 +121,6 @@ class iott(threading.Thread):
    except Exception as ex: 
     pass
    if i==True:
-    expos=False
     if exposed_telnet(ip)==True:
         ip+='::'
         print (ip)
