@@ -877,7 +877,7 @@ def adb_exploit(u,timeout=5,port=5555):
         s.settimeout(timeout)
         s.connect((u,port))
         s.send(b"\x43\x4e\x58\x4e\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x00\x32\x02\x00\x00\xbc\xb1\xa7\xb1\x68\x6f\x73\x74\x3a\x3a\x00") 
-        if "CNXN" in str(s.recv(4096)):
+        if "device" in str(s.recv(4096)):
             return True
     except:
         pass
@@ -888,7 +888,8 @@ def exposed_telnet(u,p=23,prompt='$',timeout=5):
   c= t.read_until(b":",timeout=timeout)
   t.write(b"echo ala_is_king\n")
   c= t.read_until(b":",timeout=timeout)
-  if ("#" in str(c)) or ('$' in str(c)) or (">" in str(c)):#if the shell was accessed successfully
+  if (('username:' not in str(c).lower()) and ('login:' not in str(c).lower()) and ("password:" not in str(c).lower())):
+   if ("#" in str(c)) or ('$' in str(c)) or (">" in str(c)):#if the shell was accessed successfully
     return True
  except Exception as e:
   pass

@@ -41,9 +41,10 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    pass
   c= child.before
   child.close()
-  for x in ['#','$','>']:
-   if x in str(c):#if the shell was accessed successfully
-    return True
+  if (('username:' not in str(c).lower()) and ('login:' not in str(c).lower()) and ("password:" not in str(c).lower())):
+   for x in ['#','$','>']:
+    if x in str(c):#if the shell was accessed successfully
+     return True
  except Exception as e:
   pass
  return False
