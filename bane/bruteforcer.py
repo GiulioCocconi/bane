@@ -372,7 +372,8 @@ def telnet(u,username,password,p=23,timeout=5):
   usr=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=s[2]
    if (('username:' in str(s).lower()) or ('login:' in str(s).lower())):
     if usr==True:
        break
@@ -384,13 +385,10 @@ def telnet(u,username,password,p=23,timeout=5):
    else:
     break
   #t.write(b"echo ala_is_king\n")
-  c= t.read_until(b":",timeout=timeout)
-  c=str(c)
-  if (('username:' not in c.lower()) and ('login:' not in c.lower()) and ("password:" not in c.lower())):
-   for x in ['#','$','>']:
-    if x in c:#if the shell was accessed successfully
-     if ((c.count('#')<2) or (c.count('>')<2) or (c.count('$')<2)):
-      return True
+  c= t.expect([b'alaala'],timeout=timeout)#[b'#',b'$',b'>'],timeout=timeout)#read_until(b":",timeout=timeout)
+  c=str(c[2])
+  if (('$' in c) or ('#' in c) or ('>' in c)):
+   return True
  except Exception as e:
   pass
  return False
