@@ -385,8 +385,8 @@ def telnet(u,username,password,p=23,timeout=5):
    else:
     break
   #t.write(b"echo ala_is_king\n")
-  c= t.expect([b'alaala'],timeout=timeout)#[b'#',b'$',b'>'],timeout=timeout)#read_until(b":",timeout=timeout)
-  c=str(c[2])
+  c= t.read_some()#expect([b'alaala'],timeout=timeout)#[b'#',b'$',b'>'],timeout=timeout)#read_until(b":",timeout=timeout)
+  c=str(c)
   if (('$' in c) or ('#' in c) or ('>' in c)):
    return True
  except Exception as e:
