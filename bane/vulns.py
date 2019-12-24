@@ -882,17 +882,16 @@ def adb_exploit(u,timeout=5,port=5555):
     except:
         pass
     return False
-def exposed_telnet(u,p=23,timeout=5):
+def exposed_telnet(u,p=23,timeout=3):
  try:
   t = telnetlib.Telnet(u,p,timeout=timeout)
-  c= t.read_until(b":",timeout=timeout)
-  t.write(b"echo ala_is_king\n")
-  c= t.read_until(b":",timeout=timeout)
+  c= t.read_until(b"alaalaaa",timeout=timeout)
   c=str(c)
-  if (('username:' not in c.lower()) and ('login:' not in c.lower()) and ("password:" not in c.lower())):
-   if ("#" in c) or ('$' in c) or (">" in c):#if the shell was accessed successfully
-    if ((c.count('#')<2) or (c.count('>')<2) or (c.count('$')<2)):
-     return True
+  c=c.replace("b'",'')
+  c=c.replace("'",'')
+  c=c.strip()
+  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+    return True
  except Exception as e:
   pass
  return False

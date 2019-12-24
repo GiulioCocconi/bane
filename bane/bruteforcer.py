@@ -367,28 +367,37 @@ def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  except Exception as e:
   pass
  return False
-def telnet(u,username,password,p=23,timeout=5):
+def telnet(u,username,password,p=23,timeout=3):
  try:
   usr=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.expect([b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    s=s[2]
-   if (('username:' in str(s).lower()) or ('login:' in str(s).lower())):
+   c=str(s)
+   c=c.replace("b'",'')
+   c=c.replace("'",'')
+   c=c.strip()
+   if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+    return True
+   if (('username:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
     if usr==True:
        break
     t.write("{}\n".format(username).encode('utf-8'))#send username
     usr=True
-   elif ("password:" in str(s).lower()):
+   elif (("password:" in str(s).lower()) or ("pass:" in str(s).lower())):
     t.write("{}\n".format(password).encode('utf-8'))#send password
     break
    else:
     break
   #t.write(b"echo ala_is_king\n")
-  c= t.read_some()#expect([b'alaala'],timeout=timeout)#[b'#',b'$',b'>'],timeout=timeout)#read_until(b":",timeout=timeout)
+  c= t.read_until(b"alaalaaa",timeout=timeout)
   c=str(c)
-  if (('$' in c) or ('#' in c) or ('>' in c)):
-   return True
+  c=c.replace("b'",'')
+  c=c.replace("'",'')
+  c=c.strip()
+  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+    return True
  except Exception as e:
   pass
  return False
@@ -409,12 +418,12 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    c=str(c)
    #if "yes/no" in c:
     #child.send('yes\n')
-   if (('login:' in c.lower()) or ('username:' in c.lower())):
+   if (('login:' in c.lower()) or ('username:' in c.lower()) or ('user:' in c.lower())):
     if usr==True:
        break
     child.send(username+'\n')#send username
     usr=True
-   elif "password:" in c.lower():
+   elif (("password:" in c.lower()) or ('pass:' in c.lower())):
     child.send(password+'\n')#send password
     break
    else:
@@ -426,12 +435,12 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    pass
   c= child.before
   c=str(c)
+  c=c.replace("b'",'')
+  c=c.replace("'",'')
+  c=c.strip()
   child.close()
-  if (('username:' not in c.lower()) and ('login:' not in c.lower()) and ("password:" not in c.lower())):
-   for x in ['#','$','>']:
-    if x in c:#if the shell was accessed successfully
-     if ((c.count('#')<2) or (c.count('>')<2) or (c.count('$')<2)):
-      return True
+  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+    return True
  except Exception as e:
   pass
  return False
