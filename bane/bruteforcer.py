@@ -373,7 +373,7 @@ def telnet(u,username,password,p=23,timeout=3):
   pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.expect([b'#',b'$',b'>',b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    s=s[2]
    c=str(s)
    c=c.replace("b'",'')
