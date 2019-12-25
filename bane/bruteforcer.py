@@ -373,7 +373,7 @@ def telnet(u,username,password,p=23,timeout=3):
   pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.expect([b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'#',b'$',b'>',b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    s=s[2]
    c=str(s)
    c=c.replace("b'",'')
@@ -400,15 +400,20 @@ def telnet(u,username,password,p=23,timeout=3):
   #t.write(b"echo ala_is_king\n")
   if pwd==False:
       return False
-  c= t.read_until(b'alaalaaa',timeout=timeout)
-  c=str(c)
-  c=c.replace("b'",'')
-  c=c.replace("'",'')
-  c=c.replace('b"','')
-  c=c.replace('"','')
-  c=c.strip()
-  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-    return True
+  while True:
+    try:
+      c=str(t.read_some()).lower()#keep reading the data till get the login result
+      c=c.replace("b'",'')
+      c=c.replace("'",'')
+      c=c.replace('b"','')
+      c=c.replace('"','')
+      c=c.strip()
+      if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+       return True
+      if (('%' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('username:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
+          return False
+    except:
+     break
  except Exception as e:
   pass
  return False
