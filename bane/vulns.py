@@ -888,10 +888,10 @@ def exposed_telnet(u,p=23,timeout=3):
   c= t.read_until(b"alaalaaa",timeout=timeout)
   c=str(c)
   c=c.replace("b'",'')
-   c=c.replace("'",'')
-   c=c.replace('b"','')
-   c=c.replace('"','')
-   c=c.strip()
+  c=c.replace("'",'')
+  c=c.replace('b"','')
+  c=c.replace('"','')
+  c=c.strip()
   if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
    if "This is an unrestricted telnet server" not in c:
      return True
