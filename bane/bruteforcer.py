@@ -370,6 +370,7 @@ def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
 def telnet(u,username,password,p=23,timeout=3):
  try:
   usr=False
+  pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
    s=t.expect([b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
@@ -377,9 +378,14 @@ def telnet(u,username,password,p=23,timeout=3):
    c=str(s)
    c=c.replace("b'",'')
    c=c.replace("'",'')
+   c=c.replace('b"','')
+   c=c.replace('"','')
    c=c.strip()
    if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-    return True
+    if "This is an unrestricted telnet server" not in c:
+     return True
+    if "This is an unrestricted telnet server" in c:
+        return False
    if (('username:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
     if usr==True:
        break
@@ -387,14 +393,19 @@ def telnet(u,username,password,p=23,timeout=3):
     usr=True
    elif (("password:" in str(s).lower()) or ("pass:" in str(s).lower())):
     t.write("{}\n".format(password).encode('utf-8'))#send password
+    pwd=True
     break
    else:
     break
   #t.write(b"echo ala_is_king\n")
-  c= t.read_until(b"alaalaaa",timeout=timeout)
+  if pwd==False:
+      return False
+  c= t.read_until(b'alaalaaa',timeout=timeout)
   c=str(c)
   c=c.replace("b'",'')
   c=c.replace("'",'')
+  c=c.replace('b"','')
+  c=c.replace('"','')
   c=c.strip()
   if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
     return True
