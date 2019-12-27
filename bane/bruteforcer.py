@@ -391,6 +391,8 @@ def telnet(u,username,password,p=23,timeout=3):
   #t.write(b"echo ala_is_king\n")
   if(usr==False) and (pwd==False):
       return False
+  if (pwd==False):
+      return False
   while True:
     try:
       c=str(t.read_some()).lower()#keep reading the data till get the login result
@@ -439,6 +441,8 @@ def ssh_linux(u,username,password,p=22,timeout=7):
     break
   #child.send(command+'\n')
   if(usr==False) and (pwd==False):
+      return False
+  if (pwd==False):
       return False
   try:
    child.expect(['$','>','#'],timeout=timeout)
@@ -541,6 +545,8 @@ def hydra(u,p=22,protocol="ssh",word_list=[],logs=True,returning=False,mapping=F
   pwd=x.split(':')[1].strip()
   if logs==True:
    print("[*]Trying: {}:{}".format(user,pwd))
+  if protocol=="ssh":
+      r=s(u,user,pwd,timeout=timeout,p=p)
   if protocol=="telnet":
       r=s(u,user,pwd,timeout=timeout,p=p)
   if (protocol=="mysql"):
