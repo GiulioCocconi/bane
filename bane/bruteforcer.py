@@ -7,8 +7,8 @@ if os.path.isdir('/data/data')==True:
     adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
-if ((termux==False) or (adr==False)):
- from bane.sshbf import *
+"""if ((termux==False) or (adr==False)):
+ from bane.sshbf import *"""
 import mysql.connector as mconn
 from bane.pager import *
 from bane.wp import wpadmin
@@ -372,9 +372,8 @@ def telnet(u,username,password,p=23,timeout=3):
   usr=False
   pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
-  i=0
   while True:
-   s=t.expect([b'ser:',b'ass:',b'ame:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'ser:',b'Pass:',b'pass:',b'Name:',b'sername:',b'name:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    s=s[2]
    if (('name:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
     if usr==True:
@@ -386,13 +385,9 @@ def telnet(u,username,password,p=23,timeout=3):
     pwd=True
     break
    else:
-    if i==0:
-        t.write("\n".encode('utf-8'))
-        i+=1
-    else:
      break
   #t.write(b"echo ala_is_king\n")
-  if(usr==False) or (pwd==False):
+  if(usr==False) and (pwd==False):
       return False
   while True:
     try:
@@ -418,9 +413,10 @@ def ssh_linux(u,username,password,p=22,timeout=7):
  try:
   child = pexpect.spawn(p)
   usr=False
+  pwd=False
   while True:
    try:
-    child.expect(['.*:'],timeout=timeout)#read until it reads ":"
+    child.expect(['ser:','Pass:','pass:','Name:','sername:','name:','ogin:','assword:'],timeout=timeout)#read until it reads ":"
    except:
     pass
    c=child.before
@@ -428,19 +424,22 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    c=str(c)
    #if "yes/no" in c:
     #child.send('yes\n')
-   if (('login:' in c.lower()) or ('username:' in c.lower()) or ('user:' in c.lower())):
+   if (('login:' in c.lower()) or ('name:' in c.lower()) or ('user:' in c.lower())):
     if usr==True:
        break
     child.send(username+'\n')#send username
     usr=True
    elif (("password:" in c.lower()) or ('pass:' in c.lower())):
     child.send(password+'\n')#send password
+    pwd=True
     break
    else:
     break
   #child.send(command+'\n')
+  if(usr==False) and (pwd==False):
+      return False
   try:
-   child.expect('.*=.*',timeout=timeout)#wait reading unexisting character in the prompt
+   child.expect(['$','>','#'],timeout=timeout)
   except:
    pass
   c= child.before
@@ -451,20 +450,26 @@ def ssh_linux(u,username,password,p=22,timeout=7):
   child.close()
   if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
     return True
+  if (('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
+          return False
  except Exception as e:
   pass
  return False
-def ssh_win(ip,username,password,p=22,timeout=5):
+def ssh_win(ip,username,password,p=22,timeout=10):
  #ssh login for windows
  try:
-  s = SSHClient()
-  s.set_missing_host_key_policy(AutoAddPolicy())
-  s.connect(ip, p,username=username, password=password,timeout=timeout)
-  stdin, stdout, stderr = s.exec_command ("echo ala_is_king",timeout=timeout)
-  r=stdout.read()
-  s.close()
-  if "ala_is_king" in str(r):# paramiko sometimes returns a false positive results so we execute the echo command and check the result to verify the login
-   return True
+  l='echo yes | plink -ssh -l {} -pw {} {} -P {} exit'.format(username,password,ip,p)
+  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+  p=ssh.communicate(timeout=timeout)
+  try:
+   ssh.kill()
+  except:
+   pass
+  p=ssh.communicate()
+  if ("access denied" in str(p).lower()) or ("fatal error" in str(p).lower()) or ("host does not exist" in str(p).lower()):
+     return False
+  else:
+     return True
  except Exception as e:
   pass
  return False
