@@ -465,7 +465,6 @@ def ssh_win(ip,username,password,p=22,timeout=10):
    ssh.kill()
   except:
    pass
-  p=ssh.communicate()
   if ("access denied" in str(p).lower()) or ("fatal error" in str(p).lower()) or ("host does not exist" in str(p).lower()):
      return False
   else:
