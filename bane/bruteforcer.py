@@ -372,23 +372,13 @@ def telnet(u,username,password,p=23,timeout=3):
   usr=False
   pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
+  i=0
   while True:
-   s=t.expect([b'ser:',b'ass:',b'sername:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=t.expect([b'ser:',b'ass:',b'ame:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
    s=s[2]
-   c=str(s)
-   c=c.replace("b'",'')
-   c=c.replace("'",'')
-   c=c.replace('b"','')
-   c=c.replace('"','')
-   c=c.strip()
-   if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-    if "This is an unrestricted telnet server" not in c:
-     return True
-    if "This is an unrestricted telnet server" in c:
-        return False
-   if (('username:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
+   if (('name:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
     if usr==True:
-       break
+       return False
     t.write("{}\n".format(username).encode('utf-8'))#send username
     usr=True
    elif (("password:" in str(s).lower()) or ("pass:" in str(s).lower())):
@@ -396,9 +386,13 @@ def telnet(u,username,password,p=23,timeout=3):
     pwd=True
     break
    else:
-    break
+    if i==0:
+        t.write("\n".encode('utf-8'))
+        i+=1
+    else:
+     break
   #t.write(b"echo ala_is_king\n")
-  if pwd==False:
+  if(usr==False) or (pwd==False):
       return False
   while True:
     try:
@@ -410,7 +404,7 @@ def telnet(u,username,password,p=23,timeout=3):
       c=c.strip()
       if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
        return True
-      if (('%' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('username:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
+      if (('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
           return False
     except:
      break

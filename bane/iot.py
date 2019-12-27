@@ -122,9 +122,10 @@ class iott(threading.Thread):
     pass
    if i==True:
     if exposed_telnet(ip)==True:
-        ip+='::'
+        """ip+='::'
         print (ip)
-        write_file(ip,filen)
+        write_file(ip,filen)"""
+        pass
     else:
      for x in wordlist:
       try:
