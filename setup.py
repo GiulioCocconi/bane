@@ -20,13 +20,13 @@ if termux==False:
     os.system('pip3 uninstall dnspython -y')
     os.system('pip3 install dnspython')
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","scapy","stem","cfscrape","python-whois","google","colorama","dnspython"]
+ req=["requests","PySocks","bs4","pexpect","mysql-connector","scapy","stem","cfscrape","python-whois","google","colorama","dnspython"]
  if adr==True:
     req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google","colorama","dnspython"]
  if termux==True:
     req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google","colorama","dnspython"]
 else:
- req=["requests","PySocks","bs4","pexpect","paramiko","mysql-connector","kamene","stem","cfscrape","python-whois","google","colorama","dnspython"]
+ req=["requests","PySocks","bs4","pexpect","mysql-connector","kamene","stem","cfscrape","python-whois","google","colorama","dnspython"]
  if adr==True:
     req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google","colorama","dnspython"]
  if termux==True:
@@ -39,7 +39,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.7.9",
+    version="3.8.0",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
