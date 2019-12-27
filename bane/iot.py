@@ -10,8 +10,10 @@ if os.path.isdir('/data/data/com.termux/')==True:
 wido=False
 if (sys.platform == "win32") or( sys.platform == "win64"):
  wido=True
-"""if ((wido==True) or (linux==True)):
- from bane.sshbf import *"""
+try:
+    import pexpect
+except:
+    pass
 import mysql.connector as mconn
 from bane.bruteforcer import *
 from bane.extrafun import create_file,write_file
