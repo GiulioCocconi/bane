@@ -375,8 +375,8 @@ def telnet(u,username,password,p=23,timeout=3):
   pwd=False
   t = telnetlib.Telnet(u,p,timeout=timeout)
   while True:
-   s=t.expect([b'ser:',b'Pass:',b'pass:',b'Name:',b'sername:',b'name:',b'ogin:',b'assword:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
-   s=s[2]
+   m=t.expect([b'ser:',b'Name:',b'sername:',b'name:',b'ogin:',b'assword:',b'Pass:',b'pass:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
+   s=m[2]
    if (('name:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
     if usr==True:
        return False
@@ -387,12 +387,18 @@ def telnet(u,username,password,p=23,timeout=3):
     pwd=True
     break
    else:
-     break
+      if ('this is an unrestricted telnet server' in str(s).lower()):
+         return False
+      c=str(s).lower()
+      c=c.replace("b'",'')
+      c=c.replace("'",'')
+      c=c.replace('b"','')
+      c=c.replace('"','')
+      c=c.strip()
+      if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
+       return True
+      break
   #t.write(b"echo ala_is_king\n")
-  if(usr==False) and (pwd==False):
-      return False
-  if (pwd==False):
-      return False
   while True:
     try:
       c=str(t.read_some()).lower()#keep reading the data till get the login result
@@ -403,7 +409,7 @@ def telnet(u,username,password,p=23,timeout=3):
       c=c.strip()
       if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
        return True
-      if (('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
+      if (('this is an unrestricted telnet server' in c) or ('enter>' in c) or ('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
           return False
     except:
      break
@@ -440,10 +446,6 @@ def ssh_linux(u,username,password,p=22,timeout=7):
    else:
     break
   #child.send(command+'\n')
-  if(usr==False) and (pwd==False):
-      return False
-  if (pwd==False):
-      return False
   try:
    child.expect(['$','>','#'],timeout=timeout)
   except:
