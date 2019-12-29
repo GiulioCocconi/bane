@@ -34,12 +34,12 @@ else:
 if (sys.platform == "win32") or( sys.platform == "win64"):
  req+=["win_inet_pton"]
 if termux==True:
- os.system('pkg install ssh -y')
+ os.system('pkg install openssh -y')
  os.system('pkg install sshpass -y')
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.8.2",
+    version="3.8.3",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
