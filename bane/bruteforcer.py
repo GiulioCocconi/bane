@@ -416,81 +416,82 @@ def telnet(u,username,password,p=23,timeout=3):
  except Exception as e:
   pass
  return False
-def ssh_linux(u,username,password,p=22,timeout=7):
- p='ssh -o StrictHostKeyChecking=no -p {} {}@{}'.format(p,username,u)#the command to spawn with "expect" on linux
- #command="echo ala_is_king"
- # "StrictHostKeyChecking=no" option was added to add the host automatically
- try:
-  child = pexpect.spawn(p)
-  usr=False
-  pwd=False
-  while True:
-   try:
-    child.expect(['ser:','Pass:','pass:','Name:','sername:','name:','ogin:','assword:'],timeout=timeout)#read until it reads ":"
-   except:
-    pass
-   c=child.before
-   c+= child.after
-   c=str(c)
-   #if "yes/no" in c:
-    #child.send('yes\n')
-   if (('login:' in c.lower()) or ('name:' in c.lower()) or ('user:' in c.lower())):
-    if usr==True:
-       break
-    child.send(username+'\n')#send username
-    usr=True
-   elif (("password:" in c.lower()) or ('pass:' in c.lower())):
-    child.send(password+'\n')#send password
-    pwd=True
-    break
-   else:
-    break
-  #child.send(command+'\n')
-  try:
-   child.expect(['$','>','#'],timeout=timeout)
-  except:
-   pass
-  c= child.before
-  c=str(c)
-  c=c.replace("b'",'')
-  c=c.replace("'",'')
-  c=c.strip()
-  child.close()
-  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-    return True
-  if (('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
-          return False
- except Exception as e:
-  pass
- return False
-def ssh_win(ip,username,password,p=22,timeout=10):
- #ssh login for windows
- try:
-  l='echo yes | plink -ssh -l {} -pw {} {} -P {} exit'.format(username,password,ip,p)
-  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
-  p=ssh.communicate(timeout=timeout)
-  try:
-   ssh.kill()
-  except:
-   pass
-  if ("access denied" in str(p).lower()) or ("fatal error" in str(p).lower()) or ("host does not exist" in str(p).lower()):
-     return False
-  else:
-     return True
- except Exception as e:
-  pass
- return False
-def ssh_andro(u,username,password,timeout=5):
- # ssh login on termux
- l="sshpass -p {} ssh -o ConnectTimeout={} -o StrictHostKeyChecking=no {}@{} echo ala_is_king; exit".format(password,timeout,username,u)
- #we use the "sshpass" command to send the password or the password prompt will pop up
+def ssh_linux(u,username,password,p=22,timeout=5):
+ # ssh login on linux
+ l="sshpass -p {} ssh -o ConnectTimeout={} -p {} -o StrictHostKeyChecking=no -l {} {} ; exit".format(password,timeout,p,username,u) #we use the sshpass command to send the password
+ ti=time.time()
  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
- p= ssh.communicate()
+ while ssh.poll() is None:
+   time.sleep(.1)
+   if int(time.time()-ti)==timeout:
+       try:
+        ssh.kill()
+       except:
+        pass
+       return False
  try:
    ssh.kill()
  except:
    pass
- if str(p[0]).strip()=='ala_is_king':
+ p=ssh.communicate()
+ try:
+   ssh.kill()
+ except:
+   pass
+ if (p[1]==''):
+  return True
+ else:
+  return False
+ 
+def ssh_win(ip,username,password,p=22,timeout=5):
+ #ssh login for windows
+ try:
+  l='echo yes | plink -ssh -l {} -pw {} {} -P {} exit'.format(username,password,ip,p)
+  ti=time.time()
+  ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+  while ssh.poll() is None:
+   time.sleep(.1)
+   if int(time.time()-ti)==timeout:
+       try:
+        ssh.kill()
+       except:
+        pass
+       return False
+  try:
+   ssh.kill()
+  except:
+   pass
+  p=ssh.communicate()
+  if ("access denied" in str(p).lower()) or ("fatal error" in str(p).lower()) or ("host does not exist" in str(p).lower()):
+     return False
+  else:
+     return True
+ except:
+  pass
+ return False
+def ssh_andro(u,username,password,p=22,timeout=5):
+ # ssh login on termux
+ l="sshpass -p {} ssh -o ConnectTimeout={} -p {} -o StrictHostKeyChecking=no -l {} {} ; exit".format(password,timeout,p,username,u) #we use the sshpass command to send the password
+ ti=time.time()
+ ssh = subprocess.Popen(l.split(),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ while ssh.poll() is None:
+   time.sleep(.1)
+   if int(time.time()-ti)==timeout:
+       try:
+        ssh.kill()
+       except:
+        pass
+       return False
+ try:
+   ssh.kill()
+ except:
+   pass
+ p=ssh.communicate()
+ try:
+   ssh.kill()
+ except:
+   pass
+ if (p[1]==''):
   return True
  else:
   return False
