@@ -1,4 +1,4 @@
-import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess
+import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess,time
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ftplib import FTP
@@ -429,16 +429,12 @@ def ssh_linux(u,username,password,p=22,timeout=5):
        except:
         pass
        return False
- try:
-   ssh.kill()
- except:
-   pass
  p=ssh.communicate()
  try:
    ssh.kill()
  except:
    pass
- if (p[1]==''):
+ if (p[1].decode("utf-8") ==''):
   return True
  else:
   return False
@@ -482,16 +478,12 @@ def ssh_andro(u,username,password,p=22,timeout=5):
        except:
         pass
        return False
- try:
-   ssh.kill()
- except:
-   pass
  p=ssh.communicate()
  try:
    ssh.kill()
  except:
    pass
- if (p[1]==''):
+ if (p[1].decode("utf-8") ==''):
   return True
  else:
   return False
