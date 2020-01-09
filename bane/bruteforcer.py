@@ -407,10 +407,10 @@ def telnet(u,username,password,p=23,timeout=3):
       c=c.replace('b"','')
       c=c.replace('"','')
       c=c.strip()
+      if (('this is an unrestricted telnet server' in c) or ('denied' in c) or ('enter>' in c) or ('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
+          return False
       if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
        return True
-      if (('this is an unrestricted telnet server' in c) or ('enter>' in c) or ('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
-          return False
     except:
      break
  except Exception as e:
