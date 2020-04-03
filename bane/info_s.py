@@ -120,12 +120,14 @@ def who_is(u):
  except:
   pass
  return {}
-def geoip(u,timeout=15):
+def geoip(u,timeout=15,proxy=None):
  '''
    this function is for getting: geoip informations
  '''
  try:
-   r=requests.get('https://geoip-db.com/jsonp/'+u,headers = {'User-Agent': random.choice(ua)},timeout=timeout).text
+   if proxy:
+    proxy={'http':'http://'+proxy}
+   r=requests.get('https://geoip-db.com/jsonp/'+u,headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout).text
    return json.loads(r.split('(')[1].split(')')[0])
  except:
   pass
