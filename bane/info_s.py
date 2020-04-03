@@ -4,10 +4,9 @@ from bs4 import BeautifulSoup
 from bane.payloads import *
 if os.path.isdir('/data/data/com.termux/')==False:
     import dns.resolver
-def telnet_banner(u,p=23,timeout=3):
+def get_banner(u,p=23,timeout=3,payload=None):
  try:
-  t=xtelnet.session()
-  return t.get_banner(u,p=p,timeout=timeout)
+  return xtelnet.get_banner(u,p=p,timeout=timeout,payload=payload)
  except:
   return None
 def info(u,timeout=10,proxy=None):
