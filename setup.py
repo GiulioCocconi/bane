@@ -6,7 +6,6 @@ termux=False
 if os.path.isdir('/home/')==True:
  os.system('sudo apt install sshpass -y')
  os.system('sudo apt install nodejs -y')
- os.system('sudo apt install expect -y')
 adr=False
 if os.path.isdir('/data/data')==True:
     adr=True
@@ -20,17 +19,17 @@ if termux==False:
     os.system('pip3 uninstall dnspython -y')
     os.system('pip3 install dnspython')
 if  sys.version_info < (3,0):
- req=["requests","PySocks","bs4","mysql-connector","scapy","stem","cfscrape","python-whois","google","colorama","dnspython"]
+ req=["xtelnet","requests","PySocks","bs4","mysql-connector","scapy","stem","cfscrape","python-whois","google","colorama","dnspython"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google","colorama","dnspython"]
+    req=["xtelnet","requests","PySocks","bs4","mysql-connector","cfscrape","scapy","python-whois","google","colorama","dnspython"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google","colorama","dnspython"]
+    req=["xtelnet","requests","PySocks","bs4","mysql-connector","scapy","cfscrape","python-whois","google","colorama","dnspython"]
 else:
- req=["requests","PySocks","bs4","mysql-connector","kamene","stem","cfscrape","python-whois","google","colorama","dnspython"]
+ req=["xtelnet","requests","PySocks","bs4","mysql-connector","kamene","stem","cfscrape","python-whois","google","colorama","dnspython"]
  if adr==True:
-    req=["requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google","colorama","dnspython"]
+    req=["xtelnet","requests","PySocks","bs4","mysql-connector","cfscrape","kamene","python-whois","google","colorama","dnspython"]
  if termux==True:
-    req=["requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois","google","colorama","dnspython"]
+    req=["xtelnet","requests","PySocks","bs4","mysql-connector","kamene","cfscrape","python-whois","google","colorama","dnspython"]
 if (sys.platform == "win32") or( sys.platform == "win64"):
  req+=["win_inet_pton"]
 if termux==True:
@@ -39,7 +38,7 @@ if termux==True:
  os.system('pkg install nodejs -y')
 setuptools.setup(
     name="bane",
-    version="3.8.8",
+    version="3.8.9",
     author="AlaBouali",
     author_email="trap.leader.123@gmail.com",
     description="cyber security library",
