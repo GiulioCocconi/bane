@@ -56,7 +56,7 @@ def info(u,timeout=10,proxy=None):
  except Exception as e:
   pass
  return h
-def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
+def norton_rate(u,logs=True,returning=False,timeout=15,proxy=None):
  '''
    this function takes any giving and gives a security report from: safeweb.norton.com, if it is a: spam domain, contains a malware...
    it takes 3 arguments:
@@ -66,7 +66,7 @@ def nortonrate(u,logs=True,returning=False,timeout=15,proxy=None):
    usage:
    >>>import bane
    >>>url='http://www.example.com'
-   >>>bane.nortonrate(domain)
+   >>>bane.norton_rate(domain)
 '''
  if proxy:
   proxy={'http':'http://'+proxy}
@@ -113,21 +113,7 @@ def myip(proxy=None,proxy_type=None,timeout=15):
  except:
   pass
  return ''
-'''
-   functions below are using: api.hackertarget.com services to gather up any kind of informations about any given ip or domain
-   they take 3 arguments:
-   u: ip or domain
-   logs: (set by default to: True) showing the process and the report, you can turn it off by setting it to:False
-   returning: (set by default to: False) returning the report as a string format if it is set to: True
-   general usage:
-   >>>import bane
-   >>>ip='50.63.33.34'
-   >>>bane.dnslookup(ip)
-   >>>bane.traceroute(ip)
-   etc...
-'''
 def who_is(u):
- import whois
  u=u.replace('www.','')
  try:
   return whois.whois(u)
@@ -139,13 +125,15 @@ def geoip(u,timeout=15):
    this function is for getting: geoip informations
  '''
  try:
-   r=requests.get('https://geoip-db.com/jsonp/'+u,timeout=timeout).text
+   r=requests.get('https://geoip-db.com/jsonp/'+u,headers = {'User-Agent': random.choice(ua)},timeout=timeout).text
    return json.loads(r.split('(')[1].split(')')[0])
  except:
   pass
  return {}
 def headers(u,timeout=10,logs=True,returning=False,proxy=None):
  try:
+   if proxy:
+    proxy={'http':'http://'+proxy}
    s=requests.session()
    a=s.get(u,headers = {'User-Agent': random.choice(ua)} ,proxies=proxy,timeout=timeout).headers
  except Exception as ex:
@@ -185,7 +173,7 @@ def resolve(u,server='8.8.8.8',timeout=1,lifetime=1):
   o.append(str(x))
  return o
 """
-this slass is used to scan a target for open ports
+this class is used to scan a target for open ports
 
 usage:
 
