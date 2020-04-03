@@ -1,5 +1,5 @@
 #coding: utf-8
-import subprocess,os,telnetlib
+import subprocess,os,xtelnet
 import requests,socket,random,time,ssl
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -876,7 +876,7 @@ def adb_exploit(u,timeout=5,port=5555):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(timeout)
         s.connect((u,port))
-        s.send(b"\x43\x4e\x58\x4e\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x00\x32\x02\x00\x00\xbc\xb1\xa7\xb1\x68\x6f\x73\x74\x3a\x3a\x00") 
+        s.send(b"CNXN\x00\x00\x00\x01\x00\x10\x00\x00\x07\x00\x00\x00\x32\x02\x00\x00\xbc\xb1\xa7\xb1host::\x00") 
         if "CNXN" in str(s.recv(4096)):
             return True
     except:
@@ -884,19 +884,10 @@ def adb_exploit(u,timeout=5,port=5555):
     return False
 def exposed_telnet(u,p=23,timeout=3):
  try:
-  t = telnetlib.Telnet(u,p,timeout=timeout)
-  c= t.read_until(b"alaalaaa",timeout=timeout)
-  c=str(c)
-  c=c.replace("b'",'')
-  c=c.replace("'",'')
-  c=c.replace('b"','')
-  c=c.replace('"','')
-  c=c.strip()
-  if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-   if "This is an unrestricted telnet server" not in c:
-     return True
-   if "This is an unrestricted telnet server" in c:
-        return False
- except Exception as e:
+  t=xtelnet.session()
+  t.login(u,p=p,timeout=timeout)
+  t.close()
+  return True
+ except:
   pass
  return False

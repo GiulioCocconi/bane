@@ -11,12 +11,9 @@ def masshttp(count=None,timeout=15):
    if you are willing to use them please check them first!!!
    the function takes an argument (*args) which is the number of proxies to return, in case of no argument given it will
    return the whole list.
-
    usage:
-
    >>>import bane
    >>>bane.masshttp()
-
    >>>bane.masshttp(1500)
  '''
  if count!=None:
@@ -52,7 +49,7 @@ def masshttp(count=None,timeout=15):
  l=[]
  u="https://www.dailyfreeproxy.com/#"
  try:
-  h3tags = crawl(u,headers={'User-Agent': random.choice(ua)},timeout=timeout)
+  h3tags = crawl(u,timeout=timeout)
   for a in h3tags:
     try:
      if (("-http" in str(a)) and("#" not in (str(a)))) :

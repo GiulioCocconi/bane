@@ -1,4 +1,4 @@
-import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess,time
+import requests,random,smtplib,telnetlib,sys,os,hashlib,base64,subprocess,time,xtelnet
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from ftplib import FTP
@@ -347,7 +347,7 @@ def admin_panel_finder(u,logs=True,mapping=False,returning=False,ext='php',timeo
       user=x.split(':')[0]
       pwd=x.split(':')[1]
       print '[*]Trying:',user,pwd
-      if ssh1(host,username=user,password=pwd)==True:
+      if bane.telnet(host,username=user,password=pwd)==True:
        print'[+]Found!!!'
       else:
        print'[-]Failed'
@@ -371,52 +371,14 @@ def smtp(u, username,password,p=25,ehlo=True,helo=False,ttls=False):
  return False
 def telnet(u,username,password,p=23,timeout=3):
  try:
-  usr=False
-  pwd=False
-  t = telnetlib.Telnet(u,p,timeout=timeout)
-  while True:
-   m=t.expect([b'ser:',b'Name:',b'sername:',b'name:',b'ogin:',b'assword:',b'Pass:',b'pass:'],timeout=timeout)#read_until(b':',timeout=timeout)#read until it finds ":" (it could ask for both username and password, or the password only)
-   s=m[2]
-   if (('name:' in str(s).lower()) or ('login:' in str(s).lower()) or ('user:' in str(s).lower())):
-    if usr==True:
-       return False
-    t.write("{}\n".format(username).encode('utf-8'))#send username
-    usr=True
-   elif (("password:" in str(s).lower()) or ("pass:" in str(s).lower())):
-    t.write("{}\n".format(password).encode('utf-8'))#send password
-    pwd=True
-    break
-   else:
-      if ('this is an unrestricted telnet server' in str(s).lower()):
-         return False
-      c=str(s).lower()
-      c=c.replace("b'",'')
-      c=c.replace("'",'')
-      c=c.replace('b"','')
-      c=c.replace('"','')
-      c=c.strip()
-      if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-       return True
-      break
-  #t.write(b"echo ala_is_king\n")
-  while True:
-    try:
-      c=str(t.read_some()).lower()#keep reading the data till get the login result
-      c=c.replace("b'",'')
-      c=c.replace("'",'')
-      c=c.replace('b"','')
-      c=c.replace('"','')
-      c=c.strip()
-      if (('this is an unrestricted telnet server' in c) or ('denied' in c) or ('enter>' in c) or ('%' in c) or ('bad' in c) or ("incorrect" in c) or ('failed' in c) or ('wrong' in c) or ('invalid' in c) or ('name:' in c) or ('login:' in c) or ('user:' in c) or ('password:' in c) or  ('pass:' in c)):
-          return False
-      if ((c[-1:]=='$') or (c[-1:]=='#') or (c[-1:]=='>')):
-       return True
-    except:
-     break
- except Exception as e:
+  t=xtelnet.session()
+  t.login(u,username=username,password=password,p=p,timeout=timeout)
+  t.close()
+  return True
+ except:
   pass
  return False
-def ssh_linux(u,username,password,p=22,timeout=5):
+def ssh_linux(u,username,password,p=22,timeout=3):
  # ssh login on linux
  l="sshpass -p {} ssh -o ConnectTimeout={} -p {} -o StrictHostKeyChecking=no -l {} {} ; exit".format(password,timeout,p,username,u) #we use the sshpass command to send the password
  ti=time.time()
@@ -439,8 +401,8 @@ def ssh_linux(u,username,password,p=22,timeout=5):
  else:
   return False
  
-def ssh_win(ip,username,password,p=22,timeout=5):
- #ssh login for windows
+def ssh_win(ip,username,password,p=22,timeout=3):
+ #ssh login for windows (requires putty: plink )
  try:
   l='echo yes | plink -ssh -l {} -pw {} {} -P {} exit'.format(username,password,ip,p)
   ti=time.time()
@@ -465,7 +427,7 @@ def ssh_win(ip,username,password,p=22,timeout=5):
  except:
   pass
  return False
-def ssh_andro(u,username,password,p=22,timeout=5):
+def ssh_andro(u,username,password,p=22,timeout=3):
  # ssh login on termux
  l="sshpass -p {} ssh -o ConnectTimeout={} -p {} -o StrictHostKeyChecking=no -l {} {} ; exit".format(password,timeout,p,username,u) #we use the sshpass command to send the password
  ti=time.time()

@@ -1,9 +1,15 @@
-import requests,urllib,socket,random,time,re,threading,sys,whois,json,os
+import requests,urllib,socket,random,time,re,threading,sys,whois,json,os,xtelnet
 import bs4
 from bs4 import BeautifulSoup
 from bane.payloads import *
 if os.path.isdir('/data/data/com.termux/')==False:
     import dns.resolver
+def telnet_banner(u,p=23,timeout=3):
+ try:
+  t=xtelnet.session()
+  return t.get_banner(u,p=p,timeout=timeout)
+ except:
+  return None
 def info(u,timeout=10,proxy=None):
  '''
    this function fetchs all informations about the given ip or domain using check-host.net and returns them to the use as string
@@ -174,7 +180,7 @@ def resolve(u,server='8.8.8.8',timeout=1,lifetime=1):
  r = dns.resolver.Resolver()
  r.timeout = 1
  r.lifetime = 1
- r.nameservers = ['8.8.8.8']
+ r.nameservers = [server]
  a = r.query(u)
  for x in a:
   o.append(str(x))
@@ -184,7 +190,7 @@ this slass is used to scan a target for open ports
 
 usage:
 
-a=bane.ports_scan("8.8.8.8",ports=[21,22,23,80,443,3306],timeout=5)
+a=bane.port_scan("8.8.8.8",ports=[21,22,23,80,443,3306],timeout=5)
 print(a.result)
 
 this should give you a dict like this:
@@ -192,7 +198,7 @@ this should give you a dict like this:
 {'443': 'Open', '22': 'Closed', '21': 'Closed', '23': 'Closed', '80': 'Closed', '3306': 'Closed'}
 
 """
-class ports_scan:
+class port_scan:
  def scan (self):
         p=self.por[self.flag2]
         s= socket.socket(socket.AF_INET, socket.SOCK_STREAM)

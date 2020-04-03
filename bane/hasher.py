@@ -1,4 +1,9 @@
 import hashlib,base64
+def xor(data, key):
+ '''
+   function to return XOR encrypted string
+ '''
+ return bytes(bytearray(a^b for a, b in zip(*map(bytearray, [data.encode('utf-8'), key.encode('utf-8')]))))
 def md_5(w):
  '''
    function to return md5 encrypted string
