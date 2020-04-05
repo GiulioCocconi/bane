@@ -233,3 +233,11 @@ II-Usage (General usage):
 <br>bane.slow_get_test(IP , port=80, duration=180 )
 <h4>Maximum number of allowed connections from a single host:</h4>
 <br>bane.max_connections_limit(IP , port=80, connections=150 , duration=180 )
+<h4>Slow POST test:</h4>
+<br>bane.slow_post_test(IP , port=80, duration=180 )
+<h4>Slow Read test:</h4>
+<br>bane.slow_read_test(IP , port=80, duration=180 )
+<h4>Android Debug Bridge (ADB) exploit:</h4>
+<br>bane.adb_exploit(IP , timeout=5 )
+<h4>Exposed unauthenticated Telnet server:</h4>
+<br>bane.exposed_telnet(IP , timeout=5 )
