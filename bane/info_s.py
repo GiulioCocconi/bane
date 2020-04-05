@@ -234,7 +234,7 @@ def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,reque
    r=s.post('https://scan.penteston.com/scan_system.php',data={"scan_method":"S201","test_protocol":https_flag,"test_host":host},timeout=requests_timeout).text
    if '"isFinished":"no"' not in r:
     if logs==True:
-     print("[+]Scan results:")
+     print("\n[+]Scan results:")
     c=r.split('strong><br\/>')[1].replace('"}','')
     for x in (c.split('<br\/>')):
      if x.strip():
@@ -246,7 +246,9 @@ def subdomains_finder(u,process_check_interval=5,logs=True,returning=False,reque
     break
    else:
     if logs==True:
-     print("[*]Scan in progress...")
+     sys.stdout.write("\r[*]Scan in progress...")
+     sys.stdout.flush()
+     #print("[*]Scan in progress...")
   except KeyboardInterrupt:
       break
   except:
