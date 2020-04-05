@@ -433,6 +433,13 @@ II-Usage (General usage):
 <h4>Without password: (doesn't work with Windows OS)</h4>
 <br>bane.tor_switch_with_password( interval=30 , password=password , p=9051 , logs=True)
 
+# Updating bane:
+
+<h4>Updating for Python2:</h4>
+<br>bane.update_py2(version=None)
+<h4>Updating for Python3:</h4>
+<br>bane.update_py3(version=None)
+
 # Some extra useful functions:
 
 <h4>Clear a file:</h4>
