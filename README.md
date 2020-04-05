@@ -241,6 +241,8 @@ II-Usage (General usage):
 <br>bane.adb_exploit(IP , timeout=5 )
 <h4>Exposed unauthenticated Telnet server:</h4>
 <br>bane.exposed_telnet(IP , timeout=5 )
+
+
 # Proxies collecting:
 
 <h4>Mass HTTP proxies gathering:</h4>
