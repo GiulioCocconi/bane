@@ -130,13 +130,13 @@ def wp_post(u,path='/wp-json/wp/v2/posts/',post=1,timeout=10,boolean=False,link=
   return b
  if content==True:
   return c
-def wp_users_enumeration(u,path='/',timeout=15,proxy=None,count=15,logs=True,returning=False):
+def wp_users_enumeration(u,path='/',timeout=15,proxy=None,start=1,end=20,logs=True,returning=False):
  d=u.split('://')[1].split("/")[0]
  u=u.split(d)[0]+d
  if proxy:
   proxy={'http':'http://'+proxy}
  l=[]
- for x in range(count):
+ for x in range(start,end+1):
   try:
       r=requests.get(u+path+"?author="+str(x),headers = {'User-Agent': random.choice(ua)},proxies=proxy,timeout=timeout, verify=False).text
       a=r.split('<meta property="og:title" content="')[1].split('>')[0]
@@ -159,4 +159,3 @@ def wp_version(u,timeout=15,proxy=None):
   return r.split('<meta name="generator" content="')[1].split('"')[0].strip()
  except:
   pass
- 
