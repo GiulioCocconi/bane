@@ -367,6 +367,25 @@ II-Usage (General usage):
 <h4>File content decoding with base64:</h4>
 <br>bane.base64decodefl( file )
 
+# Decryption:
+
+<h4>MD5:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , md5_hash=True )
+<h4>SHA1:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , sha1_hash=True )
+<h4>SHA224:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , sha224_hash=True )
+<h4>SHA256:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , sha256_hash=True )
+<h4>SHA384:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , sha384_hash=True )
+<h4>SHA512:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , sha512_hash=True )
+<h4>Base64:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , base64_hash=True )
+<h4>Caesar:</h4>
+<br>bane.decrypt(hash , word_list=["admin","admin123","love"] , caesar_hash=True )
+
 # Bruteforcing:
 
 <h4>Admin panel on web page:</h4>
@@ -378,8 +397,9 @@ II-Usage (General usage):
 <h4>TELNET server:</h4>
 <br>bane.hydra(IP , p=23 , protocol="telnet" , word_list=["admin:admin","admin:1234"] , timeout=5 )
 <h4>SMTP server:</h4>
-<br>bane.hydra(IP , p=25 , protocol="smtp" , ehlo=False , helo=True , ttls=False , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<br>bane.hydra(IP , p=25 , protocol="smtp" , ehlo=False , helo=True , ttls=False , word_list=["admin:admin","admin:1234"] , timeout=5)
 <h4>MySQL server:</h4>
 <br>bane.hydra(IP , p=3306 , protocol="mysqlt" , word_list=["admin:admin","admin:1234"] , timeout=5 )
 <h4>WordPress login page:</h4>
 <br>bane.hydra(link , protocol="wp" , word_list=["admin:admin","admin:1234"] , timeout=15 )
+
