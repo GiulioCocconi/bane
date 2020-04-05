@@ -261,3 +261,27 @@ II-Usage (General usage):
 <br>bane.socks5()
 <h4>Checking proxy:</h4>
 <br>bane.proxy_check(IP , port , proto="http" , timeout=5)
+
+
+# IoTs mass scanning:
+
+<h4>Mass ssh scanning: (if you are on Windows OS, please install Putty)</h4>
+<br>bane.mass_ssh(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass telnet scanning:</h4>
+<br>bane.mass_telnet(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass telnet scanning:</h4>
+<br>bane.mass_telnet(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass unauthenticated telnet scanning:</h4>
+<br>bane.mass_exposed_telnet(threads=100 )
+<h4>Mass FTP scanning:</h4>
+<br>bane.mass_ftp(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass Anonymous FTP scanning:</h4>
+<br>bane.mass_ftp_anon(threads=100 )
+<h4>Mass SMTP scanning:</h4>
+<br>bane.mass_smtp(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass MySQL scanning:</h4>
+<br>bane.mass_mysql(threads=100 , word_list= ["root:root","admin:admin"] )
+<h4>Mass MySQL scanning for servers with username "root" and empty password:</h4>
+<br>bane.mass_mysql_default(threads=100 )
+<h4>Mass Android Debug Bridge (ADB) exploit:</h4>
+<br>bane.mass_adb(threads=100 )
