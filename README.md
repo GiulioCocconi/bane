@@ -327,3 +327,42 @@ II-Usage (General usage):
 <br>bane.port_scan( IP , ports=[21,22,23,25,43,53,80,443,2082,3306] , timeout=5 )
 <h4>Subdomains finder:</h4>
 <br>bane.subdomains_finder( domain )
+
+# Encryption:
+
+<h4>XOR:</h4>
+<br>bane.xor( data, key )
+<h4>Caesar:</h4>
+<br>bane.caesar( data, key )
+<h4>MD5:</h4>
+<br>bane.md_5( data )
+<h4>SHA1:</h4>
+<br>bane.sha1( data )
+<h4>SHA224:</h4>
+<br>bane.sha224( data )
+<h4>SHA256:</h4>
+<br>bane.sha256( data )
+<h4>SHA384:</h4>
+<br>bane.sha384( data )
+<h4>SHA512:</h4>
+<br>bane.sha512( data )
+<h4>Base64 encoding:</h4>
+<br>bane.base64encode( data )
+<h4>Base64 decoding:</h4>
+<br>bane.base64decode( data )
+<h4>File content encryption with MD5:</h4>
+<br>bane.md5fl( file )
+<h4>File content encryption with SHA1:</h4>
+<br>bane.sha1fl( file )
+<h4>File content encryption with SHA224:</h4>
+<br>bane.sha224fl( file )
+<h4>File content encryption with SHA256:</h4>
+<br>bane.sha256fl( file )
+<h4>File content encryption with SHA384:</h4>
+<br>bane.sha384fl( file )
+<h4>File content encryption with SHA512:</h4>
+<br>bane.sha512fl( file )
+<h4>File content encoding with base64:</h4>
+<br>bane.base64encodefl( file )
+<h4>File content decoding with base64:</h4>
+<br>bane.base64decodefl( file )
