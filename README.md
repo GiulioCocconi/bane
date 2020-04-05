@@ -207,3 +207,9 @@ II-Usage (General usage):
 <br>bane.sqli_boolean_based(link , timeout=15 )
 <h4>SQL Injection time based:</h4>
 <br>bane.sqli_time_based(link , timeout=15 )
+<h4>XSS GET method:</h4>
+<br>bane.xss_get(link , {"q" : "<script>alert(123)</script>"}, extra={"Submit" : "Submit"} , timeout=15 )
+<h4>XSS POST method:</h4>
+<br>bane.xss_post(link , {"q" : "<script>alert(123)</script>"}, extra={"Submit" : "Submit"} , timeout=15 )
+<h4>Automatic XSS scan for page:</h4>
+<br>bane.xss(link , payload="<script>alert(123)</script>" , timeout=15 )
