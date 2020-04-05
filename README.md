@@ -227,3 +227,9 @@ II-Usage (General usage):
 <br>bane.php_code_injectc_post(link,param="q" , timeout=15 )
 <h4>File inclusion:</h4>
 <br>bane.file_inclusion(link, timeout=15 )
+<h4>Headers timeout:</h4>
+<br>bane.headers_timeout_test(IP , port=80, max_timeout=30 )
+<h4>Slow GET test:</h4>
+<br>bane.slow_get_test(IP , port=80, duration=180 )
+<h4>Maximum number of allowed connections from a single host:</h4>
+<br>bane.max_connections_limit(IP , port=80, connections=150 , duration=180 )
