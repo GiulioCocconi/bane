@@ -308,7 +308,7 @@ II-Usage (General usage):
 <h4>Get banner:</h4>
 <br>bane.get_banner(IP , p=port , payload=None , timeout=5 )
 <h4>Get infomation about Domain or IP:</h4>
-<br>bane.get_banner(IP , timeout=15 )
+<br>bane.info(IP , timeout=15 )
 <h4>safeweb.norton.com report for a link:</h4>
 <br>bane.norton_rate(link , timeout=15 )
 <h4>Your IP address:</h4>
