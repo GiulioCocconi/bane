@@ -425,3 +425,35 @@ II-Usage (General usage):
 <br>bane.snmp_factor( IP , timeout=3 )
 <h4>ECHO:</h4>
 <br>bane.echo_factor( IP , timeout=3 )
+
+# Tor IP switching:
+
+<h4>Without password: (doesn't work with Windows OS)</h4>
+<br>bane.tor_switch_no_password( interval=30 , logs=True )
+<h4>Without password: (doesn't work with Windows OS)</h4>
+<br>bane.tor_switch_with_password( interval=30 , password=password , p=9051 , logs=True)
+
+# Some extra useful functions:
+
+<h4>Clear a file:</h4>
+<br>bane.clear_file( file )
+<h4>Create a file:</h4>
+<br>bane.create_file( file )
+<h4>Delete a file:</h4>
+<br>bane.delete_file( file )
+<h4>Get content of a file:</h4>
+<br>bane.read_file( file )
+<h4>Get CloudFlare cookie: (you must install NodeJS first)</h4>
+<br>bane.get_cf_cookie( domain , user_agent )
+<h4>Get HTB invitation:</h4>
+<br>bane.HTB_invitation()
+<h4>Get Facebook account's ID:</h4>
+<br>bane.facebook_id( fb_link )
+<h4>Google dorking:</h4>
+<br>bane.google_dorking( dork )
+<h4>Webhint report's link:</h4>
+<br>bane.webhint_report( link )
+<h4>Youtube search:</h4>
+<br>bane.youtube_search( query )
+<h4>Write to a file:</h4>
+<br>bane.write_file( data , file )
