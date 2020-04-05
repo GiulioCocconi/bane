@@ -108,7 +108,7 @@ import bane
 
 
 ---------------------------------------------------------------------------------------------------------------------------
-II-Usage:
+II-Usage (General usage):
 ---------------------------------------------------------------------------------------------------------------------------
 
 # DDoS:
@@ -181,3 +181,20 @@ II-Usage:
 <br>bane.cf_kill_ua(link , duration= 300 , threads=500 , timeout=5 )
 <h4>Bypass "Under attack mode" provided by CloudFlare and Rate-Limiting:</h4>
 <br>bane.cf_kill_ua_rate_limiting(link , duration= 300 , set_tor=False , threads=500 , timeout=5 )
+
+#WordPress testing:
+
+<h4>Users list:</h4>
+<br>bane.wp_users_list(link , timeout=15 )
+<h4>User information:</h4>
+<br>bane.wp_user(link , user=user_id , timeout=15 )
+<h4>Posts list:</h4>
+<br>bane.wp_posts_list(link , timeout=15 )
+<h4>Post information:</h4>
+<br>bane.wp_post(link , post=post_id , timeout=15 )
+<h4>Users Enumeration:</h4>
+<br>bane.wp_users_enumeration(link , timeout=15 )
+<h4>WordPress version:</h4>
+<br>bane.wp_version(link , timeout=15 )
+<h4>Vulnerable plugins and themes:</h4>
+<br>bane.wp_scan(link , timeout=15 )
