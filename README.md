@@ -285,3 +285,20 @@ II-Usage (General usage):
 <br>bane.mass_mysql_default(threads=100 )
 <h4>Mass Android Debug Bridge (ADB) exploit:</h4>
 <br>bane.mass_adb(threads=100 )
+
+# Extract information from page:
+
+<h4>Get all page inputs and their values:</h4>
+<br>bane.inputs(link , value=True , timeout=10 )
+<h4>Get all page forms and their values:</h4>
+<br>bane.forms(link , value=True , timeout=10 )
+<h4>Get login form:</h4>
+<br>bane.loginform(link , value=True , timeout=10 )
+<h4>Get all links on the page:</h4>
+<br>bane.crawl(link , timeout=10 )
+<h4>Get all paths on the page:</h4>
+<br>bane.pather(link , timeout=10 )
+<h4>Get all social media and external links on the page:</h4>
+<br>bane.media(link , timeout=10 )
+<h4>Get all subdomains links on the page:</h4>
+<br>bane.subdomains_extract(link , timeout=10 )
