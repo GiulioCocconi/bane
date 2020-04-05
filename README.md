@@ -408,3 +408,20 @@ II-Usage (General usage):
 <br>bane.force_browsing(link , ext="php" , timeout=15 )
 <h4>Filemanager finder:</h4>
 <br>bane.filemanager_finder(link , ext="php" , timeout=15 )
+
+# Amplification factors calculation for some protocols:
+
+<h4>DNS:</h4>
+<br>bane.dns_factor( IP , timeout=3 )
+<h4>NTP:</h4>
+<br>bane.ntp_factor( IP , timeout=3 )
+<h4>Memcache:</h4>
+<br>bane.memcache_factor( IP , timeout=3 )
+<h4>Chargen:</h4>
+<br>bane.chargen_factor( IP , timeout=3 )
+<h4>SSDP:</h4>
+<br>bane.ssdp_factor( IP , timeout=3 )
+<h4>SNMP:</h4>
+<br>bane.snmp_factor( IP , timeout=3 )
+<h4>ECHO:</h4>
+<br>bane.echo_factor( IP , timeout=3 )
