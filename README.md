@@ -302,3 +302,28 @@ II-Usage (General usage):
 <br>bane.media(link , timeout=10 )
 <h4>Get all subdomains links on the page:</h4>
 <br>bane.subdomains_extract(link , timeout=10 )
+
+# Information gathering:
+
+<h4>Get banner:</h4>
+<br>bane.get_banner(IP , p=port , payload=None , timeout=5 )
+<h4>Get infomation about Domain or IP:</h4>
+<br>bane.get_banner(IP , timeout=15 )
+<h4>safeweb.norton.com report for a link:</h4>
+<br>bane.norton_rate(link , timeout=15 )
+<h4>Your IP address:</h4>
+<br>bane.myip()
+<h4>WHOIS:</h4>
+<br>bane.who_is( domain )
+<h4>GEO-Information for any IP:</h4>
+<br>bane.geoip( IP )
+<h4>HTTP headers:</h4>
+<br>bane.headers( link )
+<h4>Reverse IP Lookup:</h4>
+<br>bane.reverse_ip_lookup( IP )
+<h4>Resolve any domain using a specific DNS server:</h4>
+<br>bane.resolve( domain , server="8.8.8.8" )
+<h4>Very Fast port scan:</h4>
+<br>bane.port_scan( IP , ports=[21,22,23,25,43,53,80,443,2082,3306] , timeout=5 )
+<h4>Subdomains finder:</h4>
+<br>bane.subdomains_finder( domain )
