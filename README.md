@@ -402,4 +402,9 @@ II-Usage (General usage):
 <br>bane.hydra(IP , p=3306 , protocol="mysqlt" , word_list=["admin:admin","admin:1234"] , timeout=5 )
 <h4>WordPress login page:</h4>
 <br>bane.hydra(link , protocol="wp" , word_list=["admin:admin","admin:1234"] , timeout=15 )
-
+<h4>Admin panel finder:</h4>
+<br>bane.admin_panel_finder(link , ext="php" , timeout=15 )
+<h4>Force browsing pages on admin panel:</h4>
+<br>bane.force_browsing(link , ext="php" , timeout=15 )
+<h4>Filemanager finder:</h4>
+<br>bane.filemanager_finder(link , ext="php" , timeout=15 )
