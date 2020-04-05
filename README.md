@@ -198,3 +198,12 @@ II-Usage (General usage):
 <br>bane.wp_version(link , timeout=15 )
 <h4>Vulnerable plugins and themes:</h4>
 <br>bane.wp_scan(link , timeout=15 )
+
+# Vulnerabilities TESTING:
+
+<h4>SQL Injection error based:</h4>
+<br>bane.sqli_error_based(link , timeout=15 )
+<h4>SQL Injection boolean based:</h4>
+<br>bane.sqli_boolean_based(link , timeout=15 )
+<h4>SQL Injection time based:</h4>
+<br>bane.sqli_time_based(link , timeout=15 )
