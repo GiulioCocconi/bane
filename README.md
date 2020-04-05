@@ -182,7 +182,7 @@ II-Usage (General usage):
 <h4>Bypass "Under attack mode" provided by CloudFlare and Rate-Limiting:</h4>
 <br>bane.cf_kill_ua_rate_limiting(link , duration= 300 , set_tor=False , threads=500 , timeout=5 )
 
-#WordPress testing:
+# WordPress testing:
 
 <h4>Users list:</h4>
 <br>bane.wp_users_list(link , timeout=15 )
