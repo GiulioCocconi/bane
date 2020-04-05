@@ -213,3 +213,17 @@ II-Usage (General usage):
 <br>bane.xss_post(link , {"q" : "<script>alert(123)</script>"}, extra={"Submit" : "Submit"} , timeout=15 )
 <h4>Automatic XSS scan for page:</h4>
 <br>bane.xss(link , payload="<script>alert(123)</script>" , timeout=15 )
+<h4>Command execution with a link:</h4>
+<br>bane.command_exec_link(link , timeout=15 )
+<h4>Command execution GET method:</h4>
+<br>bane.command_exec_get(link,param="q" , timeout=15 )
+<h4>Command execution POST method:</h4>
+<br>bane.command_exec_post(link,param="q" , timeout=15 )
+<h4>PHP code injection with a link:</h4>
+<br>bane.php_code_inject_link(link , timeout=15 )
+<h4>PHP code injection GET method:</h4>
+<br>bane.php_code_inject_get(link,param="q" , timeout=15 )
+<h4>PHP code injection POST method:</h4>
+<br>bane.php_code_injectc_post(link,param="q" , timeout=15 )
+<h4>File inclusion:</h4>
+<br>bane.file_inclusion(link, timeout=15 )
