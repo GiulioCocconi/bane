@@ -241,3 +241,23 @@ II-Usage (General usage):
 <br>bane.adb_exploit(IP , timeout=5 )
 <h4>Exposed unauthenticated Telnet server:</h4>
 <br>bane.exposed_telnet(IP , timeout=5 )
+# Proxies collecting:
+
+<h4>Mass HTTP proxies gathering:</h4>
+<br>bane.masshttp()
+<h4>Mass SOCKS4 proxies gathering:</h4>
+<br>bane.massocks4()
+<h4>Mass SOCKS5 proxies gathering:</h4>
+<br>bane.massocks5()
+<h4>Some HTTP proxies gathering:</h4>
+<br>bane.http()
+<h4>Some HTTPS proxies gathering:</h4>
+<br>bane.https()
+<h4>Some SOCKS4 proxies gathering:</h4>
+<br>bane.socks4()
+<h4>Some SOCKS5 proxies gathering:</h4>
+<br>bane.socks5()
+<h4>Mass SOCKS4 proxies gathering:</h4>
+<br>bane.massocks4()
+<h4>Checking proxy:</h4>
+<br>bane.proxy_check(IP , port , proto="http" , timeout=5)
