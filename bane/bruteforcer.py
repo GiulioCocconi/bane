@@ -467,7 +467,7 @@ def ftp(ip,username,password,timeout=5):
    except Exception as e:
     pass
    return False
-def mysql(u,username='root',password=''):
+def mysql(u,username,password):
  try:
   mconn.connect(host=u,user=username, password=password)
   return True
