@@ -7,10 +7,6 @@ if os.path.isdir('/data/data')==True:
     adr=True
 if os.path.isdir('/data/data/com.termux/')==True:
     termux=True
-try:
-    import pexpect
-except:
-    pass
 import mysql.connector as mconn
 from bane.pager import *
 from bane.wp import wpadmin
