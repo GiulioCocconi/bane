@@ -3933,7 +3933,9 @@ class dosecl(threading.Thread):
         break
     doser_counter+=1
     if prints==True:
-     print("Requests: {} | Type: {}  ".format(doser_counter,req))
+        sys.stdout.write("\rRequests: {} | Type: {}  ".format(doser_counter,req))
+        sys.stdout.flush()
+        #print("Requests: {} | Type: {}  ".format(doser_counter,req))
    except Exception as e:
     pass
    time.sleep(.1)
